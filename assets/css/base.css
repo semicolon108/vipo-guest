@@ -1,0 +1,19 @@
+/* Error: Undefined variable.
+ *    ,
+ * 54 |   --text-color: #{$text-color};
+ *    |                   ^^^^^^^^^^^
+ *    '
+ *   assets\scss\forward\_color.scss 54:19  @forward
+ *   assets\scss\forward\forward.scss 1:1   @use
+ *   assets\scss\base.scss 1:1              root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined variable.\a    \2577 \a 54 \2502    --text-color: #{$text-color};\d\a    \2502                    ^^^^^^^^^^^\a    \2575 \a   assets\\scss\\forward\\_color.scss 54:19  @forward\a   assets\\scss\\forward\\forward.scss 1:1   @use\a   assets\\scss\\base.scss 1:1              root stylesheet";
+}

@@ -1,0 +1,25 @@
+/* System Start */
+$font-family: "Satoshi", "Noto Sans Lao", sans-serif;
+
+/* System End */
+$xxsm-font: clamp(0.512rem, 0.4458rem + 0.331vw, 0.7023rem);
+$xsm-font: clamp(0.64rem, 0.5878rem + 0.2611vw, 0.7901rem);
+$sm-font: clamp(0.8rem, 0.7691rem + 0.1546vw, 0.8889rem);
+$md-font: clamp(1rem, 1rem + 0vw, 1rem);
+$lg-font: clamp(1.125rem, 1.2935rem + -0.2174vw, 1.25rem);
+$xlg-font: clamp(1.2656rem, 1.6658rem + -0.5163vw, 1.5625rem);
+$xxlg-font: clamp(1.4238rem, 2.1372rem + -0.9205vw, 1.9531rem);
+$xxxlg-font: clamp(1.6018rem, 2.7334rem + -1.4602vw, 2.4414rem);
+/* Font Size End */
+
+:root {
+  --font-family: #{$font-family};
+  --xxsm-font: #{$xxsm-font};
+  --xsm-font: #{$xsm-font};
+  --sm-font: #{$sm-font};
+  --md-font: #{$md-font};
+  --lg-font: #{$lg-font};
+  --xlg-font: #{$xlg-font};
+  --xxlg-font: #{$xxlg-font};
+  --xxxlg-font: #{$xxxlg-font};
+}
