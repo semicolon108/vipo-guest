@@ -7,6 +7,7 @@
           <h3>ຝາກປະຫວັດເພື່ອໃຫ້ສະດວກ ແລະ ວ່ອງໄວໃນການສະໝັກວຽກ</h3>
         </div>
         <div class="form-body">
+          <!-- Personal Information -->
           <div class="card">
             <div class="card-header">
               <h1>ຂໍ້ມູນສ່ວນໂຕ</h1>
