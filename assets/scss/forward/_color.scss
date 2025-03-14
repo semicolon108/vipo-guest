@@ -1,81 +1,56 @@
-$yellow-900: #efc403;
-$yellow-800: lighten($yellow-900, 10%);
-$yellow-700: lighten($yellow-900, 15%);
-$yellow-600: lighten($yellow-900, 20%);
-$yellow-500: lighten($yellow-900, 25%);
-$yellow-400: lighten($yellow-900, 30%);
-$yellow-300: lighten($yellow-900, 35%);
-$yellow-200: lighten($yellow-900, 40%);
-$yellow-100: lighten($yellow-900, 45%);
+@use "sass:color";
+
+$yellow-900: #ffce00;
+$yellow-800: color.adjust($yellow-900, $lightness: 10%);
+$yellow-700: color.adjust($yellow-900, $lightness: 15%);
+$yellow-600: color.adjust($yellow-900, $lightness: 20%);
+$yellow-500: color.adjust($yellow-900, $lightness: 25%);
+$yellow-400: color.adjust($yellow-900, $lightness: 30%);
+$yellow-300: color.adjust($yellow-900, $lightness: 35%);
+$yellow-200: color.adjust($yellow-900, $lightness: 40%);
+$yellow-100: color.adjust($yellow-900, $lightness: 45%);
+
+$light-blue-900: #9bd2ff;
+$light-blue-800: color.adjust($light-blue-900, $lightness: 10%);
+$light-blue-700: color.adjust($light-blue-900, $lightness: 15%);
+$light-blue-600: color.adjust($light-blue-900, $lightness: 20%);
+$light-blue-500: color.adjust($light-blue-900, $lightness: 25%);
+$light-blue-400: color.adjust($light-blue-900, $lightness: 30%);
+$light-blue-300: color.adjust($light-blue-900, $lightness: 10%);
+$light-blue-200: color.adjust($light-blue-900, $lightness: 13%);
+$light-blue-100: color.adjust($light-blue-900, $lightness: 15%);
+
+$deep-blue-900: #0067bc;
+$deep-blue-800: color.adjust($deep-blue-900, $lightness: 10%);
+$deep-blue-700: color.adjust($deep-blue-900, $lightness: 15%);
+$deep-blue-600: color.adjust($deep-blue-900, $lightness: 20%);
+$deep-blue-500: color.adjust($deep-blue-900, $lightness: 25%);
+$deep-blue-400: color.adjust($deep-blue-900, $lightness: 30%);
+$deep-blue-300: color.adjust($deep-blue-900, $lightness: 35%);
+$deep-blue-200: color.adjust($deep-blue-900, $lightness: 40%);
+$deep-blue-100: color.adjust($deep-blue-900, $lightness: 45%);
 
 $orange-900: #ff6d00;
-$orange-800: lighten($orange-900, 10%);
-$orange-700: lighten($orange-900, 15%);
-$orange-600: lighten($orange-900, 20%);
-$orange-500: lighten($orange-900, 25%);
-$orange-400: lighten($orange-900, 30%);
-$orange-300: lighten($orange-900, 35%);
-$orange-200: lighten($orange-900, 40%);
-$orange-100: lighten($orange-900, 45%);
-
-// Info
-$yellow-900: #efc403;
-$yellow-800: lighten($yellow-900, 10%);
-$yellow-700: lighten($yellow-900, 15%);
-$yellow-600: lighten($yellow-900, 20%);
-$yellow-500: lighten($yellow-900, 25%);
-$yellow-400: lighten($yellow-900, 30%);
-$yellow-300: lighten($yellow-900, 35%);
-$yellow-200: lighten($yellow-900, 40%);
-$yellow-100: lighten($yellow-900, 45%);
-
-$primary-900: #3346d3;
-$primary-800: lighten($primary-900, 10%);
-$primary-700: lighten($primary-900, 15%);
-$primary-600: lighten($primary-900, 20%);
-$primary-500: lighten($primary-900, 25%);
-$primary-400: lighten($primary-900, 30%);
-$primary-300: lighten($primary-900, 35%);
-$primary-200: lighten($primary-900, 40%);
-$primary-100: lighten($primary-900, 45%);
+$orange-800: color.adjust($orange-900, $lightness: 10%);
+$orange-700: color.adjust($orange-900, $lightness: 15%);
+$orange-600: color.adjust($orange-900, $lightness: 20%);
+$orange-500: color.adjust($orange-900, $lightness: 25%);
+$orange-400: color.adjust($orange-900, $lightness: 30%);
+$orange-300: color.adjust($orange-900, $lightness: 35%);
+$orange-200: color.adjust($orange-900, $lightness: 40%);
+$orange-100: color.adjust($orange-900, $lightness: 45%);
 
 $black-900: #000;
-$black-800: lighten($black-900, 40%);
-$black-700: lighten($black-900, 45%);
-$black-600: lighten($black-900, 50%);
-$black-500: lighten($black-900, 55%);
-$black-400: lighten($black-900, 88%);
-$black-300: lighten($black-900, 90%);
-$black-200: lighten($black-900, 93%);
-$black-100: lighten($black-900, 95%);
+$black-800: color.adjust($black-900, $lightness: 50%);
+$black-700: color.adjust($black-900, $lightness: 60%);
+$black-600: color.adjust($black-900, $lightness: 70%);
+$black-500: color.adjust($black-900, $lightness: 80%);
+$black-400: color.adjust($black-900, $lightness: 85%);
+$black-300: color.adjust($black-900, $lightness: 91%);
+$black-200: color.adjust($black-900, $lightness: 95%);
+$black-100: color.adjust($black-900, $lightness: 99%);
 
 :root {
-  // Text color
-  --text-color: #{$text-color};
-  --grey-text-color: #{$grey-text-color};
-  --placehoder-text-color: #{$placehoder-text-color};
-
-  // Component color
-  --bg-color: #{$bg-color};
-  --border-color: #{$border-color};
-  --dark-border-color: #{$dark-border-color};
-  --input-color: #{$input-color};
-
-  // Theme HEX
-  --sub-color: #{$sub-color};
-
-  --light-sub-color: #{$light-sub-color};
-
-  --primary-900: #{$primary-900};
-  --primary-800: #{$primary-800};
-  --primary-700: #{$primary-700};
-  --primary-600: #{$primary-600};
-  --primary-500: #{$primary-500};
-  --primary-400: #{$primary-400};
-  --primary-300: #{$primary-300};
-  --primary-200: #{$primary-200};
-  --primary-100: #{$primary-100};
-
   --orange-900: #{$orange-900};
   --orange-800: #{$orange-800};
   --orange-700: #{$orange-700};
@@ -86,6 +61,26 @@ $black-100: lighten($black-900, 95%);
   --orange-200: #{$orange-200};
   --orange-100: #{$orange-100};
 
+  --light-blue-900: #{$light-blue-900};
+  --light-blue-800: #{$light-blue-800};
+  --light-blue-700: #{$light-blue-700};
+  --light-blue-600: #{$light-blue-600};
+  --light-blue-500: #{$light-blue-500};
+  --light-blue-400: #{$light-blue-400};
+  --light-blue-300: #{$light-blue-300};
+  --light-blue-200: #{$light-blue-200};
+  --light-blue-100: #{$light-blue-100};
+
+  --deep-blue-900: #{$deep-blue-900};
+  --deep-blue-800: #{$deep-blue-800};
+  --deep-blue-700: #{$deep-blue-700};
+  --deep-blue-600: #{$deep-blue-600};
+  --deep-blue-500: #{$deep-blue-500};
+  --deep-blue-400: #{$deep-blue-400};
+  --deep-blue-300: #{$deep-blue-300};
+  --deep-blue-200: #{$deep-blue-200};
+  --deep-blue-100: #{$deep-blue-100};
+
   --yellow-900: #{$yellow-900};
   --yellow-800: #{$yellow-800};
   --yellow-700: #{$yellow-700};
@@ -95,16 +90,6 @@ $black-100: lighten($black-900, 95%);
   --yellow-300: #{$yellow-300};
   --yellow-200: #{$yellow-200};
   --yellow-100: #{$yellow-100};
-
-  --green-100: #{$green-100};
-  --green-200: #{$green-200};
-  --green-300: #{$green-300};
-  --green-400: #{$green-400};
-
-  --red-100: #{$red-100};
-  --red-200: #{$red-200};
-  --red-300: #{$red-300};
-  --red-400: #{$red-400};
 
   --black-900: #{$black-900};
   --black-800: #{$black-800};

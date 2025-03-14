@@ -1,19 +1,306 @@
-/* Error: Undefined variable.
- *    ,
- * 54 |   --text-color: #{$text-color};
- *    |                   ^^^^^^^^^^^
- *    '
- *   assets\scss\forward\_color.scss 54:19  @forward
- *   assets\scss\forward\forward.scss 1:1   @use
- *   assets\scss\base.scss 1:1              root stylesheet */
-
-body::before {
-  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
-      "Droid Sans Mono", monospace, monospace;
-  white-space: pre;
-  display: block;
-  padding: 1em;
-  margin-bottom: 1em;
-  border-bottom: 2px solid black;
-  content: "Error: Undefined variable.\a    \2577 \a 54 \2502    --text-color: #{$text-color};\d\a    \2502                    ^^^^^^^^^^^\a    \2575 \a   assets\\scss\\forward\\_color.scss 54:19  @forward\a   assets\\scss\\forward\\forward.scss 1:1   @use\a   assets\\scss\\base.scss 1:1              root stylesheet";
+:root {
+  --orange-900: #ff6d00;
+  --orange-800: rgb(255, 138.2, 51);
+  --orange-700: rgb(255, 152.8, 76.5);
+  --orange-600: rgb(255, 167.4, 102);
+  --orange-500: rgb(255, 182, 127.5);
+  --orange-400: rgb(255, 196.6, 153);
+  --orange-300: rgb(255, 211.2, 178.5);
+  --orange-200: rgb(255, 225.8, 204);
+  --orange-100: rgb(255, 240.4, 229.5);
+  --light-blue-900: #9bd2ff;
+  --light-blue-800: rgb(206, 232.95, 255);
+  --light-blue-700: rgb(231.5, 244.425, 255);
+  --light-blue-600: hsl(207, 100%, 100.3921568627%);
+  --light-blue-500: hsl(207, 100%, 105.3921568627%);
+  --light-blue-400: hsl(207, 100%, 110.3921568627%);
+  --light-blue-300: rgb(206, 232.95, 255);
+  --light-blue-200: rgb(221.3, 239.835, 255);
+  --light-blue-100: rgb(231.5, 244.425, 255);
+  --deep-blue-900: #0067bc;
+  --deep-blue-800: rgb(0, 130.9414893617, 239);
+  --deep-blue-700: rgb(9.5, 144.0026595745, 255);
+  --deep-blue-600: rgb(35, 155.5319148936, 255);
+  --deep-blue-500: rgb(60.5, 167.0611702128, 255);
+  --deep-blue-400: rgb(86, 178.5904255319, 255);
+  --deep-blue-300: rgb(111.5, 190.1196808511, 255);
+  --deep-blue-200: rgb(137, 201.6489361702, 255);
+  --deep-blue-100: rgb(162.5, 213.1781914894, 255);
+  --yellow-900: #ffce00;
+  --yellow-800: rgb(255, 215.8, 51);
+  --yellow-700: rgb(255, 220.7, 76.5);
+  --yellow-600: rgb(255, 225.6, 102);
+  --yellow-500: rgb(255, 230.5, 127.5);
+  --yellow-400: rgb(255, 235.4, 153);
+  --yellow-300: rgb(255, 240.3, 178.5);
+  --yellow-200: rgb(255, 245.2, 204);
+  --yellow-100: rgb(255, 250.1, 229.5);
+  --black-900: #000;
+  --black-800: rgb(127.5, 127.5, 127.5);
+  --black-700: #999999;
+  --black-600: rgb(178.5, 178.5, 178.5);
+  --black-500: #cccccc;
+  --black-400: rgb(216.75, 216.75, 216.75);
+  --black-300: rgb(232.05, 232.05, 232.05);
+  --black-200: rgb(242.25, 242.25, 242.25);
+  --black-100: rgb(252.45, 252.45, 252.45);
 }
+
+:root {
+  --font-family: Noto Sans Lao Looped, Satoshi sans-serif;
+  --xxsm-font: 0.7rem;
+  --xsm-font: 0.8rem;
+  --sm-font: 0.9rem;
+  --md-font: 1rem;
+  --lg-font: 1.18rem;
+  --xlg-font: 1.5rem;
+}
+
+/* Mobile (max 768px) */
+@media screen and (max-width: 768px) {
+  :root {
+    --xxsm-font: 0.7rem;
+    --xsm-font: 0.8rem;
+    --sm-font: 0.85rem;
+    --md-font: 1rem;
+    --lg-font: 1.13rem;
+    --xlg-font: 1.4rem;
+  }
+}
+/* Tablet (769px - 1023px) */
+/* Desktop (1024px - 1280px) */
+/* Widescreen (1281px - 1407px) */
+/* Full HD (1408px and above) */
+.button {
+  border-radius: 999px;
+  border: 1px solid var(--black-200);
+  font-family: var(--font-family);
+  font-size: var(--md-font);
+  font-weight: 500;
+  height: 2.5rem;
+  overflow: hidden;
+  box-shadow: none;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1.25em;
+  padding-right: 1.25em;
+  padding-top: calc(0.35em - 1px);
+  white-space: nowrap;
+  position: relative;
+  transition: all ease-in-out 0.3s;
+}
+.button:has(i) {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+.button:has(i) i {
+  font-size: var(--xsm-font);
+}
+.button:hover::after {
+  content: "";
+  display: block;
+  background-color: rgba(0, 0, 0, 0.05);
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+}
+.button:active {
+  animation: press 0.1s ease-in-out;
+}
+@keyframes press {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.93);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.button.small {
+  font-size: var(--sm-font);
+}
+.button.orange {
+  background-color: var(--orange-900);
+  color: #fff;
+}
+.button.light-orange {
+  background-color: var(--orange-100);
+  box-shadow: 0 0 0 1px var(--orange-900);
+  color: var(--orange-900);
+}
+.button.light-blue {
+  background-color: var(--light-blue-100);
+  box-shadow: 0 0 0 1px var(--deep-blue-900);
+  color: var(--deep-blue-900);
+}
+
+input,
+select,
+textarea {
+  font-weight: 500;
+  font-family: inherit;
+  box-shadow: none;
+  font-size: var(--md-font);
+  width: 100%;
+  padding: calc(0.5rem - 1px) calc(0.75rem - 1px);
+  position: relative;
+  transition: all ease-in-out 0.1s;
+  border-radius: 6px;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 0 0 0.5px var(--black-300);
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--orange-900);
+}
+input.small,
+select.small,
+textarea.small {
+  height: 2.5rem;
+}
+input:valid,
+select:valid,
+textarea:valid {
+  background-color: var(--orange-100) !important;
+  box-shadow: 0 0 0 1px var(--orange-900);
+}
+
+input,
+select {
+  height: 2.5rem;
+}
+
+.select {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.select:after {
+  position: absolute;
+  right: 0.5rem;
+  display: block;
+  content: "fdsfsadf";
+  width: 12px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: var(--black-600);
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  user-select: none;
+  pointer-events: none;
+}
+.select select {
+  padding-right: 1.5rem !important;
+  border-radius: 6px;
+  background-color: #fff;
+  outline: none;
+  cursor: pointer;
+  display: block;
+  font-size: 1em;
+  font-weight: 500;
+  max-width: 100%;
+  outline: 0;
+  appearance: none;
+  position: relative;
+}
+
+html,
+body,
+p,
+ol,
+ul,
+li,
+dl,
+dt,
+dd,
+blockquote,
+figure,
+fieldset,
+legend,
+textarea,
+pre,
+iframe,
+hr,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  box-sizing: border-box;
+  font-weight: 500;
+}
+
+* {
+  box-sizing: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+button,
+input,
+textarea {
+  margin: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*::before, *::after {
+  box-sizing: inherit;
+}
+
+img,
+video {
+  height: auto;
+  max-width: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+table th,
+table td {
+  border: 1px solid;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/*# sourceMappingURL=base.css.map */

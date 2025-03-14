@@ -1,0 +1,64 @@
+input,
+select,
+textarea {
+  font-weight: 500;
+  font-family: inherit;
+  box-shadow: none;
+  font-size: var(--md-font);
+  width: 100%;
+  padding: calc(0.5rem - 1px) calc(0.75rem - 1px);
+  position: relative;
+  transition: all ease-in-out 0.1s;
+  border-radius: 6px;
+  border: none;
+  background-color: #fff;
+  box-shadow: 0 0 0 0.5px var(--black-300);
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--orange-900);
+  }
+  &.small {
+    height: 2.5rem;
+  }
+  &:valid {
+    background-color: var(--orange-100) !important;
+    box-shadow: 0 0 0 1px var(--orange-900);
+  }
+}
+input,
+select {
+  height: 2.5rem;
+}
+.select {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  &:after {
+    position: absolute;
+    right: 0.5rem;
+    display: block;
+    content: "fdsfsadf";
+    width: 12px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: var(--black-600);
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    user-select: none;
+    pointer-events: none;
+  }
+  select {
+    padding-right: 1.5rem !important;
+    border-radius: 6px;
+    background-color: #fff;
+    outline: none;
+    cursor: pointer;
+    display: block;
+    font-size: 1em;
+    font-weight: 500;
+    max-width: 100%;
+    outline: 0;
+    appearance: none;
+    position: relative;
+  }
+}

@@ -1,0 +1,73 @@
+.button {
+  border-radius: 999px;
+  border: 1px solid var(--black-200);
+  font-family: var(--font-family);
+  font-size: var(--md-font);
+  font-weight: 500;
+  height: 2.5rem;
+  overflow: hidden;
+  box-shadow: none;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: calc(1em + 0.25em);
+  padding-right: calc(1em + 0.25em);
+  padding-top: calc(0.35em - 1px);
+  white-space: nowrap;
+  position: relative;
+  transition: all ease-in-out 0.3s;
+  &:has(i) {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+    i {
+      font-size: var(--xsm-font);
+    }
+  }
+  // click effect start
+  &:hover::after {
+    content: "";
+    display: block;
+    background-color: rgba(#000, 0.05);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+  }
+  &:active {
+    animation: press 0.1s ease-in-out;
+    @keyframes press {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(0.93);
+      }
+      to {
+        transform: scale(1);
+      }
+    }
+  }
+  &.small {
+    font-size: var(--sm-font);
+  }
+  &.orange {
+    background-color: var(--orange-900);
+    color: #fff;
+  }
+  &.light-orange {
+    background-color: var(--orange-100);
+    box-shadow: 0 0 0 1px var(--orange-900);
+    color: var(--orange-900);
+  }
+  &.light-blue {
+    background-color: var(--light-blue-100);
+    box-shadow: 0 0 0 1px var(--deep-blue-900);
+    color: var(--deep-blue-900);
+  }
+} //button
