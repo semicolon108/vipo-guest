@@ -50,7 +50,10 @@
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+//Test
+
+</script>
 
 <style lang="scss" scoped>
 .search-section {
