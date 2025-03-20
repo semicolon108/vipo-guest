@@ -8,7 +8,8 @@
         </div>
         <div class="field">
           <div class="select">
-            <select name="" id="">
+            <select name="" id="" required>
+              <option value="" disabled selected>ເລືອກແຂວງ</option>
               <option value="">ນະຄອນຫຼວງວຽງຈັນ</option>
               <option value="">ນະຄອນຫຼວງພະບາງ</option>
               <option value="">ວຽງຈັນ</option>
@@ -17,7 +18,8 @@
         </div>
         <div class="field">
           <div class="select">
-            <select>
+            <select required>
+              <option value="" disabled selected>ເວລາເຮັດວຽກ</option>
               <option value="">07:00 - 15:00</option>
               <option value="">16:00 - 21:00</option>
               <option value="">08:00 - 17:00</option>
@@ -40,6 +42,9 @@
       </div>
       <div class="job-card-list">
         <Jobcard v-for="i in 9" />
+      </div>
+      <div class="pages">
+        <Paginate />
       </div>
     </div>
   </section>
@@ -71,6 +76,11 @@
       color: var(--orange-900);
     }
   }
+}
+.pages {
+  padding: 2rem 0 0;
+  display: flex;
+  justify-content: center;
 }
 .job-card-list {
   display: grid;

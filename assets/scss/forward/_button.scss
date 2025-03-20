@@ -1,6 +1,6 @@
 .button {
   border-radius: 999px;
-  border: 1px solid var(--black-200);
+  border: none;
   font-family: var(--font-family);
   font-size: var(--md-font);
   font-weight: 500;
@@ -18,7 +18,7 @@
   padding-top: calc(0.35em - 1px);
   white-space: nowrap;
   position: relative;
-  transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.15s;
   &:has(i) {
     display: flex;
     gap: 0.25rem;
@@ -64,6 +64,10 @@
     background-color: var(--orange-100);
     box-shadow: 0 0 0 1px var(--orange-900);
     color: var(--orange-900);
+    &:hover {
+      background-color: var(--orange-900);
+      color: #fff;
+    }
   }
   &.light-blue {
     background-color: var(--light-blue-100);

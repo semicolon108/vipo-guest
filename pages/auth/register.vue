@@ -162,11 +162,17 @@
                 </div>
               </div>
             </div>
-            <div class="field">
+            <div class="field" :class="{ disabled: isStudent }">
               <label class="has-checkbox">
                 ຈົນເຖິງ
                 <!-- if true add class checked -->
-                <small class="">ຍັງເປັນນັກຮຽນຢູ່</small>
+                <p
+                  class="checkbox"
+                  @click="isStudent = !isStudent"
+                  :class="{ checked: isStudent }"
+                >
+                  ກຳລັງເປັນນັກສຶກຢູ່
+                </p>
               </label>
               <div class="selects">
                 <div class="select">
@@ -191,28 +197,35 @@
           <div class="card">
             <div class="card-header">
               <h1>ໄຟສຊີວະປະຫວັດ (ຊີວີ້)</h1>
-              <div class="field">
-                <div class="control">
-                  <label for="cv-file" class="file-upload">
-                    <i class="fa-regular fa-arrow-up-from-bracket"></i>
-                    <p>ກະລຸນາເລືອກໄຟສ</p>
-                    <small
-                      >Supported file format PDF, Word, JPG that has less than
-                      5MB size.</small
-                    >
-                    <input type="file" id="cv-file" />
-                  </label>
-                </div>
-                <div class="uploaded-file">
-                  <p><i class="fa-regular fa-file-pdf"></i>Filename</p>
-                  <i class="fa-regular fa-trash"></i>
-                </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <label for="cv-file" class="file-upload">
+                  <i class="fa-regular fa-arrow-up-from-bracket"></i>
+                  <p>ກະລຸນາເລືອກໄຟສ</p>
+                  <small
+                    >Supported file format PDF, Word, JPG that has less than 5MB
+                    size.</small
+                  >
+                  <input type="file" id="cv-file" />
+                </label>
+              </div>
+              <div class="uploaded-file">
+                <p><i class="fa-regular fa-file-pdf"></i>Filename</p>
+                <i class="fa-regular fa-trash"></i>
               </div>
             </div>
           </div>
-          <div class="card">
+          <div class="card" :class="{ disabled: noExp }">
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
+              <p
+                class="checkbox"
+                @click="noExp = !noExp"
+                :class="{ checked: noExp }"
+              >
+                ຂ້ອຍຍັງບໍ່ເຄີຍເຮັດວຽກ
+              </p>
             </div>
             <div class="field">
               <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
@@ -253,11 +266,17 @@
                 </div>
               </div>
             </div>
-            <div class="field">
+            <div class="field" :class="{ disabled: isCurrentWork }">
               <label class="has-checkbox">
                 ຈົນເຖິງ
                 <!-- if true add class checked -->
-                <small class="">ນີ້ແມ່ນວຽກປະຈຸບັນຂອງຂ້ອຍ</small>
+                <p
+                  class="checkbox"
+                  @click="isCurrentWork = !isCurrentWork"
+                  :class="{ checked: isCurrentWork }"
+                >
+                  ນີ້ແມ່ນວຽກປະຈຸບັນຂອງຂ້ອຍ
+                </p>
               </label>
               <div class="selects">
                 <div class="select">
@@ -343,7 +362,13 @@
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+
+const noExp = ref(false);
+const isStudent = ref(false);
+const isCurrentWork = ref(false);
+</script>
 
 <style scoped lang="scss">
 section {
@@ -375,10 +400,12 @@ section {
         margin-bottom: 1rem;
       }
       .card-header {
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
         h1 {
           font-weight: 700;
           font-size: var(--lg-font);
-          margin-bottom: 1rem;
           // color: var(--orange-900);
         }
       }
@@ -400,7 +427,49 @@ section {
     }
   }
 }
-
+.disabled {
+  &.card {
+    background-color: var(--black-300) !important;
+  }
+  input,
+  select,
+  textarea {
+    pointer-events: none;
+    user-select: none;
+    background-color: var(--black-400) !important;
+  }
+  .checkbox {
+    &:first-child {
+      pointer-events: none;
+      user-select: none;
+      color: var(--black-400);
+    }
+  }
+}
+.checkbox {
+  font-size: var(--sm-font);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all ease-in-out 0.15s;
+  &:hover {
+    color: var(--orange-900);
+  }
+  &::before {
+    content: "\f0c8";
+    font-family: "Font Awesome 6 Pro" !important;
+    margin-top: 0.25rem;
+    font-size: var(--xsm-font);
+  }
+  &.checked {
+    color: var(--orange-900) !important;
+    &::before {
+      content: "\f14a";
+      font-weight: 700;
+    }
+  }
+}
 .options {
   display: flex;
   gap: 0.5rem;
@@ -438,33 +507,9 @@ section {
 label.has-checkbox {
   display: flex !important;
   align-items: flex-end;
-  small {
-    font-size: var(--sm-font);
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    cursor: pointer;
-    user-select: none;
-    &:hover,
-    &.checked {
-      color: var(--orange-900);
-      &::before {
-        background-color: var(--orange-900);
-        border-radius: 9999px;
-        box-shadow: 0 0 6px 1px var(--orange-900);
-      }
-    }
-    &::before {
-      margin-top: 0.15rem;
-      transition: all ease-in-out 0.15s;
-      content: "";
-      display: block;
-      width: 10px;
-      height: 10px;
-      border-radius: 3px;
-      background-color: var(--black-300);
-    }
+  justify-content: space-between;
+  p {
+    font-weight: 500;
   }
 }
 

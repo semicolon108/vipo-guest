@@ -73,7 +73,7 @@
 /* Full HD (1408px and above) */
 .button {
   border-radius: 999px;
-  border: 1px solid var(--black-200);
+  border: none;
   font-family: var(--font-family);
   font-size: var(--md-font);
   font-weight: 500;
@@ -91,7 +91,7 @@
   padding-top: calc(0.35em - 1px);
   white-space: nowrap;
   position: relative;
-  transition: all ease-in-out 0.3s;
+  transition: all ease-in-out 0.15s;
 }
 .button:has(i) {
   display: flex;
@@ -138,6 +138,10 @@
   box-shadow: 0 0 0 1px var(--orange-900);
   color: var(--orange-900);
 }
+.button.light-orange:hover {
+  background-color: var(--orange-900);
+  color: #fff;
+}
 .button.light-blue {
   background-color: var(--light-blue-100);
   box-shadow: 0 0 0 1px var(--deep-blue-900);
@@ -174,7 +178,7 @@ textarea.small {
 input:valid,
 select:valid,
 textarea:valid {
-  background-color: var(--orange-100) !important;
+  background-color: var(--orange-200) !important;
   box-shadow: 0 0 0 1px var(--orange-900);
 }
 
