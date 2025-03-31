@@ -30,6 +30,7 @@ section {
     justify-content: center;
     gap: 1rem;
     font-size: var(--sm-font);
+    color: var(--black-900);
     @media screen and (max-width: 768px) {
       flex-direction: column;
       gap: 0.5rem;

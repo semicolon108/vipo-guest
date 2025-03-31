@@ -52,17 +52,22 @@
 
 <script setup lang="ts">
 //Test
-
 </script>
 
 <style lang="scss" scoped>
 .search-section {
+  position: relative;
   background-color: var(--orange-100);
   @media screen and (max-width: 768px) {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
   }
+  svg {
+    position: absolute;
+    top: 100px;
+  }
 }
+
 .filter {
   display: flex;
   align-items: center;
