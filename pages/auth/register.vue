@@ -90,9 +90,11 @@
               <label>ແຂວງຢູ່ປະຈຸບັນ</label>
               <div class="control">
                 <div class="select">
-                  <select name="" id="" required>
+                  <select
+                      v-model="formState.province"
+                      name="" id="" required>
                     <option value="" selected disabled>ເລືອກແຂວງ</option>
-                    <option value="">ນະຄອນຫຼວງ</option>
+                    <option :value="i._id" v-for="i in provincesList">{{i.name}}</option>
                   </select>
                 </div>
               </div>
@@ -101,9 +103,9 @@
               <label>ເມືອງຢູ່ປະຈຸບັນ</label>
               <div class="control">
                 <div class="select">
-                  <select name="" id="" required>
+                  <select name="" id="" :disabled="!formState.province">
                     <option value="" selected disabled>ເລືອກເມືອງ</option>
-                    <option value="">ເມືອງສີສັດຕະນາກ</option>
+                    <option v-for="i in districtsList.filter((i: any) => i.provinceId === formState.province)">{{i.name}}</option>
                   </select>
                 </div>
               </div>
@@ -364,10 +366,204 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useForm } from "vee-validate";
+import * as yup from "yup";
+
+
+
+const formState = ref({
+  profileImg: '',
+  gender: '',
+  firstName: '',
+  lastName: '',
+  dateOfBirth: '',
+  maritalStatus: '',
+  province: '',
+  district: '',
+
+  educations: [{
+    major: '',
+    university: '',
+    degree: '',
+    startDate: '',
+    endDate: '',
+  }],
+  isCurrentlyStudy: false,
+
+  cvFile: '',
+
+  workHistories: [{
+    company: '',
+    position: '',
+    startDate: '',
+    endDate: '',
+    detail: '',
+    isCurrentWork: false
+  }],
+
+  languages: [{
+    language: '',
+    level: ''
+  }],
+
+  otherSkills: [{
+    skill: '',
+    level: ''
+  }]
+})
+
+
+
+
+
+const {
+  values,
+  errors,
+  defineField,
+  setFieldValue,
+  handleSubmit,
+  resetForm,
+  setErrors,
+} = useForm({
+  validationSchema: yup.object({
+    profileImg: yup.string().required("This field is required"),
+    gender: yup.string().required("This field is required"),
+    firstName:  yup.string().required("This field is required"),
+    lastName:  yup.string().required("This field is required"),
+    dateOfBirth:  yup.string().required("This field is required"),
+    maritalStatus:  yup.string().required("This field is required"),
+    province:  yup.string().required("This field is required"),
+    district:  yup.string().required("This field is required"),
+
+    cvFile: yup.string().required('This field is required'),
+
+    educations: yup.array().of(
+        yup.object().shape({
+          major: yup.string().required('This field is required'),
+          university: yup.string().required('This field is required'),
+          degree: yup.string().required('This field is required'),
+          startDate: yup.date().required('This field is required'),
+          endDate: yup.date().required('This field is required'),
+          isCurrentlyStudying: yup.boolean().required('This field is required'),
+        })
+    ),
+        //.min(1, 'At least one education entry is required'),
+    workHistories: yup.array().of(
+        yup.object().shape({
+          company: yup.string().required('This field is required'),
+          position: yup.string().required('This field is required'),
+          startDate: yup.date().required('This field is required'),
+          endDate: yup.date().required('This field is required'),
+          detail: yup.string().required('This field is required'),
+          isCurrentlyWorking: yup.boolean().required('This field is required'),
+        })
+    ).min(1, 'At least one work history entry is required'),
+    languages: yup.array().of(
+        yup.object().shape({
+          language: yup.string().required('This field is required'),
+          level: yup.string().required('This field is required'),
+        })
+    ).min(1, 'At least one language entry is required'),
+    otherSkills: yup.array().of(
+        yup.object().shape({
+          skill: yup.string().required('This field is required'),
+          level: yup.string().required('This field is required'),
+        })
+    )
+  }),
+});
+
+const [profileImg, profileImgProps] = defineField("profileImg");
+const [gender, genderProps] = defineField("gender");
+const [firstName, firstNameProps] = defineField("firstName");
+const [lastName, lastNameProps] = defineField("lastName");
+const [dateOfBirth, dateOfBirthProps] = defineField("dateOfBirth");
+const [maritalStatus, maritalStatusProps] = defineField("maritalStatus");
+const [province, provinceProps] = defineField("province");
+const [district, districtProps] = defineField("district");
+
+const [educations, educationsProps] = defineField("educations");
+const [workHistories, workHistoriesProps] = defineField("workHistories");
+const [languages, languagesProps] = defineField("languages");
+const [otherSkills, otherSkillsProps] = defineField("otherSkills");
+
+
+
+
+
+
+
+
+
+
+
+
 
 const noExp = ref(false);
 const isStudent = ref(false);
 const isCurrentWork = ref(false);
+
+
+const provincesList = ref([
+  {
+    _id: '1',
+    name: 'Vientiane'
+  },
+  {
+    _id: '2',
+    name: 'LPB'
+  }
+])
+
+const districtsList = ref([
+  {
+    _id: '11',
+    name: 'Sisattanark',
+    provinceId: '1'
+  },
+  {
+    _id: '22',
+    name: 'LLLPPP',
+    provinceId: '2'
+  }
+])
+
+
+const degreesList = ref([
+  {
+    _id: '1',
+    name: 'First Degree',
+  }
+])
+
+const languagesList  = ref([
+  {
+    _id: '1',
+    name: 'English',
+  }
+])
+
+const levelsList = ref([
+  {
+    _id: '1',
+    name: 'Beginner',
+  }
+])
+
+
+
+const getProvincesList = async () => {
+  const { data, error } = await useFetch('/get-province-vipo', {
+    baseURL: useRuntimeConfig().public.apiBase,  // Automatically uses the global base URL
+  });
+
+  console.log(data)
+}
+
+onMounted(() => {
+  getProvincesList()
+})
+
 </script>
 
 <style scoped lang="scss">
