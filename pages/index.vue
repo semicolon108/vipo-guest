@@ -41,7 +41,9 @@
         </div>
       </div>
       <div class="job-card-list">
-        <Jobcard v-for="i in 9" />
+        <Jobcard v-for="i in jobs"
+        :detail="i"
+        />
       </div>
       <div class="pages">
         <Paginate />
@@ -51,7 +53,34 @@
 </template>
 
 <script setup lang="ts">
-//Test
+const config = useRuntimeConfig();
+
+const jobs = ref([])
+
+const getJobs = async () => {
+  try {
+
+    const { data }: any = await useFetch(config.public.apiBase + '/get-all-vipo-jobs', {
+      method: 'POST',
+      body: {
+       title: '',
+        workingLocation: '',
+        workinghours: '',
+        page: 1,
+        perPage: 10
+      },
+    });
+
+    jobs.value = data.value.info
+
+  }catch(e) {
+    console.log(e)
+  }
+}
+
+onMounted(() => {
+  getJobs()
+})
 </script>
 
 <style lang="scss" scoped>

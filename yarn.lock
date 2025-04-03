@@ -2636,6 +2636,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dayjs@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
+  languageName: node
+  linkType: hard
+
 "db0@npm:^0.3.1":
   version: 0.3.1
   resolution: "db0@npm:0.3.1"
@@ -4669,6 +4676,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-app@workspace:."
   dependencies:
+    dayjs: "npm:^1.11.13"
     nuxt: "npm:^3.15.2"
     sass: "npm:^1.83.4"
     vee-validate: "npm:^4.15.0"

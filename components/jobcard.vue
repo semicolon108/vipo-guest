@@ -1,34 +1,32 @@
 <template>
-  <div class="job-card" @click="$router.push('job-detail/1')">
+  <div class="job-card" @click="$router.push('job-detail/' + detail._id)">
     <div class="jobcard-header">
       <div class="header-start">
         <img
-          src="https://cdn.prod.website-files.com/653a4f584e6b39d63b5ffbfa/67287e6e339d4a8f1a698ca5_WhatsApp%20Image%202024-11-04%20at%2011.47.26.jpeg"
+          :src="detail.logo"
           alt=""
         />
       </div>
       <div class="header-end">
         <small>ສະໝັກກ່ອນວັນທີ</small>
-        <p>12/08/2025</p>
+        <p>{{formatDefaultDate(detail.closingDate) }}</p>
       </div>
     </div>
     <div class="jobcard-body">
-      <p><i class="fa-solid fa-building"></i>Mk Restaurant</p>
-      <h3>ຕ້ອງການຮັບພະນັກງານສາງ</h3>
+      <p><i class="fa-solid fa-building"></i>{{ detail.companyName }}</p>
+      <h3>{{ detail.title }}</h3>
       <ul>
         <li>
-          <span>07:00 - 15:00</span>
-        </li>
-        <li>
-          <span>15:00 - 21:00</span>
+
+          <span>{{minutesToTimeString(detail.startTime)}} - {{minutesToTimeString(detail.endTime)}}</span>
         </li>
       </ul>
-      <h6>3.500.000 ກີບ</h6>
+      <h6>{{ formatCurrency(detail.salary) }} ກີບ</h6>
     </div>
     <div class="jobcard-footer">
       <div class="footer-start">
         <i class="fa-solid fa-location-dot"></i>
-        <p>ນະຄອນຫຼວງວຽງຈັນ</p>
+        <p v-for="i in detail.workingLocation">{{ i.province }} </p>
       </div>
       <div class="footer-end">
         <button class="button small">ສະໝັກ</button>
@@ -37,7 +35,13 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+import {formatCurrency, formatDefaultDate, minutesToTimeString} from "~/utils/formatter";
+
+const {detail}: any = defineProps(['detail'])
+
+</script>
 
 <style lang="scss" scoped>
 .job-card {

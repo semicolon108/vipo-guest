@@ -1,7 +1,7 @@
 <template>
   <section class="job-detail-page">
     <div class="container">
-      <a class="back-button" @click="$router.back"
+      <a class="back-button" @click="$router.back()"
         ><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a
       >
       <div class="page-content">
@@ -9,28 +9,28 @@
           <div class="box">
             <div class="box-header">
               <div class="box-header-start">
-                <h1 class="job-title">ຕ້ອງການຮັບພະນັກງານສາງ</h1>
+                <h1 class="job-title">{{ detail.title }}</h1>
                 <ul>
-                  <li><small>₭</small>3.500.000</li>
+                  <li><small>₭</small>{{ formatCurrency(detail.salary) }}</li>
                   <li>
                     <i class="fa-regular fa-building"></i>
-                    MK Restuarant
+                    {{ detail.companyName }}
                   </li>
                   <li>
                     <i class="fa-regular fa-location-dot"></i>
-                    ນະຄອນຫຼວງວຽງຈັນ
+                    <span v-for="i in detail.workingLocation">{{ i.province }} </span>
                   </li>
                   <li>
                     <div class="tags">
-                      <span>07:00 - 15:00</span>
-                      <span>15:00 - 21:00</span>
+                      <span>{{minutesToTimeString(detail.startTime)}} - {{minutesToTimeString(detail.endTime)}}</span>
+
                     </div>
                   </li>
                 </ul>
               </div>
               <div class="logo">
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/MK_Restaurant_Logo.svg/2560px-MK_Restaurant_Logo.svg.png"
+                  :src="detail.logo"
                 />
               </div>
             </div>
@@ -41,34 +41,35 @@
               <div class="button small apply-button">ສະໝັກວຽກນີ້</div>
             </div>
             <div class="card-job-description">
-              <h3>ໜ້າທີ່ຮັບຜິດຊອບ</h3>
-              <ol>
-                <li>
-                  ການແນະນໍາສິນຄ້າ ແລະ ຂາຍສິນຄ້າ ປິດຍອດຂາຍໃຫ້ໄດ້ຕາມເປົ້າໜາຍ
-                </li>
-                <li>ການວາງແຜນກ່ອນອອກຢ້ຽມຢາມຮ້ານຄ້າໃນທຸກມື້</li>
-                <li>ການອອກຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນທີ່ວາງໄວ້ ແລະ ມີຄວາມຕໍ່ເນື່ອງ</li>
-                <li>
-                  ການເກັບກຳຂໍ້ມູນການເຄື່ອນໄຫຼວການຂາຍຂອງຮ້ານຄ້າ, ຕະຫຼາດ ແລະ
-                  ຄູ່ແຂ່ງ
-                </li>
-                <li>ມີກົນລະຍຸດໃນການນໍາສະເໜີສິນຄ້າ,</li>
-                <li>ເຮັດໃຫ້ເຫັນເຖີງຄຸນນະພາບຫລາຍກວ່າລາຄາ</li>
-                <li>ການລົງຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນການທີ່ວາງໄວ້,</li>
-                <li>ການສ້າງສາຍສໍາພັນທີ່ດີກັບຮ້ານຄ້າ ການກວດນັບສະຕ໋ອກຮ້ານຄ້າ,</li>
-                <li>ການເຕີມສະຕ໋ອກຂອງລຸ້ນທີ່ຂາດ</li>
-                <li>ການເຕີມສະຕ໋ອກສີນຄ້າທີ່ຂາດໃຫ້ກັບຮ້ານຄ້າໄດ້ຄົບຖ້ວນ</li>
-              </ol>
-              <h3>ເງິນໄຂການສະໝັກ</h3>
-              <ul>
-                <li>ທັກສະການສື່ສານ</li>
-                <li>ທັກສະການຫາຂໍ້ມູນ</li>
-                <li>ທັກສະການໂນ້ມນ້າວ</li>
-                <li>ທັກສະການປະສານງານ</li>
-                <li>ຊັ້ນສູງ ຫຼື ປະລິນຍາຕີສາຂາທີ່ກ່ຽວຂ້ອງ</li>
-                <li>Gender: ຍິງ/ຊາຍ</li>
-                <li>Age: 20 ຂື້ນໄປ</li>
-              </ul>
+              <div v-html="detail.description"></div>
+<!--              <h3>ໜ້າທີ່ຮັບຜິດຊອບ</h3>-->
+<!--              <ol>-->
+<!--                <li>-->
+<!--                  ການແນະນໍາສິນຄ້າ ແລະ ຂາຍສິນຄ້າ ປິດຍອດຂາຍໃຫ້ໄດ້ຕາມເປົ້າໜາຍ-->
+<!--                </li>-->
+<!--                <li>ການວາງແຜນກ່ອນອອກຢ້ຽມຢາມຮ້ານຄ້າໃນທຸກມື້</li>-->
+<!--                <li>ການອອກຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນທີ່ວາງໄວ້ ແລະ ມີຄວາມຕໍ່ເນື່ອງ</li>-->
+<!--                <li>-->
+<!--                  ການເກັບກຳຂໍ້ມູນການເຄື່ອນໄຫຼວການຂາຍຂອງຮ້ານຄ້າ, ຕະຫຼາດ ແລະ-->
+<!--                  ຄູ່ແຂ່ງ-->
+<!--                </li>-->
+<!--                <li>ມີກົນລະຍຸດໃນການນໍາສະເໜີສິນຄ້າ,</li>-->
+<!--                <li>ເຮັດໃຫ້ເຫັນເຖີງຄຸນນະພາບຫລາຍກວ່າລາຄາ</li>-->
+<!--                <li>ການລົງຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນການທີ່ວາງໄວ້,</li>-->
+<!--                <li>ການສ້າງສາຍສໍາພັນທີ່ດີກັບຮ້ານຄ້າ ການກວດນັບສະຕ໋ອກຮ້ານຄ້າ,</li>-->
+<!--                <li>ການເຕີມສະຕ໋ອກຂອງລຸ້ນທີ່ຂາດ</li>-->
+<!--                <li>ການເຕີມສະຕ໋ອກສີນຄ້າທີ່ຂາດໃຫ້ກັບຮ້ານຄ້າໄດ້ຄົບຖ້ວນ</li>-->
+<!--              </ol>-->
+<!--              <h3>ເງິນໄຂການສະໝັກ</h3>-->
+<!--              <ul>-->
+<!--                <li>ທັກສະການສື່ສານ</li>-->
+<!--                <li>ທັກສະການຫາຂໍ້ມູນ</li>-->
+<!--                <li>ທັກສະການໂນ້ມນ້າວ</li>-->
+<!--                <li>ທັກສະການປະສານງານ</li>-->
+<!--                <li>ຊັ້ນສູງ ຫຼື ປະລິນຍາຕີສາຂາທີ່ກ່ຽວຂ້ອງ</li>-->
+<!--                <li>Gender: ຍິງ/ຊາຍ</li>-->
+<!--                <li>Age: 20 ຂື້ນໄປ</li>-->
+<!--              </ul>-->
             </div>
             <div class="share-card">
               <p>ໝູ່ຂອງເຈົ້າອາດເໝາະກັບວຽກນີ້</p>
@@ -78,6 +79,7 @@
             </div>
           </div>
         </div>
+        
         <div class="end">
           <div class="box ads">
             <img
@@ -97,7 +99,40 @@
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+import {minutesToTimeString} from "~/utils/formatter";
+
+const config = useRuntimeConfig();
+
+const route = useRoute()
+
+const detail = ref<any>({})
+
+const getJobById = async () => {
+  try {
+
+    const { data }: any = await useFetch(config.public.apiBase + '/get-one-job-vipo', {
+      method: 'POST',
+      body: {
+        token: '',
+        _id: route.params._id,
+      },
+    });
+
+    detail.value = data.value.info
+
+  }catch(e) {
+    console.log(e)
+  }
+}
+
+onMounted(() => {
+  getJobById()
+})
+
+
+</script>
 
 <style lang="scss" scoped>
 .job-detail-page {
