@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <div class="forgot-password-page">
+      <form @submit.prevent="onSubmit" class="forgot-password-page">
         <div class="forgot-password-form">
           <h1>ຢືນຢັນລະຫັດ OTP</h1>
           <p>ທ່ານຈະໄດ້ຮັບລະຫັດ OTP ທາງຂໍ້ຄວາມ.</p>
@@ -9,22 +9,111 @@
           <div class="field">
             <label>ລະຫັດຢືນຢັນ OTP</label>
             <div class="control">
-              <input type="text" required placeholder="000000" />
+              <input
+                  type="text"
+                     v-model="verifyCode"
+                  v-bind="verifyCodeProps"
+                     placeholder="000000" />
+              <p class="error-text">{{errors.verifyCode}}</p>
+              <p class="error-text">{{apiError}}</p>
             </div>
           </div>
           <button
+              type="submit"
             class="button light-blue"
-            @click="$router.push('/auth/set-password')"
           >
             ຢືນຢັນລະຫັດ
           </button>
         </div>
-      </div>
+      </form>
     </div>
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import {useForm} from "vee-validate";
+import * as yup from "yup";
+
+
+const route = useRoute()
+const apiError = ref('')
+const config = useRuntimeConfig();
+
+
+
+const {
+  values,
+  errors,
+  defineField,
+  handleSubmit,
+} = useForm({
+  validationSchema: yup.object({
+    verifyCode: yup.string().required("This field is required"),
+  }),
+});
+
+const [verifyCode, verifyCodeProps] = defineField("verifyCode");
+
+
+const verifyOtp = async () => {
+  if(route.query.type === 'register' && route.query.mobile && route.query.token) {
+    const form = {
+      mobile: route.query.mobile,
+      verifyCode: verifyCode.value,
+      verifyToken:  route.query.token
+    }
+
+    const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-verification-code-vipo`, {
+      method: 'POST',
+      body: form,
+    });
+
+    if(error.value) {
+      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+      setTimeout(() => {
+        apiError.value = ''
+      }, 2000)
+      return
+    }
+
+    const token = data.value.token
+    navigateTo('/auth/set-password?type=register&mobile=' + form.mobile + '&token=' + token)
+
+  }
+  else if(route.query.type === 'forgotPassword' && route.query.mobile && route.query.token) {
+
+    const form = {
+      mobile: route.query.mobile,
+      verifyCode: verifyCode.value,
+      verifyToken:  route.query.token
+    }
+
+    const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-verification-forgetpassword-vipo`, {
+      method: 'POST',
+      body: form,
+    });
+
+    if(error.value) {
+      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+      setTimeout(() => {
+        apiError.value = ''
+      }, 2000)
+      return
+    }
+
+    const token = data.value.token
+    navigateTo('/auth/set-password?type=forgotPassword&mobile=' + form.mobile + '&token=' + token)
+  }
+}
+
+
+const onSubmit = handleSubmit((values) => {
+  verifyOtp()
+})
+
+
+
+</script>
 
 <style scoped lang="scss">
 .forgot-password-page {

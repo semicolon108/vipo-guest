@@ -1,14 +1,19 @@
 <template>
   <section>
     <div class="container">
-      <div class="login-page">
+      <form @submit.prevent="onSubmit" class="login-page">
         <div class="login-form">
           <h1>ເຂົ້າສູ່ລະບົບ</h1>
           <hr />
           <div class="field">
             <label>ເບີໂທລະສັບ</label>
             <div class="control">
-              <input type="text" required placeholder="020" />
+              <input type="text"
+                     v-model="mobile"
+                     v-bind="mobileProps"
+                      placeholder="020" />
+
+              <p class="error-text">{{errors.mobile}}</p>
             </div>
           </div>
           <div class="field">
@@ -21,20 +26,99 @@
               ></label
             >
             <div class="control">
-              <input type="text" required placeholder="**********" />
+              <input
+                  v-model="password"
+                  v-bind="passwordProps"
+
+                  type="password"  placeholder="**********" />
+              <p class="error-text">{{errors.password}}</p>
             </div>
+            <p class="error-text">{{apiError}}</p>
           </div>
-          <button class="button">ເຂົ້າສູ່ລະບົບ</button>
+
+          <button type="submit" class="button">ເຂົ້າສູ່ລະບົບ</button>
           <p class="regsiter-link">
-            ຍັງບໍ່ທັນເປັນສະມາຊິກ<a href="">ສະໝັກສະມາຊິກ</a>
+            ຍັງບໍ່ທັນເປັນສະມາຊິກ<NuxtLink to="/auth/register">ສະໝັກສະມາຊິກ</NuxtLink>
           </p>
         </div>
-      </div>
+      </form>
     </div>
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useForm } from "vee-validate";
+import * as yup from "yup";
+const config = useRuntimeConfig();
+
+const apiError = ref('');
+
+const {
+  values,
+  errors,
+  defineField,
+  setFieldValue,
+  handleSubmit,
+  resetForm,
+  setErrors,
+} = useForm({
+  validationSchema: yup.object({
+    mobile: yup.string().required("This field is required"),
+    password: yup.string().required("This field is required"),
+  }),
+});
+
+const [mobile, mobileProps] = defineField("mobile");
+const [password, passwordProps] = defineField("password");
+
+const login = async (form: any) => {
+ try {
+   const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-signIn-vipo`, {
+     method: 'POST',
+     body: {
+       email: form.mobile,
+       password: form.password
+     },
+   });
+
+   if(error.value) {
+     apiError.value = 'Mobile or password is incorrect'
+     setTimeout(() => {
+       apiError.value = ''
+     }, 2000)
+     return
+   }
+
+   const token = data.value.token
+
+   // Save the token in a secure cookie
+   const tokenCookie = useCookie('auth-token', {
+     maxAge: 60 * 60 * 24 * 365, // 7 days
+     httpOnly: false,          // Set to true if managed from server-side
+     secure: false,            // set to true if using HTTPS
+     sameSite: 'lax',
+   });
+
+   tokenCookie.value = token;
+
+   navigateTo('/')
+
+ } catch (e) {
+   console.log(e)
+ }
+}
+
+const onSubmit = handleSubmit((values) => {
+ login(values)
+})
+
+onMounted(() => {
+  mobile.value = '58593344'
+})
+
+
+</script>
 
 <style scoped lang="scss">
 .login-page {

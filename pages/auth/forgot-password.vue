@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <div class="forgot-password-page">
+      <form @submit.prevent="onSubmit" class="forgot-password-page">
         <div class="forgot-password-form">
           <h1>ລືມລະຫັດຜ່ານ</h1>
           <p>ໃສ່ເບີໂທຂອງທ່ານເພື່ອຮັບລະຫັດຢືນຢັນທາງຂໍ້ຄວາມ</p>
@@ -9,22 +9,91 @@
           <div class="field">
             <label>ເບີໂທລະສັບ</label>
             <div class="control">
-              <input type="text" required placeholder="020" />
+              <input type="text"
+                     v-model="mobile"
+                     v-bind="mobileProps"
+                     placeholder="020" />
             </div>
+            <p class="error-text">{{apiError}}</p>
           </div>
           <button
+              type="submit"
             class="button light-blue"
-            @click="$router.push('/auth/verify-otp')"
           >
             ຂໍລະຫັດຢືນຢັນ
           </button>
         </div>
-      </div>
+      </form>
     </div>
   </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+import {ref} from "vue";
+import {useForm} from "vee-validate";
+import * as yup from "yup";
+
+const config = useRuntimeConfig();
+
+const apiError = ref('');
+
+const {
+  values,
+  errors,
+  defineField,
+  setFieldValue,
+  handleSubmit,
+  resetForm,
+  setErrors,
+} = useForm({
+  validationSchema: yup.object({
+    mobile: yup.string().required("This field is required"),
+  }),
+});
+
+const [mobile, mobileProps] = defineField("mobile");
+
+
+const verifyMobile = async (form: any) => {
+
+  try {
+    const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-request-verification-code-vipo`, {
+      method: 'POST',
+      body: {
+        mobile: form.mobile,
+      },
+    });
+
+    if(error.value) {
+      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+      setTimeout(() => {
+        apiError.value = ''
+      }, 2000)
+      return
+    }
+
+    const token = data.value.token
+
+    navigateTo('/auth/verify-otp?type=forgotPassword&mobile=' + form.mobile + '&token=' + token)
+
+
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+
+const onSubmit = handleSubmit((values) => {
+  verifyMobile(values)
+})
+
+onMounted(() => {
+  mobile.value = '58593344'
+})
+
+
+</script>
 
 <style scoped lang="scss">
 .forgot-password-page {

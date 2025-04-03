@@ -6,7 +6,25 @@
   </div>
 </template>
 
+<script setup lang="ts">
+
+const { isAuth } = useAuth();
+
+const route = useRoute()
+
+watch(() => route.path, () => {
+  if(isAuth.value && (route.path === '/auth/login' || route.path === '/auth/register')) {
+    navigateTo('/')
+  }
+}, {immediate: true})
+</script>
+
 <style lang="scss">
+
+.error-text {
+  color: red;
+}
+
 body {
   font-family: var(--font-family);
   font-weight: 500;
