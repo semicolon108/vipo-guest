@@ -8,7 +8,10 @@
 
 <script setup lang="ts">
 
-const { isAuth } = useAuth();
+const { isAuth, user } = useAuth();
+
+const { $apiFetch } = useNuxtApp();
+const { setUser } = useAuth();
 
 const route = useRoute()
 
@@ -17,6 +20,27 @@ watch(() => route.path, () => {
     navigateTo('/')
   }
 }, {immediate: true})
+
+
+const getCurrentUser = async () => {
+
+  const { data }: any = await useAsyncData('getCurrentUser', () =>
+      $apiFetch('/get-seeker-info-vipo')
+  );
+ const user = data.value
+  if (user) {
+    setUser(data.value);
+  }
+
+}
+
+watch(() => isAuth.value, () => {
+  if(isAuth.value){
+    getCurrentUser()
+  }
+}, {immediate: true})
+
+
 </script>
 
 <style lang="scss">

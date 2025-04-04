@@ -1,10 +1,13 @@
 <template>
   <section class="job-detail-page">
+    <Share ref="shareRef" />
     <div class="container">
       <a class="back-button" @click="$router.back()"
         ><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a
       >
+
       <div class="page-content">
+
         <div class="start">
           <div class="box">
             <div class="box-header">
@@ -15,6 +18,7 @@
                   <li>
                     <i class="fa-regular fa-building"></i>
                     {{ detail.companyName }}
+
                   </li>
                   <li>
                     <i class="fa-regular fa-location-dot"></i>
@@ -35,10 +39,15 @@
               </div>
             </div>
             <div class="buttons">
-              <button class="button small share-button">
+
+              <button
+                  @click="shareRef.isPopupVisible = true"
+                  class="button small share-button">
                 <i class="fa-solid fa-link"></i> ແຊປະກາດວຽກ
               </button>
-              <div class="button small apply-button">ສະໝັກວຽກນີ້</div>
+              <div
+                  @click="applyJob"
+                  class="button small apply-button">ສະໝັກວຽກນີ້</div>
             </div>
             <div class="card-job-description">
               <div v-html="detail.description"></div>
@@ -73,13 +82,16 @@
             </div>
             <div class="share-card">
               <p>ໝູ່ຂອງເຈົ້າອາດເໝາະກັບວຽກນີ້</p>
-              <button class="button">
+              <button class="button"
+                      @click="shareRef.isPopupVisible = true"
+
+              >
                 <i class="fa-solid fa-link"></i> ສົ່ງວຽກນີ້ໃຫ້ໝູ່
               </button>
             </div>
           </div>
         </div>
-        
+
         <div class="end">
           <div class="box ads">
             <img
@@ -100,8 +112,12 @@
 </template>
 
 <script setup lang="ts">
-
+import Share from '@/components/Share.vue'
 import {minutesToTimeString} from "~/utils/formatter";
+
+const { $apiFetch } = useNuxtApp();
+
+const { isAuth, user } = useAuth();
 
 const config = useRuntimeConfig();
 
@@ -109,17 +125,24 @@ const route = useRoute()
 
 const detail = ref<any>({})
 
+const shareRef = ref()
+
+
+
 const getJobById = async () => {
   try {
 
-    const { data }: any = await useFetch(config.public.apiBase + '/get-one-job-vipo', {
-      method: 'POST',
-      body: {
-        token: '',
-        _id: route.params._id,
-      },
-    });
+    const { data }: any = await useAsyncData('getJobDetail', () =>
+        $apiFetch('/get-one-job-vipo', {
+          method: 'POST',
+          body: {
+            token: '',
+            _id: route.params._id },
+        })
+    )
 
+
+    console.log(data)
     detail.value = data.value.info
 
   }catch(e) {
@@ -127,10 +150,55 @@ const getJobById = async () => {
   }
 }
 
-onMounted(() => {
-  getJobById()
-})
+const applyJob = async () => {
 
+  if(!isAuth.value) {
+    return navigateTo('/auth/login')
+  }
+  if (!user.value.isCV) {
+    return navigateTo('/auth/cv')
+  }
+
+  const isConfirmed = confirm('Are you sure you want to apply this job?');
+  if(!isConfirmed) return
+
+  try {
+
+  //   const { data, error } = await useAsyncData('userData', () =>
+  //       $apiFetch('/user/profile') // automatically prepends apiBase
+  //   );
+  //
+  //   const { data }: any = await useFetch(config.public.apiBase + '/apply-job-vipo', {
+  //     method: 'POST',
+  //     body: {
+  //       _id: route.params._id
+  //     },
+  // })
+
+
+    const { data } = await useAsyncData('applyJob', () =>
+        $apiFetch('/apply-job-vipo', {
+          method: 'POST',
+          body: { _id: route.params._id },
+        })
+    );
+
+    console.log(data)
+
+  }catch(e) {
+    console.log(e)
+  }
+}
+
+
+await  getJobById()
+
+
+onMounted(() => {
+  setTimeout(() => {
+    shareRef.value.shareLink = 'https://new.vipo.cc' + route.fullPath
+  })
+})
 
 </script>
 

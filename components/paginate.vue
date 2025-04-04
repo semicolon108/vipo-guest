@@ -3,17 +3,20 @@
     <label for="">ໜ້າ</label>
     <div class="select">
       <select name="" id="" class="small">
-        <option value="1">01</option>
-        <option value="1">02</option>
-        <option value="1">03</option>
+
+        <option v-for="i in lastPage" :value="i">{{ i }}</option>
       </select>
     </div>
     <p>/</p>
-    <p class="number_of_page">30</p>
+    <p class="number_of_page">{{ lastPage }}</p>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+
+const {lastPage} = defineProps(['lastPage'])
+
+</script>
 
 <style scoped lang="scss">
 .paginate {
