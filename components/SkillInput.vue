@@ -3,11 +3,10 @@
     <div class="multi-selector-container">
       <div class="input-box" @click="toggleSelectOption">
         <input
-
             v-model="selectedSkill"
-            style="width: 20vw"
             type="text"
             placeholder="Enter or select skill"
+            style="width: 100%"
         />
       </div>
 
@@ -16,84 +15,82 @@
           v-if="showSelectOption"
           style="overflow: auto; height: 400px"
       >
+
         <ul>
           <li
-              @click="selectSkill(i.name)"
-              :class="{ selected: selectedSkill === i.name }"
-              v-for="i in skills"
-              :key="i._id"
+              v-for="skill in skills"
+              :key="skill._id"
+              @click="selectSkill(skill.name)"
+              :class="{ selected: selectedSkill === skill.name }"
           >
-            <span></span>{{ i.name }}
+            <span></span>{{ skill.name }}
           </li>
-          <!-- <li><span></span>Inter/Student</li>
-        <li><span></span>Experienced (non-manager)</li>
-        <li><span></span>Manager</li>
-        <li><span></span>Director and above</li> -->
         </ul>
       </div>
     </div>
-    <!-- <button @click="hideEmployerFunc" class="button primary">Add</button> -->
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from "vue";
 
-import { onMounted, ref, watch } from "vue";
+// v-model
+const modelValue = defineModel<string>();
 
+// Refs
+const selectedSkill = ref("");
+const showSelectOption = ref(false);
+const skills = ref<any[]>([]);
 
-const { isAuth } = useAuth();
+// Nuxt / API
 const { $apiFetch } = useNuxtApp();
 
-const selectedSkill = ref("");
-
-const skills = ref<any>([]);
-
-const modelValue = defineModel();
-
-const selectSkill = (name: string) => {
-  selectedSkill.value = name;
-
-  showSelectOption.value = false;
-};
-
-const showSelectOption = ref(false);
+// Functions
 const toggleSelectOption = () => {
   showSelectOption.value = !showSelectOption.value;
 };
 
-const getSkill = async () => {
+const selectSkill = (name: string) => {
+  selectedSkill.value = name;
+  showSelectOption.value = false;
+};
+
+// Fetch skill suggestions
+const getSkills = async () => {
   const { data }: any = await useAsyncData('getKeySkills', () =>
       $apiFetch('/get-keyskills-job-seeker-vipo', {
         query: { lang: 'LA', page: 1, perPage: 100, search: selectedSkill.value },
       })
   );
-
-  skills.value = data.value.getKeySkill;
+  skills.value = data.value.getKeySkill || [];
 };
 
+// Sync input to v-model
 watch(
     () => selectedSkill.value,
-    () => {
-      modelValue.value = selectedSkill.value;
-      getSkill();
+    (newVal) => {
+      modelValue.value = newVal;
+      getSkills();
     }
 );
 
+// Sync v-model to input
 watch(
     () => modelValue.value,
-    () => {
-      selectedSkill.value = modelValue.value as string;
-    }
+    (newVal) => {
+      if (newVal !== selectedSkill.value) {
+        selectedSkill.value = newVal || "";
+      }
+    },
+    { immediate: true }
 );
 
-onMounted(() => {
-  getSkill();
-});
+// Initial load
+await getSkills();
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .multi-selector-container {
-
   position: relative;
 
   .input-box {
@@ -123,44 +120,37 @@ onMounted(() => {
     padding: 1rem 0;
     overflow-y: auto;
     max-height: 200px;
-    ul {
-      display: block;
 
+    ul {
       li {
         white-space: nowrap;
-        flex-wrap: nowrap;
         display: flex;
         align-items: center;
-        justify-content: left;
+        justify-content: flex-start;
         padding: 0 1rem;
         cursor: pointer;
         position: relative;
         line-height: 2.5rem;
-        transition: all ease-in-out 0.15s;
+        transition: all 0.15s ease-in-out;
 
-        // border-radius: 6px;
         &:hover {
           background-color: var(--light-primary-color);
         }
 
-        &.selected {
-          span {
-            &::before {
-              background-color: var(--primary-color);
-            }
+        &.selected span::before {
+          background-color: var(--primary-color);
+        }
 
-            &::after {
-              content: "";
-              position: absolute;
-              width: 8px;
-              height: 4px;
-              border-bottom: 2px solid #fff;
-              border-left: 2px solid #fff;
-              transform: rotate(-45deg) scale(1);
-              top: 6px;
-              left: 5.5px;
-            }
-          }
+        &.selected span::after {
+          content: "";
+          position: absolute;
+          width: 8px;
+          height: 4px;
+          border-bottom: 2px solid #fff;
+          border-left: 2px solid #fff;
+          transform: rotate(-45deg) scale(1);
+          top: 6px;
+          left: 5.5px;
         }
 
         span {
@@ -169,56 +159,13 @@ onMounted(() => {
 
           &::before {
             content: "";
-            display: flex;
-            align-items: center;
-            justify-content: center;
             width: 18px;
             height: 18px;
-            border-radius: 18px;
+            border-radius: 50%;
             border: 1px solid var(--primary-color);
-            transition: all 0.25s ease 0s;
+            display: block;
           }
         }
-      }
-
-      // li
-    }
-
-    // ul
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-.search-option {
-  padding: 1.5rem;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  h3 {
-    margin-bottom: 0.5rem;
-  }
-  .input-group {
-    display: flex;
-    gap: 10px;
-  }
-  ul {
-    margin-top: 1rem;
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    li {
-      height: 2.5rem;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      padding: 0 1rem;
-      border: 1px solid var(--border-color);
-      background-color: #fff;
-      gap: 10px;
-      i {
-        color: var(--alert-color);
-        cursor: pointer;
       }
     }
   }
