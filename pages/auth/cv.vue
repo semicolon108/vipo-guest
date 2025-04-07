@@ -931,7 +931,11 @@ setTimeout(() => {
      })
    }
 
-   if(user.value.workHistory &&  user.value.workHistory.length) {
+   if(user.value.noExperience) {
+     isHaveNoExp.value = true
+     workHistoriesRemove(0)
+   }
+   else if(user.value.workHistory &&  user.value.workHistory.length) {
      const i = user.value.workHistory[user.value.workHistory.length-1]
      workHistoriesRemove(0)
      workHistoriesPush({
