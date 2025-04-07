@@ -6,7 +6,7 @@
           <h1>ຝາກປະຫວັດ</h1>
           <h3>ຝາກປະຫວັດເພື່ອໃຫ້ສະດວກ ແລະ ວ່ອງໄວໃນການສະໝັກວຽກ</h3>
         </div>
-        <div class="form-body">
+        <form @submit.prevent="onSubmit" class="form-body">
           <!-- Personal Information -->
           <div class="card">
             <div class="card-header">
@@ -16,21 +16,34 @@
               <div class="field">
                 <label for="">ຮູບຂອງເຈົ້າ</label>
                 <div class="control">
-                  <label for="image" class="image-upload">
-                    <!-- <img
-                  src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  /> -->
-                    <i class="fa-solid fa-camera"></i>
-                    <input type="file" id="image" />
-                  </label>
+                  <div @click="profileImgRef.click()">
+                    <img
+                        style="width: 160px"
+                        v-if="profileImg"
+                        :src="config.public.fileTmp + '/' +  profileImg"
+                    />
+                    <label   class="image-upload" v-else>
+
+
+                      <i class="fa-solid fa-camera"></i>
+
+
+                    </label>
+                  </div>
+
+
                   <small class="image-size">ຮູບຕ້ອງມີຂະໜາດບໍ່ເກີນ 10MB</small>
+                  <input v-show="false" ref="profileImgRef" type="file" id="image" @change="onProfileImgChange" />
                 </div>
+                <p class="error-text">{{errors.profileImg}}</p>
               </div>
               <label>ເພດ</label>
               <div class="control options">
-                <p class="checked">ຊາຍ</p>
-                <p>ຍິງ</p>
+                <p v-for="i in genderList"
+                   @click="gender = i._id"
+                   :class="{'checked': gender === i._id}">{{ i.name }}</p>
               </div>
+              <p class="error-text">{{errors.gender}}</p>
             </div>
             <div class="field">
               <label>ຊື່</label>
@@ -38,8 +51,9 @@
                 type="text"
                 class="input"
                 placeholder="ຊື່ຂອງເຈົ້າ"
-                required
+              v-model="firstName"
               />
+              <p class="error-text">{{errors.firstName}}</p>
             </div>
             <div class="field">
               <label>ນາມສະກຸນ</label>
@@ -47,262 +61,276 @@
                 type="text"
                 class="input"
                 placeholder="ນາມສະກຸນ"
-                required
+v-model="lastName"
               />
+              <p class="error-text">{{errors.firstName}}</p>
             </div>
             <div class="field">
               <label>ວັນເດືອນປີເກີດ</label>
-              <div class="selects">
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ວັນທີ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ເດືອນ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ປີ</option>
-                    <option value="">2023</option>
-                    <option value="">2024</option>
-                    <option value="">2025</option>
-                  </select>
-                </div>
-              </div>
+              <DateInput v-model="dateOfBirth"/>
+              <p class="error-text">{{errors.dateOfBirth}}</p>
             </div>
             <div class="field">
               <label>ສະຖານະແຕ່ງງານ</label>
               <div class="control options">
-                <p class="checked">ໂສດ</p>
-                <p>ແຕ່ງານ</p>
+                <p v-for="i in maritalStatusList"
+                   @click="maritalStatus = i._id"
+                   :class="{'checked': maritalStatus === i._id}">{{ i.name }}</p>
               </div>
+              <p class="error-text">{{errors.maritalStatus}}</p>
             </div>
             <div class="field">
               <label>ແຂວງຢູ່ປະຈຸບັນ</label>
               <div class="control">
                 <div class="select">
                   <select
-                      v-model="formState.province"
-                      name="" id="" required>
+                      v-model="province"
+                      name="" id="" >
                     <option value="" selected disabled>ເລືອກແຂວງ</option>
                     <option :value="i._id" v-for="i in provincesList">{{i.name}}</option>
                   </select>
+
                 </div>
+                <p class="error-text">{{errors.province}}</p>
               </div>
             </div>
             <div class="field">
               <label>ເມືອງຢູ່ປະຈຸບັນ</label>
               <div class="control">
                 <div class="select">
-                  <select name="" id="" :disabled="!formState.province">
+                  <select
+                      v-model="district"
+                      name="" id="" :disabled="!province">
                     <option value="" selected disabled>ເລືອກເມືອງ</option>
-                    <option v-for="i in districtsList.filter((i: any) => i.provinceId === formState.province)">{{i.name}}</option>
+                    <option v-for="i in districtsList" :value="i._id">{{i.name}}</option>
                   </select>
+
                 </div>
+                <p class="error-text">{{errors.district}}</p>
               </div>
             </div>
           </div>
-          <div class="card">
+
+          <div class="card" v-for="(i, idx) in educations as any" :key="i.key">
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
             </div>
             <div class="field">
               <label>ວິຊາທີ່ຮຽນ</label>
-              <input
-                type="text"
-                class="input"
-                placeholder="ການເງິນ ການບັນຊີ"
-                required
+              <Field
+                  :name="`educations[${idx}].major`"
+                  as="input"
+                  type="text"
+                  placeholder="ການເງິນ ການບັນຊີ"
               />
+              <ErrorMessage class="error-text" :name="`educations[${idx}].major`" />
             </div>
+
             <div class="field">
               <label>ສະຖາບັນການສຶກສາ</label>
-              <input
-                type="text"
-                class="input"
-                placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
-                required
+              <Field
+                  :name="`educations[${idx}].university`"
+                  as="input"
+                  type="text"
+                  placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
               />
+              <ErrorMessage class="error-text" :name="`educations[${idx}].university`" />
             </div>
             <div class="field">
               <label>ລະດັບການສຶກສາ</label>
               <div class="control">
                 <div class="select">
-                  <select name="" id="" required>
-                    <option value="" selected disabled>ລະດັບການສຶກສາ</option>
+
+                  <select  v-model="i.value.degree" >
+                    <option v-for="o in educationLevelList" :value="o._id">{{ o.name }}</option>
                   </select>
                 </div>
+
+                <div v-show="false">
+                  <Field
+                      :name="`educations[${idx}].degree`"
+                      as="input"
+                      type="text"
+                      placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
+                  />
+                </div>
+                <ErrorMessage class="error-text" :name="`educations[${idx}].degree`" />
               </div>
             </div>
             <div class="field">
               <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
               <div class="selects">
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ເດືອນ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ປີ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
+                <DateInput
+                    v-model="i.value.startDate"
+                    style="width: 100%;"
+                    :is-only-month-and-year="true"/>
               </div>
+              <div v-show="false">
+                <Field
+                    :name="`educations[${idx}].startDate`"
+                    as="input"
+                    type="text"
+                />
+              </div>
+              <ErrorMessage class="error-text" :name="`educations[${idx}].startDate`" />
             </div>
-            <div class="field" :class="{ disabled: isStudent }">
+            <div
+
+                class="field" :class="{ disabledzzz: i.value.isCurrentlyStudying }">
               <label class="has-checkbox">
                 ຈົນເຖິງ
                 <!-- if true add class checked -->
                 <p
                   class="checkbox"
-                  @click="isStudent = !isStudent"
-                  :class="{ checked: isStudent }"
+                  @click="i.value.isCurrentlyStudying = !i.value.isCurrentlyStudying"
+                  :class="{ checked: i.value.isCurrentlyStudying }"
                 >
                   ກຳລັງເປັນນັກສຶກຢູ່
                 </p>
               </label>
-              <div class="selects">
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ເດືອນ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ປີ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
+              <div class="selects"  v-show="!i.value.isCurrentlyStudying">
+                <DateInput
+                    v-model="i.value.endDate"
+                    style="width: 100%;"
+                    :is-only-month-and-year="true"/>
               </div>
+              <div v-show="false">
+                <Field
+                    :name="`educations[${idx}].endDate`"
+                    as="input"
+                    type="text"
+                />
+              </div>
+              <ErrorMessage class="error-text" :name="`educations[${idx}].endDate`" />
             </div>
           </div>
+
           <div class="card">
             <div class="card-header">
               <h1>ໄຟສຊີວະປະຫວັດ (ຊີວີ້)</h1>
             </div>
             <div class="field">
               <div class="control">
-                <label for="cv-file" class="file-upload">
+                <label
+                    @click="cvFileRef.click()"
+                    class="file-upload">
                   <i class="fa-regular fa-arrow-up-from-bracket"></i>
                   <p>ກະລຸນາເລືອກໄຟສ</p>
                   <small
                     >Supported file format PDF, Word, JPG that has less than 5MB
                     size.</small
                   >
-                  <input type="file" id="cv-file" />
+<!--                  <input type="file" id="cv-file" />-->
                 </label>
+
+                <input v-show="false" ref="cvFileRef" type="file" @change="onCVFileChange" />
               </div>
-              <div class="uploaded-file">
-                <p><i class="fa-regular fa-file-pdf"></i>Filename</p>
-                <i class="fa-regular fa-trash"></i>
+              <div class="uploaded-file" v-if="cvFile">
+                <p><i class="fa-regular fa-file-pdf"></i>{{ cvFile }}</p>
+<!--                <i class="fa-regular fa-trash"></i>-->
               </div>
+              <p class="error-text">{{errors.cvFile}}</p>
+
             </div>
           </div>
-          <div class="card" :class="{ disabled: noExp }">
+          <div
+               class="card"
+               :class="{ disabled: isHaveNoExp }">
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
+
               <p
                 class="checkbox"
-                @click="noExp = !noExp"
-                :class="{ checked: noExp }"
+                @click="isHaveNoExp = !isHaveNoExp"
+                :class="{ checked: isHaveNoExp }"
               >
                 ຂ້ອຍຍັງບໍ່ເຄີຍເຮັດວຽກ
               </p>
             </div>
-            <div class="field">
-              <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
-              <input
-                type="text"
-                class="input"
-                placeholder="ຊື່ບໍລິສັດ"
-                required
-              />
-            </div>
-            <div class="field">
-              <label>ຕຳແໜ່ງງານ</label>
-              <input
-                type="text"
-                class="input"
-                placeholder="ຕຳແໜ່ງງານ"
-                required
-              />
-            </div>
-            <div class="field">
-              <label>ເລີ່ມເຮັດວຽກ</label>
-              <div class="selects">
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ເດືອນ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ປີ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
+            <div v-for="(i, idx) in workHistories as any" :key="i.key">
+
+              <div class="field">
+                <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
+                <Field
+                    :name="`workHistories[${idx}].company`"
+                    as="input"
+                    type="text"
+                    placeholder="ຊື່ບໍລິສັດ"
+                />
+                <ErrorMessage class="error-text" :name="`workHistories[${idx}].company`" />
               </div>
-            </div>
-            <div class="field" :class="{ disabled: isCurrentWork }">
-              <label class="has-checkbox">
-                ຈົນເຖິງ
-                <!-- if true add class checked -->
-                <p
-                  class="checkbox"
-                  @click="isCurrentWork = !isCurrentWork"
-                  :class="{ checked: isCurrentWork }"
-                >
-                  ນີ້ແມ່ນວຽກປະຈຸບັນຂອງຂ້ອຍ
-                </p>
-              </label>
-              <div class="selects">
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ເດືອນ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ປີ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
-                </div>
+              <div class="field">
+                <label>ຕຳແໜ່ງງານ</label>
+                <Field
+                    :name="`workHistories[${idx}].position`"
+                    as="input"
+                    type="text"
+                    placeholder="ຕຳແໜ່ງງານ"
+                />
+                <ErrorMessage class="error-text" :name="`workHistories[${idx}].position`" />
               </div>
-            </div>
-            <div class="field">
-              <label for="">ໜ້າທີ່ຮັບຜິດຊອບ</label>
-              <div class="control">
-                <textarea name="" id="" rows="5" required></textarea>
+              <div class="field">
+                <label>ເລີ່ມເຮັດວຽກ</label>
+                <div class="selects">
+                  <DateInput
+                      v-model="i.value.startDate"
+                      style="width: 100%;"
+                      :is-only-month-and-year="true"/>
+                </div>
+                <div v-show="false">
+                  <Field
+                      :name="`workHistories[${idx}].startDate`"
+                      as="input"
+                      type="text"
+                  />
+                </div>
+                <ErrorMessage class="error-text" :name="`workHistories[${idx}].startDate`" />
+              </div>
+
+              <div class="field" :class="{ disabledzzz: i.value.isCurrentlyWorking }">
+                <label class="has-checkbox">
+                  ຈົນເຖິງ
+                  <!-- if true add class checked -->
+                  <p
+                      class="checkbox"
+                      @click="i.value.isCurrentlyWorking = !i.value.isCurrentlyWorking"
+                      :class="{ checked: i.value.isCurrentlyWorking }"
+                  >
+               ນີ້ແມ່ນວຽກປັດຈຸບັນ
+                  </p>
+                </label>
+                <div class="selects" v-show="!i.value.isCurrentlyWorking">
+                  <DateInput
+                      v-model="i.value.endDate"
+                      style="width: 100%;"
+                      :is-only-month-and-year="true"/>
+                </div>
+                <div v-show="false">
+                  <Field
+                      :name="`workHistories[${idx}].endDate`"
+                      as="input"
+                      type="text"
+                  />
+                </div>
+                <ErrorMessage class="error-text" :name="`workHistories[${idx}].endDate`" />
+              </div>
+              <div class="field">
+                <label for="">ໜ້າທີ່ຮັບຜິດຊອບ</label>
+                <div class="control">
+                <textarea
+                    v-model="i.value.detail"
+                    name="" id="" rows="5" ></textarea>
+
+                  <div v-show="false">
+                    <Field
+                        :name="`workHistories[${idx}].detail`"
+                        as="input"
+                        type="text"
+                        placeholder="ໜ້າທີ່ຮັບຜິດຊອບ"
+                    />
+                  </div>
+                  <ErrorMessage class="error-text" :name="`workHistories[${idx}].detail`" />
+                </div>
               </div>
             </div>
           </div>
@@ -312,25 +340,39 @@
             </div>
             <div class="field">
               <label>ພາສາ</label>
-              <div class="selects">
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ເລືອກພາສາ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
+              <div v-for="(i, idx) in languages as any" :key="i.key">
+                <div class="selects" >
+                  <div class="select">
+                    <select name="" id="" v-model="i.value.language">
+                      <option value="" disabled selected>ເລືອກພາສາ</option>
+                      <option :value="i._id" v-for="i in languagesList as any">{{ i.name }}</option>
+
+                    </select>
+
+                  </div>
+
+                  <div class="select">
+                    <select name="" id="" v-model="i.value.level">
+                      <option value="" disabled selected>ລະດັບ</option>
+                      <option :value="i._id" v-for="i in languageLevelsList as any">{{ i.name }}</option>
+                    </select>
+                  </div>
+
+                  <button @click="languagesRemove(idx)" v-if="idx !== 0">remove</button>
+
+                  <br>
+
                 </div>
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ລະດັບ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
+                <div>
+                  <ErrorMessage class="error-text" :name="`languages[${idx}].language`" />
+                  <br>
+                  <ErrorMessage class="error-text" :name="`languages[${idx}].level`" />
                 </div>
+
               </div>
-              <button class="button add-button small light-orange">
+
+
+              <button class="button add-button small light-orange" @click="languagesPush({ language: '', level: '' })">
                 ເພີ່ມ
               </button>
             </div>
@@ -341,24 +383,38 @@
             </div>
             <div class="field">
               <label>ພາສາ</label>
-              <div class="selects">
-                <input type="text" class="input" required placeholder="ທັກສະ" />
-                <div class="select">
-                  <select name="" id="" required>
-                    <option value="" disabled selected>ລະດັບ</option>
-                    <option value="">1</option>
-                    <option value="">2</option>
-                    <option value="">3</option>
-                  </select>
+              <div  v-for="(i, idx) in otherSkills as any" :key="i.key">
+
+                <div class="selects">
+                  <SkillInput v-model="i.value.skill"/>
+<!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
+                  <div class="select">
+                    <select name="" id="" v-model="i.value.level">
+                      <option value="" disabled selected>ລະດັບ</option>
+                      <option :value="i._id" v-for="i in skillLevels as any">{{ i.name }}</option>
+                    </select>
+                  </div>
+
+
                 </div>
+                <div>
+                  <ErrorMessage class="error-text" :name="`otherSkills[${idx}].skill`" />
+                  <br>
+                  <ErrorMessage class="error-text" :name="`otherSkills[${idx}].level`" />
+                </div>
+                <br>
               </div>
-              <button class="button add-button small light-orange">
+              <button
+                  @click="otherSkillsPush({ skill: '', level: '' })"
+                  class="button add-button small light-orange">
                 ເພີ່ມ
               </button>
             </div>
           </div>
-          <button class="button submit-button orange">ບັນທຶກຂໍ້ມູນ</button>
-        </div>
+          <button
+              type="submit"
+              class="button submit-button orange">ບັນທຶກຂໍ້ມູນ</button>
+        </form>
       </div>
     </div>
   </section>
@@ -366,11 +422,21 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useForm } from "vee-validate";
+import { useForm , useFieldArray, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
+import DateInput from '@/components/DateInput.vue'
+import SkillInput from '@/components/SkillInput.vue'
+
 
 const { isAuth } = useAuth();
+const { $apiFetch } = useNuxtApp();
 
+const config= useRuntimeConfig();
+
+const profileImgRef = ref()
+const isHaveNoExp = ref(false)
+const cvFileRef = ref()
+const backupWorkingHistories = ref<any>({})
 
 const route = useRoute()
 
@@ -446,21 +512,21 @@ const {
           university: yup.string().required('This field is required'),
           degree: yup.string().required('This field is required'),
           startDate: yup.date().required('This field is required'),
-          endDate: yup.date().required('This field is required'),
-          isCurrentlyStudying: yup.boolean().required('This field is required'),
+          // endDate: yup.date().required('This field is required'),
+          isCurrentlyStudying: yup.boolean().required('This field is required')
         })
-    ),
-        //.min(1, 'At least one education entry is required'),
+    ).min(1, 'At least one education entry is required'),
+        //
     workHistories: yup.array().of(
         yup.object().shape({
           company: yup.string().required('This field is required'),
           position: yup.string().required('This field is required'),
           startDate: yup.date().required('This field is required'),
-          endDate: yup.date().required('This field is required'),
+         // endDate: yup.date().required('This field is required'),
           detail: yup.string().required('This field is required'),
           isCurrentlyWorking: yup.boolean().required('This field is required'),
         })
-    ).min(1, 'At least one work history entry is required'),
+    ).notRequired(),
     languages: yup.array().of(
         yup.object().shape({
           language: yup.string().required('This field is required'),
@@ -485,10 +551,13 @@ const [maritalStatus, maritalStatusProps] = defineField("maritalStatus");
 const [province, provinceProps] = defineField("province");
 const [district, districtProps] = defineField("district");
 
-const [educations, educationsProps] = defineField("educations");
-const [workHistories, workHistoriesProps] = defineField("workHistories");
-const [languages, languagesProps] = defineField("languages");
-const [otherSkills, otherSkillsProps] = defineField("otherSkills");
+const [cvFile, cvFileProps] = defineField("cvFile");
+
+const { fields: educations, push: educationsPush } = useFieldArray('educations')
+const { fields: workHistories, push: workHistoriesPush, remove: workHistoriesRemove } = useFieldArray('workHistories')
+const { fields: languages, push: languagesPush, remove: languagesRemove } = useFieldArray('languages')
+const { fields: otherSkills, push: otherSkillsPush, remove: otherSkillsRemove } = useFieldArray('otherSkills')
+
 
 
 
@@ -507,68 +576,301 @@ const isStudent = ref(false);
 const isCurrentWork = ref(false);
 
 
-const provincesList = ref([
-  {
-    _id: '1',
-    name: 'Vientiane'
-  },
-  {
-    _id: '2',
-    name: 'LPB'
+const provincesList = ref<any>([])
+
+const districtsList = ref<any>([])
+
+const genderList = ref<any>([])
+const maritalStatusList = ref<any>([])
+const educationLevelList = ref<any>([])
+
+
+const degreesList = ref([])
+
+const languagesList  = ref([])
+
+const  languageLevelsList = ref([])
+
+const skills = ref([])
+const skillLevels = ref([])
+
+const onSubmit = handleSubmit(async (values) => {
+  const object = values
+
+  const obj  = {
+    "educations": [
+      {
+        "major": "TT",
+        "university": "TT",
+        "degree": "5fae4291b734a44b583273e3",
+        "startDate": "2013-04-30T17:00:00.000Z",
+        "endDate": "2010-10-31T17:00:00.000Z",
+        "isCurrentlyStudying": false
+      }
+    ],
+    "workHistories": [
+      {
+        "company": "TT",
+        "position": "TT",
+        "startDate": "2009-10-31T17:00:00.000Z",
+        "endDate": "2006-10-31T17:00:00.000Z",
+        "isCurrentlyWorking": false,
+        "detail": "TT"
+      }
+    ],
+    "languages": [
+      {
+        "language": "639afdbf26422969be6cb318",
+        "level": "5fae4fd8b734a44b583273fb"
+      }
+    ],
+    "otherSkills": [
+      {
+        "skill": "Microsoft Excel",
+        "level": "6680c7befde163adcc5b4227"
+      }
+    ],
+    "profileImg": "b5667035-0ec7-4928-896d-fd2cb56df2f3.jpeg",
+    "gender": "5fae50b9b734a44b583273fe",
+    "firstName": "TT",
+    "lastName": "TT",
+    "dateOfBirth": "1998-04-25T17:00:00.000Z",
+    "maritalStatus": "5fae50d0b734a44b58327401",
+    "province": "5eb8cb58f2913809f730ce9c",
+    "district": "5ec5f96ecc249b11cae0404f",
+    "cvFile": "aa72c98c-00e9-4902-84cd-617abaa73e6c.pdf"
   }
-])
 
-const districtsList = ref([
-  {
-    _id: '11',
-    name: 'Sisattanark',
-    provinceId: '1'
-  },
-  {
-    _id: '22',
-    name: 'LLLPPP',
-    provinceId: '2'
+
+  const form = {
+    cv: object.cvFile,
+    noExperience: isHaveNoExp.value,
+    profile: {
+      file: object.profileImg,
+      firstName: object.firstName,
+      lastName: object.lastName,
+      dateOfBirth: object.dateOfBirth,
+      genderId: object.gender,
+      maritalStatusId: object.maritalStatus,
+    //  currentResidenceId: object.province,
+      districtId : object.district
+    },
+    educations: object.educations.map((i: any) => ({
+      subject: i.major,
+      school: i.university,
+      qualifications: i.degree,
+      startYear: i.startDate,
+      endYear: i.endDate,
+      currentlyStudying: i.isCurrentlyStudying,
+    })),
+    workHistories: object.workHistories.map((i: any) => ({
+      company: i.company,
+      position: i.position,
+      startYear: i.startDate,
+      endYear: i.endDate,
+      isCurrentJob: i.isCurrentlyWorking,
+      responsibility: i.detail
+    })),
+    language: object.languages.map((i: any) => ({
+      LanguageId: i.language,
+      LanguageLevelId: i.level
+    })),
+    skill: object.otherSkills.map((i: any) => ({
+      keySkill: i.skill,
+      skillLevelId: i.level
+    })),
   }
-])
 
 
-const degreesList = ref([
-  {
-    _id: '1',
-    name: 'First Degree',
-  }
-])
+  // console.log(form)
 
-const languagesList  = ref([
-  {
-    _id: '1',
-    name: 'English',
-  }
-])
-
-const levelsList = ref([
-  {
-    _id: '1',
-    name: 'Beginner',
-  }
-])
-
-
-
-const getProvincesList = async () => {
-  const { data, error } = await useFetch('/get-province-vipo', {
-    baseURL: useRuntimeConfig().public.apiBase,  // Automatically uses the global base URL
-  });
+  const { data }: any = await useAsyncData('updateSeekerInfo', () =>
+      $apiFetch('/update-seeker-info-vipo', {
+        method: 'POST',
+        body: form
+      })
+  );
 
   console.log(data)
-}
 
-onMounted(() => {
-  getProvincesList()
+
 })
 
 
-onMounted(() => {
+const onProfileImgChange = async ($event: any) => {
+  const file = $event.target.files[0];
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const { data }: any = await useAsyncData('uploadImg', () =>
+      $apiFetch('/upload-image', {
+        method: 'POST',
+        body: formData
+      })
+  );
+
+  if(data.value) {
+    profileImg.value = data.value.file.name
+    profileImgRef.value.value = ''
+  }
+
+}
+
+
+
+
+const onCVFileChange = async ($event: any) => {
+  const file = $event.target.files[0];
+
+  const formData = new FormData()
+  formData.append('file', file)
+
+  const { data }: any = await useAsyncData('uploadResume', () =>
+      $apiFetch('/upload-resume', {
+        method: 'POST',
+        body: formData
+      })
+  );
+
+  if(data.value) {
+    cvFile.value = data.value.myFile.name
+    cvFileRef.value.value = ''
+  }
+
+}
+
+
+const getProvinces = async () => {
+  try {
+
+    const { data }: any = await useAsyncData('provinces', () =>
+        $apiFetch('/get-province-vipo', {
+          query: { lang: 'LA' },
+        })
+    );
+    provincesList.value = data.value.provinces
+
+  }catch(e) {
+    console.log(e)
+  }
+}
+
+const getReuse = async (type: string) => {
+  try {
+
+    const { data }: any = await useAsyncData('reuse' + type, () =>
+        $apiFetch('/get-reuse-vipo', {
+          query: { lang: 'LA', type },
+        })
+    );
+
+
+    const list =data.value.info
+    switch (type) {
+     case 'Gender':
+       genderList.value = list
+       break; case 'MaritalStatus':
+       maritalStatusList.value = list
+       break; case 'JobEducationLevel':
+       educationLevelList.value = list
+       break; case 'Language':
+       languagesList.value = list
+       break; case 'LanguageLevel':
+       languageLevelsList.value = list
+       break; case 'SkillLevel':
+       skillLevels.value = list
+       break;
+    }
+
+
+  }catch(e) {
+    console.log(e)
+  }
+}
+
+
+watch(() => province.value, () => {
+  if(province.value) {
+    const provinceIdx = provincesList.value.findIndex((i: any) => i._id === province.value)
+    districtsList.value = provincesList.value[provinceIdx].districts
+    district.value = districtsList.value[0]._id
+  }
+}, {immediate: true})
+
+watch(() => isHaveNoExp.value, () => {
+  if(isHaveNoExp.value) {
+    backupWorkingHistories.value =   workHistories.value[0].value
+    setTimeout(() => {
+      workHistoriesRemove(0)
+    }, 100)
+  }else {
+    if(backupWorkingHistories.value) {
+      workHistoriesPush(backupWorkingHistories.value)
+    }
+  }
+})
+
+
+
+const getKeySkills = async () => {
+
+  const { data }: any = await useAsyncData('getKeySkills', () =>
+      $apiFetch('/get-keyskills-job-seeker-vipo', {
+        query: { lang: 'LA', page: 1, perPage: 10000, search: '' },
+      })
+  );
+
+  skills.value = data.value.getKeySkill
+
+}
+
+
+//Type not matching in model: Country,State,SkillLevel,KeySkills,CurrentResidence,Nationality,BannerType,BlogType,Degree,CompanySize,Gender,Industry,JobEducationLevel,JobExperience,JobFunction,JobZone,Language,LanguageLevel,MaritalStatus,Province,Tag,SalaryRange,District,JobTag,SkillTag,AdditionalTag,JobLevel
+
+await getProvinces()
+ getReuse('Gender')
+ getReuse('MaritalStatus')
+ getReuse('JobEducationLevel')
+ getReuse('Language')
+ getReuse('LanguageLevel')
+getReuse('SkillLevel')
+getKeySkills()
+
+
+
+onMounted(async () => {
+
+setTimeout(() => {
+    educationsPush({
+  major: '',
+  university: '',
+  degree: '',
+  startDate: '',
+  endDate: '',
+  isCurrentlyStudying: false,
+})
+
+  workHistoriesPush({
+    company: '',
+    position: '',
+    startDate: '',
+    endDate: '',
+    isCurrentlyWorking: false,
+  })
+
+  languagesPush({
+    language: '',
+    level: '',
+  })
+
+  otherSkillsPush({
+    skill: '',
+    level: '',
+  })
+}, 1000)
+
+
   if(!isAuth.value) {
     alert('Please login first')
     navigateTo('/auth/login')
@@ -647,8 +949,8 @@ section {
   }
   .checkbox {
     &:first-child {
-      pointer-events: none;
-      user-select: none;
+      //pointer-events: none;
+      //user-select: none;
       color: var(--black-400);
     }
   }
