@@ -792,7 +792,7 @@ const getReuse = async (type: string) => {
        genderList.value = list
        break; case 'MaritalStatus':
        maritalStatusList.value = list
-       break; case 'JobEducationLevel':
+       break; case 'Degree':
        educationLevelList.value = list
        break; case 'Language':
        languagesList.value = list
@@ -854,7 +854,7 @@ const isLoading = ref(true)
 await getProvinces()
  getReuse('Gender')
  getReuse('MaritalStatus')
- getReuse('JobEducationLevel')
+ getReuse('Degree')
  getReuse('Language')
  getReuse('LanguageLevel')
   getReuse('SkillLevel')
@@ -924,7 +924,7 @@ setTimeout(() => {
        _id: i._id,
        major: i.subject,
        university: i.school,
-       degree: i.qualifications,
+       degree: i.qualifications ? i.qualifications._id : '',
        startDate: i.startYear,
        endDate: i.endYear,
        isCurrentlyStudying: i.currentlyStudying
