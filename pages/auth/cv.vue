@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="container">
+    <div class="container" >
       <div class="register-form">
         <div class="form-header">
           <h1>ຝາກປະຫວັດ</h1>
@@ -19,8 +19,13 @@
                   <div @click="profileImgRef.click()">
                     <img
                         style="width: 160px"
-                        v-if="profileImg"
+                        v-if="profileImgObject"
                         :src="config.public.fileTmp + '/' +  profileImg"
+                    />
+                    <img
+                        style="width: 160px"
+                        v-else-if="profileImg"
+                        :src=" profileImg"
                     />
                     <label   class="image-upload" v-else>
 
@@ -68,6 +73,8 @@ v-model="lastName"
             <div class="field">
               <label>ວັນເດືອນປີເກີດ</label>
               <DateInput v-model="dateOfBirth"/>
+
+
               <p class="error-text">{{errors.dateOfBirth}}</p>
             </div>
             <div class="field">
@@ -157,6 +164,8 @@ v-model="lastName"
                 <ErrorMessage class="error-text" :name="`educations[${idx}].degree`" />
               </div>
             </div>
+
+
             <div class="field">
               <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
               <div class="selects">
@@ -165,6 +174,7 @@ v-model="lastName"
                     style="width: 100%;"
                     :is-only-month-and-year="true"/>
               </div>
+
               <div v-show="false">
                 <Field
                     :name="`educations[${idx}].startDate`"
@@ -385,7 +395,8 @@ v-model="lastName"
               <label>ພາສາ</label>
               <div  v-for="(i, idx) in otherSkills as any" :key="i.key">
 
-                <div class="selects">
+                <div class="selects" >
+
                   <SkillInput v-model="i.value.skill"/>
 <!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
                   <div class="select">
@@ -425,10 +436,11 @@ import { ref } from "vue";
 import { useForm , useFieldArray, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import DateInput from '@/components/DateInput.vue'
+
 import SkillInput from '@/components/SkillInput.vue'
 
 
-const { isAuth } = useAuth();
+const { isAuth, user } = useAuth();
 const { $apiFetch } = useNuxtApp();
 
 const config= useRuntimeConfig();
@@ -436,6 +448,9 @@ const config= useRuntimeConfig();
 const profileImgRef = ref()
 const isHaveNoExp = ref(false)
 const cvFileRef = ref()
+const profileImgObject = ref<any>(null)
+const cvFileObject = ref<any>(null)
+
 const backupWorkingHistories = ref<any>({})
 
 const route = useRoute()
@@ -553,22 +568,10 @@ const [district, districtProps] = defineField("district");
 
 const [cvFile, cvFileProps] = defineField("cvFile");
 
-const { fields: educations, push: educationsPush } = useFieldArray('educations')
+const { fields: educations, push: educationsPush, remove: educationsRemove } = useFieldArray('educations')
 const { fields: workHistories, push: workHistoriesPush, remove: workHistoriesRemove } = useFieldArray('workHistories')
 const { fields: languages, push: languagesPush, remove: languagesRemove } = useFieldArray('languages')
 const { fields: otherSkills, push: otherSkillsPush, remove: otherSkillsRemove } = useFieldArray('otherSkills')
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 const noExp = ref(false);
@@ -642,11 +645,9 @@ const onSubmit = handleSubmit(async (values) => {
   }
 
 
-  const form = {
-    cv: object.cvFile,
+  const form: any = {
     noExperience: isHaveNoExp.value,
     profile: {
-      file: object.profileImg,
       firstName: object.firstName,
       lastName: object.lastName,
       dateOfBirth: object.dateOfBirth,
@@ -656,6 +657,7 @@ const onSubmit = handleSubmit(async (values) => {
       districtId : object.district
     },
     educations: object.educations.map((i: any) => ({
+      _id: i._id,
       subject: i.major,
       school: i.university,
       qualifications: i.degree,
@@ -664,6 +666,7 @@ const onSubmit = handleSubmit(async (values) => {
       currentlyStudying: i.isCurrentlyStudying,
     })),
     workHistories: object.workHistories.map((i: any) => ({
+      _id: i._id,
       company: i.company,
       position: i.position,
       startYear: i.startDate,
@@ -672,13 +675,24 @@ const onSubmit = handleSubmit(async (values) => {
       responsibility: i.detail
     })),
     language: object.languages.map((i: any) => ({
+      _id: i._id,
       LanguageId: i.language,
       LanguageLevelId: i.level
     })),
     skill: object.otherSkills.map((i: any) => ({
+      _id: i._id,
       keySkill: i.skill,
       skillLevelId: i.level
     })),
+  }
+
+
+  if(profileImgObject.value) {
+    form.profile.file = profileImgObject.value
+  }
+
+  if(cvFileObject.value) {
+    form.cv = cvFileObject.value
   }
 
 
@@ -691,7 +705,11 @@ const onSubmit = handleSubmit(async (values) => {
       })
   );
 
-  console.log(data)
+  //console.log(data)
+
+  window.location.reload()
+
+
 
 
 })
@@ -712,6 +730,7 @@ const onProfileImgChange = async ($event: any) => {
 
   if(data.value) {
     profileImg.value = data.value.file.name
+    profileImgObject.value = data.value.file
     profileImgRef.value.value = ''
   }
 
@@ -735,6 +754,7 @@ const onCVFileChange = async ($event: any) => {
 
   if(data.value) {
     cvFile.value = data.value.myFile.name
+    cvFileObject.value = data.value.myFile
     cvFileRef.value.value = ''
   }
 
@@ -826,6 +846,9 @@ const getKeySkills = async () => {
 }
 
 
+
+const isLoading = ref(true)
+
 //Type not matching in model: Country,State,SkillLevel,KeySkills,CurrentResidence,Nationality,BannerType,BlogType,Degree,CompanySize,Gender,Industry,JobEducationLevel,JobExperience,JobFunction,JobZone,Language,LanguageLevel,MaritalStatus,Province,Tag,SalaryRange,District,JobTag,SkillTag,AdditionalTag,JobLevel
 
 await getProvinces()
@@ -834,8 +857,8 @@ await getProvinces()
  getReuse('JobEducationLevel')
  getReuse('Language')
  getReuse('LanguageLevel')
-getReuse('SkillLevel')
-getKeySkills()
+  getReuse('SkillLevel')
+  getKeySkills()
 
 
 
@@ -870,10 +893,89 @@ setTimeout(() => {
   })
 }, 1000)
 
-
   if(!isAuth.value) {
     alert('Please login first')
     navigateTo('/auth/login')
+  }else {
+
+
+ setTimeout(() => {
+
+   if (user.value.cv && user.value.cv.src) {
+     cvFile.value = user.value.cv.src
+   }
+
+   if(user.value.profile) {
+     profileImg.value =  user.value.profile.file ? user.value.profile.file.src : ''
+     gender.value = user.value.profile.genderId ? user.value.profile.genderId._id : ''
+     firstName.value =  user.value.profile.firstName ? user.value.profile.firstName : ''
+     lastName.value =  user.value.profile.lastName ? user.value.profile.lastName : ''
+     dateOfBirth.value =  user.value.profile.dateOfBirth ? user.value.profile.dateOfBirth : ''
+     maritalStatus.value =  user.value.profile.maritalStatusId ? user.value.profile.maritalStatusId._id : ''
+     province.value = user.value.profile.districtId ? user.value.profile.districtId.provinceId._id : ''
+     district.value = user.value.profile.districtId ? user.value.profile.districtId._id : ''
+   }
+
+
+   if(user.value.education && user.value.education.length) {
+     const i = user.value.education[user.value.education.length-1]
+     educationsRemove(0)
+     educationsPush({
+       _id: i._id,
+       major: i.subject,
+       university: i.school,
+       degree: i.qualifications,
+       startDate: i.startYear,
+       endDate: i.endYear,
+       isCurrentlyStudying: i.currentlyStudying
+     })
+   }
+
+   if(user.value.workHistory &&  user.value.workHistory.length) {
+     const i = user.value.workHistory[user.value.workHistory.length-1]
+     workHistoriesRemove(0)
+     workHistoriesPush({
+       _id: i._id,
+       company: i.company,
+       position: i.position,
+       startDate: i.startYear,
+       endDate: i.endYear,
+       isCurrentlyWorking: i.isCurrentJob,
+       detail: i.responsibility
+     })
+   }
+
+   if(user.value.languageSkill && user.value.languageSkill.length) {
+     const i = user.value.languageSkill[user.value.languageSkill.length-1]
+     languagesRemove(0)
+     languagesPush({
+       _id: i._id,
+       language: i.LanguageId._id,
+       level: i.LanguageLevelId._id
+     })
+   }
+
+   if(user.value.skills && user.value.skills.length) {
+     const i = user.value.skills[user.value.skills.length-1]
+     otherSkillsRemove(0)
+     otherSkillsPush({
+       _id: i._id,
+       skill: i.keySkillId._id,
+       level: i.skillLevelId._id
+     })
+
+   }
+
+ }, 1500)
+
+
+
+
+
+    setTimeout(() => {
+        isLoading.value = false
+    }, 2000)
+
   }
 })
 

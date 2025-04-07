@@ -105,6 +105,7 @@ watch(
   () => props.modelValue,
   () => {
     if (props.modelValue && !isModelValueSet.value) {
+      console.log(props.modelValue)
       isModelValueSet.value = true;
       dateFieldDay.value = dayjs(props.modelValue).format("DD");
       dateFieldMonth.value = dayjs(props.modelValue).format("MM");

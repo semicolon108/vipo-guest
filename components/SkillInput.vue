@@ -86,9 +86,9 @@ watch(
     }
 );
 
-onMounted(() => {
-  getSkill();
-});
+//onMounted(() => {
+  await getSkill();
+// });
 </script>
 
 <style lang="scss" scoped>
