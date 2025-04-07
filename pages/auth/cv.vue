@@ -73,7 +73,7 @@ v-model="lastName"
             <div class="field">
               <label>ວັນເດືອນປີເກີດ</label>
 
-              <DateInput v-model="dateOfBirth" :is-only-month-and-year="true"/>
+              <DateInput v-model="dateOfBirth"/>
 
 
               <p class="error-text">{{errors.dateOfBirth}}</p>
@@ -171,9 +171,9 @@ v-model="lastName"
               <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
               <div class="selects">
 
-        {{educations[idx].value.startDate}}
+
                 <DateInput
-                    v-model="educations[idx].value.startDate"
+                    v-model="i.value.startDate"
                     style="width: 100%;"
                     :is-only-month-and-year="true"/>
               </div>
@@ -399,7 +399,6 @@ v-model="lastName"
               <div  v-for="(i, idx) in otherSkills as any" :key="i.key">
 
                 <div class="selects" >
-
                   <SkillInput v-model="i.value.skill"/>
 <!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
                   <div class="select">
@@ -408,6 +407,9 @@ v-model="lastName"
                       <option :value="i._id" v-for="i in skillLevels as any">{{ i.name }}</option>
                     </select>
                   </div>
+                  <button @click="otherSkillsRemove(idx)" v-if="idx !== 0">remove</button>
+
+                  <br>
 
 
                 </div>
@@ -603,7 +605,7 @@ const skillLevels = ref([])
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values
-  
+
   const form: any = {
     noExperience: isHaveNoExp.value,
     profile: {
@@ -954,7 +956,7 @@ setTimeout(() => {
      otherSkillsRemove(0)
      const list = user.value.skills.map((i: any) => ({
        _id: i._id,
-       skill: i.keySkillId._id,
+       skill: i.keySkillId.name,
        level: i.skillLevelId._id
      }))
 
