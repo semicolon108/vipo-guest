@@ -12,7 +12,7 @@ textarea {
   border-radius: 6px;
   border: none;
   background-color: #fff;
-  box-shadow: 0 0 0 0.5px var(--black-300);
+  box-shadow: 0 0 0 1px var(--black-300);
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px var(--orange-900);
@@ -20,11 +20,27 @@ textarea {
   &.small {
     height: 2.5rem;
   }
-  &:valid {
-    background-color: var(--orange-200) !important;
+  &:placeholder-shown {
+    background-color: #fff;
+  }
+  &:not(:placeholder-shown) {
+    background-color: var(--orange-900) !important;
     box-shadow: 0 0 0 1px var(--orange-900);
+    color: #fff;
+  }
+  &[type="time"]:valid {
+    background-color: var(--orange-900);
+    color: #fff;
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(100%) brightness(200%);
+    }
+  }
+  &[type="time"]:invalid {
+    background-color: #fff !important;
+    color: var(--black-800);
   }
 }
+
 input,
 select {
   height: 2.5rem;

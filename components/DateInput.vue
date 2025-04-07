@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
- import { formatStringToDate } from "@/utils/formatter";
+import { formatStringToDate } from "@/utils/formatter";
 import dayjs from "dayjs";
 
 const props = defineProps(["modelValue", "isOnlyMonthAndYear", "isDisabled"]);

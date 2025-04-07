@@ -3,23 +3,29 @@
     <div class="container">
       <div class="navbar">
         <div class="navbar-start">
-          <div class="logo" @click="$router.push('/')">
+          <a class="logo" href="/">
             <img src="../assets/images/vipo-plus-logo-color.svg" alt="" />
-          </div>
+          </a>
         </div>
         <div class="navbar-end">
           <NuxtLink v-if="!isAuth" to="/auth/login">ເຂົ້າສູ່ລະບົບ</NuxtLink>
           <NuxtLink to="/auth/cv" class="button register-button">
             <i class="fa-light fa-file-pdf"></i> ຝາກປະຫວັດ
           </NuxtLink>
-          <a v-if="isAuth"
-
-             @click="logout"
-                    style="color: red; font-weight: bold;"
-                    class="button"
-                    to="/auth/login">
-            <i class="fa fa-sign-out" style="font-size: 16px; margin-top: 4px" aria-hidden="true"></i>
-            <span>Logout</span></a>
+          <a
+            v-if="isAuth"
+            @click="logout"
+            style="color: red; font-weight: bold"
+            class="button"
+            to="/auth/login"
+          >
+            <i
+              class="fa fa-sign-out"
+              style="font-size: 16px; margin-top: 4px"
+              aria-hidden="true"
+            ></i>
+            <span>Logout</span></a
+          >
         </div>
       </div>
     </div>
@@ -29,15 +35,12 @@
 <script setup lang="ts">
 const { isAuth } = useAuth();
 
-const logout =  () => {
-  const isConfirmed =  confirm('Are you sure you want to logout?');
-  if(!isConfirmed) return
+const logout = () => {
+  const isConfirmed = confirm("Are you sure you want to logout?");
+  if (!isConfirmed) return;
 
   useAuth().logout();
-
-
-}
-
+};
 </script>
 
 <style scoped lang="scss">

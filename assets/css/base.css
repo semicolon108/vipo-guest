@@ -127,7 +127,10 @@
   }
 }
 .button.small {
+  height: 2.35rem;
   font-size: var(--sm-font);
+  padding-left: 1.5em;
+  padding-right: 1.5em;
 }
 .button.orange {
   background-color: var(--orange-900);
@@ -147,6 +150,11 @@
   box-shadow: 0 0 0 1px var(--deep-blue-900);
   color: var(--deep-blue-900);
 }
+.button.light-grey {
+  background-color: var(--black-200);
+  box-shadow: 0 0 0 1px var(--black-300);
+  color: var(--black-900);
+}
 
 input,
 select,
@@ -162,7 +170,7 @@ textarea {
   border-radius: 6px;
   border: none;
   background-color: #fff;
-  box-shadow: 0 0 0 0.5px var(--black-300);
+  box-shadow: 0 0 0 1px var(--black-300);
 }
 input:focus,
 select:focus,
@@ -175,11 +183,34 @@ select.small,
 textarea.small {
   height: 2.5rem;
 }
-input:valid,
-select:valid,
-textarea:valid {
-  background-color: var(--orange-200) !important;
+input:placeholder-shown,
+select:placeholder-shown,
+textarea:placeholder-shown {
+  background-color: #fff;
+}
+input:not(:placeholder-shown),
+select:not(:placeholder-shown),
+textarea:not(:placeholder-shown) {
+  background-color: var(--orange-900) !important;
   box-shadow: 0 0 0 1px var(--orange-900);
+  color: #fff;
+}
+input[type=time]:valid,
+select[type=time]:valid,
+textarea[type=time]:valid {
+  background-color: var(--orange-900);
+  color: #fff;
+}
+input[type=time]:valid::-webkit-calendar-picker-indicator,
+select[type=time]:valid::-webkit-calendar-picker-indicator,
+textarea[type=time]:valid::-webkit-calendar-picker-indicator {
+  filter: invert(100%) brightness(200%);
+}
+input[type=time]:invalid,
+select[type=time]:invalid,
+textarea[type=time]:invalid {
+  background-color: #fff !important;
+  color: var(--black-800);
 }
 
 input,

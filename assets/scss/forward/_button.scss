@@ -54,7 +54,10 @@
     }
   }
   &.small {
+    height: 2.35rem;
     font-size: var(--sm-font);
+    padding-left: calc(1.25em + 0.25em);
+    padding-right: calc(1.25em + 0.25em);
   }
   &.orange {
     background-color: var(--orange-900);
@@ -73,5 +76,10 @@
     background-color: var(--light-blue-100);
     box-shadow: 0 0 0 1px var(--deep-blue-900);
     color: var(--deep-blue-900);
+  }
+  &.light-grey {
+    background-color: var(--black-200);
+    box-shadow: 0 0 0 1px var(--black-300);
+    color: var(--black-900);
   }
 } //button

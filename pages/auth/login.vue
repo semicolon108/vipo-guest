@@ -8,37 +8,39 @@
           <div class="field">
             <label>ເບີໂທລະສັບ</label>
             <div class="control">
-              <input type="text"
-                     v-model="mobile"
-                     v-bind="mobileProps"
-                      placeholder="020" />
+              <input
+                type="text"
+                v-model="mobile"
+                v-bind="mobileProps"
+                placeholder="020"
+              />
 
-              <p class="error-text">{{errors.mobile}}</p>
+              <p class="error-text">{{ errors.mobile }}</p>
             </div>
           </div>
           <div class="field">
-            <label
-              >ລະຫັດຜ່ານ
-              <span
-                ><NuxtLink to="/auth/forgot-password"
-                  >ລືມລະຫັດຜ່ານ</NuxtLink
-                ></span
-              ></label
-            >
+            <label>
+              ລະຫັດຜ່ານ
+              <span>
+                <NuxtLink to="/auth/forgot-password"> ລືມລະຫັດຜ່ານ </NuxtLink>
+              </span>
+            </label>
             <div class="control">
               <input
-                  v-model="password"
-                  v-bind="passwordProps"
-
-                  type="password"  placeholder="**********" />
-              <p class="error-text">{{errors.password}}</p>
+                v-model="password"
+                v-bind="passwordProps"
+                type="password"
+                placeholder="**********"
+              />
+              <p class="error-text">{{ errors.password }}</p>
             </div>
-            <p class="error-text">{{apiError}}</p>
+            <p class="error-text">{{ apiError }}</p>
           </div>
 
           <button type="submit" class="button">ເຂົ້າສູ່ລະບົບ</button>
           <p class="regsiter-link">
-            ຍັງບໍ່ທັນເປັນສະມາຊິກ<NuxtLink to="/auth/register">ສະໝັກສະມາຊິກ</NuxtLink>
+            ຍັງບໍ່ທັນເປັນສະມາຊິກ
+            <NuxtLink to="/auth/register"> ສະໝັກສະມາຊິກ </NuxtLink>
           </p>
         </div>
       </form>
@@ -52,7 +54,7 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 const config = useRuntimeConfig();
 
-const apiError = ref('');
+const apiError = ref("");
 
 const {
   values,
@@ -73,51 +75,51 @@ const [mobile, mobileProps] = defineField("mobile");
 const [password, passwordProps] = defineField("password");
 
 const login = async (form: any) => {
- try {
-   const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-signIn-vipo`, {
-     method: 'POST',
-     body: {
-       email: form.mobile,
-       password: form.password
-     },
-   });
+  try {
+    const { data, error }: any = await useFetch(
+      `${config.public.apiBase}/seeker-signIn-vipo`,
+      {
+        method: "POST",
+        body: {
+          email: form.mobile,
+          password: form.password,
+        },
+      }
+    );
 
-   if(error.value) {
-     apiError.value = 'Mobile or password is incorrect'
-     setTimeout(() => {
-       apiError.value = ''
-     }, 2000)
-     return
-   }
+    if (error.value) {
+      apiError.value = "Mobile or password is incorrect";
+      setTimeout(() => {
+        apiError.value = "";
+      }, 2000);
+      return;
+    }
 
-   const token = data.value.token
+    const token = data.value.token;
 
-   // Save the token in a secure cookie
-   const tokenCookie = useCookie('auth-token', {
-     maxAge: 60 * 60 * 24 * 365, // 7 days
-     httpOnly: false,          // Set to true if managed from server-side
-     secure: false,            // set to true if using HTTPS
-     sameSite: 'lax',
-   });
+    // Save the token in a secure cookie
+    const tokenCookie = useCookie("auth-token", {
+      maxAge: 60 * 60 * 24 * 365, // 7 days
+      httpOnly: false, // Set to true if managed from server-side
+      secure: false, // set to true if using HTTPS
+      sameSite: "lax",
+    });
 
-   tokenCookie.value = token;
+    tokenCookie.value = token;
 
-   navigateTo('/')
-
- } catch (e) {
-   console.log(e)
- }
-}
+    navigateTo("/");
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 const onSubmit = handleSubmit((values) => {
- login(values)
-})
+  login(values);
+});
 
 onMounted(() => {
-  mobile.value = '58593344'
-})
-
-
+  mobile.value = "58593344";
+});
 </script>
 
 <style scoped lang="scss">

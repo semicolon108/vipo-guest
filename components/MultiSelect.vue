@@ -1,6 +1,6 @@
 <template>
   <div class="select-container" ref="target">
-    <ul class="selected-list-container" @click="showOptions = !showOptions" >
+    <ul class="selected-list-container" @click="showOptions = !showOptions">
       <li v-if="!selectedList.length" class="blank">Select</li>
       <li v-else class="not-blank">
         <p>
@@ -13,9 +13,9 @@
         </p>
       </li>
     </ul>
-    <div class="select-options-container" v-if="showOptions" >
+    <div class="select-options-container" v-if="showOptions">
       <div class="search">
-        <input type="text" v-model="textSearch" placeholder="Search" />
+        <input type="text" v-model="textSearch" placeholder="Search" required />
       </div>
       <div class="select-options">
         <div class="options" v-for="i in filteredList">
@@ -34,8 +34,10 @@
         </div>
       </div>
       <div class="buttons" v-if="!isSingle">
-        <button class="primary" @click="save()">Apply</button>
-        <button class="light-grey" @click="showOptions = false">Cancel</button>
+        <button class="button small orange" @click="save()">Apply</button>
+        <button class="button small light-grey" @click="showOptions = false">
+          Cancel
+        </button>
       </div>
     </div>
   </div>
@@ -54,8 +56,8 @@ const selectParentClick = (id: string, type: string) => {
     selectedList.value.push(id);
   }
   if (isSingle) {
-    selectedList.value = [id]
-    save()
+    selectedList.value = [id];
+    save();
   }
   autoSelect(type);
 };
@@ -66,7 +68,11 @@ const textSearch = ref("");
 
 const isLoading = ref(true);
 
-const { list, hasChild = false, isSingle = false } = defineProps(["list", "hasChild", 'isSingle']);
+const {
+  list,
+  hasChild = false,
+  isSingle = false,
+} = defineProps(["list", "hasChild", "isSingle"]);
 
 const fullList = computed(() => {
   if (hasChild) {
@@ -169,9 +175,6 @@ const autoSelect = (type: string) => {
         );
       }
     }
-
-
-
   }
 };
 
@@ -211,14 +214,12 @@ onMounted(() => {
 <style lang="scss" scoped>
 .select-container {
   position: relative;
-
   input {
     position: relative;
     z-index: 2;
   }
 
   ul.selected-list-container {
-
     li {
       height: 2.5rem;
       border-radius: 6px;
@@ -230,19 +231,19 @@ onMounted(() => {
       padding-right: 1.5rem;
       cursor: pointer;
       position: relative;
-
+      border-radius: 6px;
+      overflow: hidden;
       &::after {
         content: "\f078";
         font-family: "Font Awesome 6 Pro";
         font-size: var(--xsm-font);
         position: absolute;
-        right: 0;
+        right: 0.75rem;
         text-align: center;
-        color: var(--placeholder-text-color);
+        color: var(--black-800);
         height: 2.5rem;
         display: flex;
         align-items: center;
-        width: 1.5rem;
         justify-content: center;
       }
 
@@ -259,13 +260,17 @@ onMounted(() => {
       }
 
       &.blank {
-        background-color: var(--primary-100);
-        color: var(--placeholder-text-color);
+        background-color: #fff;
+        color: var(--black-800);
+        box-shadow: 0 0 0 1px var(--black-300);
       }
 
       &.not-blank {
-        background-color: var(--black-100);
-        border: 1px solid var(--primary-200);
+        background-color: var(--orange-900);
+        color: #fff;
+        &::after {
+          color: #fff;
+        }
       }
 
       p {
@@ -273,18 +278,18 @@ onMounted(() => {
         overflow: hidden;
         white-space: pre;
         text-overflow: ellipsis;
+        padding-right: 0.5rem;
       }
     }
   }
 
   .select-options-container {
-
     padding: 0.5rem 0 0;
     position: absolute;
     left: 0;
     right: 0;
     z-index: 8;
-    top: 4rem;
+    top: 3rem;
     border-radius: 6px;
     border: 1px solid var(--border-color);
     background-color: #fff;
@@ -325,13 +330,14 @@ onMounted(() => {
               vertical-align: text-top;
               width: 20px;
               height: 20px;
-              background-color: var(--black-100);
+              border-radius: 3px;
+              background-color: var(--black-300);
               transition: all ease-in-out 0.15s;
             }
 
             &.checked {
               &::before {
-                background-color: var(--primary-900);
+                background-color: var(--orange-900);
               }
 
               &::after {
@@ -353,12 +359,14 @@ onMounted(() => {
     }
 
     .buttons {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 0.5rem;
       background-color: var(--black-100);
-      height: 4rem;
+      height: 3.5rem;
       padding: 0 1rem;
+      box-shadow: 0 -1px 0 0 var(--black-300);
     }
   }
 }
