@@ -72,7 +72,8 @@ v-model="lastName"
             </div>
             <div class="field">
               <label>ວັນເດືອນປີເກີດ</label>
-              <DateInput v-model="dateOfBirth"/>
+
+              <DateInput v-model="dateOfBirth" :is-only-month-and-year="true"/>
 
 
               <p class="error-text">{{errors.dateOfBirth}}</p>
@@ -166,11 +167,13 @@ v-model="lastName"
             </div>
 
 
-            <div class="field">
+            <div class="field" v-if="!isLoading">
               <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
               <div class="selects">
+
+        {{educations[idx].value.startDate}}
                 <DateInput
-                    v-model="i.value.startDate"
+                    v-model="educations[idx].value.startDate"
                     style="width: 100%;"
                     :is-only-month-and-year="true"/>
               </div>
@@ -436,6 +439,7 @@ import { ref } from "vue";
 import { useForm , useFieldArray, Field, ErrorMessage} from "vee-validate";
 import * as yup from "yup";
 import DateInput from '@/components/DateInput.vue'
+import dayjs from 'dayjs'
 
 import SkillInput from '@/components/SkillInput.vue'
 
@@ -599,52 +603,7 @@ const skillLevels = ref([])
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values
-
-  const obj  = {
-    "educations": [
-      {
-        "major": "TT",
-        "university": "TT",
-        "degree": "5fae4291b734a44b583273e3",
-        "startDate": "2013-04-30T17:00:00.000Z",
-        "endDate": "2010-10-31T17:00:00.000Z",
-        "isCurrentlyStudying": false
-      }
-    ],
-    "workHistories": [
-      {
-        "company": "TT",
-        "position": "TT",
-        "startDate": "2009-10-31T17:00:00.000Z",
-        "endDate": "2006-10-31T17:00:00.000Z",
-        "isCurrentlyWorking": false,
-        "detail": "TT"
-      }
-    ],
-    "languages": [
-      {
-        "language": "639afdbf26422969be6cb318",
-        "level": "5fae4fd8b734a44b583273fb"
-      }
-    ],
-    "otherSkills": [
-      {
-        "skill": "Microsoft Excel",
-        "level": "6680c7befde163adcc5b4227"
-      }
-    ],
-    "profileImg": "b5667035-0ec7-4928-896d-fd2cb56df2f3.jpeg",
-    "gender": "5fae50b9b734a44b583273fe",
-    "firstName": "TT",
-    "lastName": "TT",
-    "dateOfBirth": "1998-04-25T17:00:00.000Z",
-    "maritalStatus": "5fae50d0b734a44b58327401",
-    "province": "5eb8cb58f2913809f730ce9c",
-    "district": "5ec5f96ecc249b11cae0404f",
-    "cvFile": "aa72c98c-00e9-4902-84cd-617abaa73e6c.pdf"
-  }
-
-
+  
   const form: any = {
     noExperience: isHaveNoExp.value,
     profile: {
@@ -657,7 +616,7 @@ const onSubmit = handleSubmit(async (values) => {
       districtId : object.district
     },
     educations: object.educations.map((i: any) => ({
-      _id: i._id,
+      //_id: i._id,
       subject: i.major,
       school: i.university,
       qualifications: i.degree,
@@ -666,7 +625,7 @@ const onSubmit = handleSubmit(async (values) => {
       currentlyStudying: i.isCurrentlyStudying,
     })),
     workHistories: object.workHistories.map((i: any) => ({
-      _id: i._id,
+     // _id: i._id,
       company: i.company,
       position: i.position,
       startYear: i.startDate,
@@ -675,12 +634,12 @@ const onSubmit = handleSubmit(async (values) => {
       responsibility: i.detail
     })),
     language: object.languages.map((i: any) => ({
-      _id: i._id,
+     // _id: i._id,
       LanguageId: i.language,
       LanguageLevelId: i.level
     })),
     skill: object.otherSkills.map((i: any) => ({
-      _id: i._id,
+      //_id: i._id,
       keySkill: i.skill,
       skillLevelId: i.level
     })),
@@ -820,13 +779,25 @@ watch(() => province.value, () => {
 
 watch(() => isHaveNoExp.value, () => {
   if(isHaveNoExp.value) {
-    backupWorkingHistories.value =   workHistories.value[0].value
+    if(workHistories.value.length) {
+      backupWorkingHistories.value =   workHistories.value[0].value
+    }
+
     setTimeout(() => {
       workHistoriesRemove(0)
     }, 100)
   }else {
+
     if(backupWorkingHistories.value) {
       workHistoriesPush(backupWorkingHistories.value)
+    }else {
+      workHistoriesPush({
+        company: '',
+        position: '',
+        startDate: '',
+        endDate: '',
+        isCurrentlyWorking: false,
+      })
     }
   }
 })
@@ -950,23 +921,46 @@ setTimeout(() => {
    }
 
    if(user.value.languageSkill && user.value.languageSkill.length) {
-     const i = user.value.languageSkill[user.value.languageSkill.length-1]
+     // const i = user.value.languageSkill[user.value.languageSkill.length-1]
+     // languagesRemove(0)
+     // languagesPush({
+     //   _id: i._id,
+     //   language: i.LanguageId._id,
+     //   level: i.LanguageLevelId._id
+     // })
+
      languagesRemove(0)
-     languagesPush({
+     const list = user.value.languageSkill.map((i: any) => ({
        _id: i._id,
        language: i.LanguageId._id,
        level: i.LanguageLevelId._id
-     })
+     }))
+
+     for (let i = 0; i < list.length; i++) {
+       languagesPush(list[i])
+     }
    }
 
    if(user.value.skills && user.value.skills.length) {
-     const i = user.value.skills[user.value.skills.length-1]
+     // const i = user.value.skills[user.value.skills.length-1]
+     // otherSkillsRemove(0)
+     // otherSkillsPush({
+     //   _id: i._id,
+     //   skill: i.keySkillId._id,
+     //   level: i.skillLevelId._id
+     // })
+
+
      otherSkillsRemove(0)
-     otherSkillsPush({
+     const list = user.value.skills.map((i: any) => ({
        _id: i._id,
        skill: i.keySkillId._id,
        level: i.skillLevelId._id
-     })
+     }))
+
+     for (let i = 0; i < list.length; i++) {
+       otherSkillsPush(list[i])
+     }
 
    }
 
