@@ -41,7 +41,6 @@
 import { ref, watch, computed } from "vue";
 import { formatStringToDate } from "@/utils/formatter";
 import dayjs from "dayjs";
-import { formatStringToDate } from "@/utils/formatter";
 
 // Define v-model and props
 const modelValue = defineModel<string | null>();

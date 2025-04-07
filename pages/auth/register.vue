@@ -5,36 +5,21 @@
         <div class="login-form">
           <h1>ສະໝັກສະມາຊິກ</h1>
           <hr />
-          <div class="field" >
-          <div>
-            <label>ເບີໂທລະສັບ</label>
-            <div class="control">
-              <input type="text"
-                     v-model="mobile"
-                     v-bind="mobileProps"
-                     placeholder="020" />
-
-              <p class="error-text">{{errors.mobile}}</p>
+          <div class="field">
+            <div>
+              <label>ເບີໂທລະສັບ</label>
+              <div class="control">
+                <input
+                  type="text"
+                  v-model="mobile"
+                  v-bind="mobileProps"
+                  placeholder="020"
+                />
+                <p class="error-text">{{ errors.mobile }}</p>
+              </div>
+              <p class="error-text">{{ apiError }}</p>
             </div>
-            <p class="error-text">{{apiError}}</p>
           </div>
-<!--          <div>-->
-<!--            <button style="margin-left: 10px"-->
-<!--                    class="button light-blue"-->
-<!--                    @click="$router.push('/auth/set-password')"-->
-<!--            >-->
-<!--              ສົ່ງລະຫັດ OTP-->
-<!--            </button>-->
-<!--          </div>-->
-          </div>
-
-
-
-
-
-
-
-
           <button type="submit" class="button">ສະໝັກສະມາຊິກ</button>
           <p class="regsiter-link">
             ມີບັນຊີຢູ່ແ້ລວ<NuxtLink to="/auth/login">ເຂົ້າສູ່ລະບົບ</NuxtLink>
@@ -46,13 +31,13 @@
 </template>
 
 <script setup lang="ts">
-import {ref} from "vue";
-import {useForm} from "vee-validate";
+import { ref } from "vue";
+import { useForm } from "vee-validate";
 import * as yup from "yup";
 
 const config = useRuntimeConfig();
 
-const apiError = ref('');
+const apiError = ref("");
 
 const {
   values,
@@ -70,50 +55,46 @@ const {
 
 const [mobile, mobileProps] = defineField("mobile");
 
-
 const verifyMobile = async (form: any) => {
-
   try {
-    const { data, error }: any = await useFetch(`${config.public.apiBase}/verify-mobile-email-vipo`, {
-      method: 'POST',
-      body: {
-        mobile: form.mobile,
-      },
-    });
+    const { data, error }: any = await useFetch(
+      `${config.public.apiBase}/verify-mobile-email-vipo`,
+      {
+        method: "POST",
+        body: {
+          mobile: form.mobile,
+        },
+      }
+    );
 
-    if(error.value) {
-      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+    if (error.value) {
+      apiError.value =
+        error.value.data?.message ||
+        error.value.message ||
+        "Something went wrong";
       setTimeout(() => {
-        apiError.value = ''
-      }, 2000)
-      return
+        apiError.value = "";
+      }, 2000);
+      return;
     }
 
-    const token = data.value.token
+    const token = data.value.token;
 
-    navigateTo('/auth/verify-otp?type=register&mobile=' + form.mobile + '&token=' + token)
-
-
+    navigateTo(
+      "/auth/verify-otp?type=register&mobile=" + form.mobile + "&token=" + token
+    );
   } catch (e) {
-    console.log(e)
+    console.log(e);
   }
-}
-
-
-
-
-
-
+};
 
 const onSubmit = handleSubmit((values) => {
-  verifyMobile(values)
-})
+  verifyMobile(values);
+});
 
 onMounted(() => {
-  mobile.value = '58593344'
-})
-
-
+  mobile.value = "58593344";
+});
 </script>
 
 <style scoped lang="scss">

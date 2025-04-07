@@ -266,11 +266,9 @@ onMounted(() => {
       }
 
       &.not-blank {
-        background-color: var(--orange-900);
-        color: #fff;
-        &::after {
-          color: #fff;
-        }
+        background-color: var(--orange-200);
+        color: black;
+        box-shadow: 0 0 0 1px var(--orange-900);
       }
 
       p {
@@ -291,7 +289,6 @@ onMounted(() => {
     z-index: 8;
     top: 3rem;
     border-radius: 6px;
-    border: 1px solid var(--border-color);
     background-color: #fff;
     box-shadow: 6px 6px 12px 3px rgba(#000, 0.15);
 
@@ -317,7 +314,7 @@ onMounted(() => {
           cursor: pointer;
 
           &:hover {
-            color: var(--primary-900);
+            color: var(--orange-900);
           }
 
           span {

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div class="container" >
+    <div class="container">
       <div class="register-form">
         <div class="form-header">
           <h1>ຝາກປະຫວັດ</h1>
@@ -18,37 +18,41 @@
                 <div class="control">
                   <div @click="profileImgRef.click()">
                     <img
-                        style="width: 160px"
-                        v-if="profileImgObject"
-                        :src="config.public.fileTmp + '/' +  profileImg"
+                      v-if="profileImgObject"
+                      :src="config.public.fileTmp + '/' + profileImg"
                     />
                     <img
-                        style="width: 160px"
-                        v-else-if="profileImg"
-                        :src=" profileImg"
+                      style="width: 160px"
+                      v-else-if="profileImg"
+                      :src="profileImg"
                     />
-                    <label   class="image-upload" v-else>
-
-
+                    <label class="image-upload" v-else>
                       <i class="fa-solid fa-camera"></i>
-
-
                     </label>
                   </div>
 
-
                   <small class="image-size">ຮູບຕ້ອງມີຂະໜາດບໍ່ເກີນ 10MB</small>
-                  <input v-show="false" ref="profileImgRef" type="file" id="image" @change="onProfileImgChange" />
+                  <input
+                    v-show="false"
+                    ref="profileImgRef"
+                    type="file"
+                    id="image"
+                    @change="onProfileImgChange"
+                  />
                 </div>
-                <p class="error-text">{{errors.profileImg}}</p>
+                <p class="error-text">{{ errors.profileImg }}</p>
               </div>
               <label>ເພດ</label>
               <div class="control options">
-                <p v-for="i in genderList"
-                   @click="gender = i._id"
-                   :class="{'checked': gender === i._id}">{{ i.name }}</p>
+                <p
+                  v-for="i in genderList"
+                  @click="gender = i._id"
+                  :class="{ checked: gender === i._id }"
+                >
+                  {{ i.name }}
+                </p>
               </div>
-              <p class="error-text">{{errors.gender}}</p>
+              <p class="error-text">{{ errors.gender }}</p>
             </div>
             <div class="field">
               <label>ຊື່</label>
@@ -56,9 +60,9 @@
                 type="text"
                 class="input"
                 placeholder="ຊື່ຂອງເຈົ້າ"
-              v-model="firstName"
+                v-model="firstName"
               />
-              <p class="error-text">{{errors.firstName}}</p>
+              <p class="error-text">{{ errors.firstName }}</p>
             </div>
             <div class="field">
               <label>ນາມສະກຸນ</label>
@@ -66,40 +70,42 @@
                 type="text"
                 class="input"
                 placeholder="ນາມສະກຸນ"
-v-model="lastName"
+                v-model="lastName"
               />
-              <p class="error-text">{{errors.firstName}}</p>
+              <p class="error-text">{{ errors.firstName }}</p>
             </div>
             <div class="field">
               <label>ວັນເດືອນປີເກີດ</label>
 
-              <DateInput v-model="dateOfBirth"/>
+              <DateInput v-model="dateOfBirth" />
 
-
-              <p class="error-text">{{errors.dateOfBirth}}</p>
+              <p class="error-text">{{ errors.dateOfBirth }}</p>
             </div>
             <div class="field">
               <label>ສະຖານະແຕ່ງງານ</label>
               <div class="control options">
-                <p v-for="i in maritalStatusList"
-                   @click="maritalStatus = i._id"
-                   :class="{'checked': maritalStatus === i._id}">{{ i.name }}</p>
+                <p
+                  v-for="i in maritalStatusList"
+                  @click="maritalStatus = i._id"
+                  :class="{ checked: maritalStatus === i._id }"
+                >
+                  {{ i.name }}
+                </p>
               </div>
-              <p class="error-text">{{errors.maritalStatus}}</p>
+              <p class="error-text">{{ errors.maritalStatus }}</p>
             </div>
             <div class="field">
               <label>ແຂວງຢູ່ປະຈຸບັນ</label>
               <div class="control">
                 <div class="select">
-                  <select
-                      v-model="province"
-                      name="" id="" >
+                  <select v-model="province" name="" id="">
                     <option value="" selected disabled>ເລືອກແຂວງ</option>
-                    <option :value="i._id" v-for="i in provincesList">{{i.name}}</option>
+                    <option :value="i._id" v-for="i in provincesList">
+                      {{ i.name }}
+                    </option>
                   </select>
-
                 </div>
-                <p class="error-text">{{errors.province}}</p>
+                <p class="error-text">{{ errors.province }}</p>
               </div>
             </div>
             <div class="field">
@@ -107,14 +113,18 @@ v-model="lastName"
               <div class="control">
                 <div class="select">
                   <select
-                      v-model="district"
-                      name="" id="" :disabled="!province">
+                    v-model="district"
+                    name=""
+                    id=""
+                    :disabled="!province"
+                  >
                     <option value="" selected disabled>ເລືອກເມືອງ</option>
-                    <option v-for="i in districtsList" :value="i._id">{{i.name}}</option>
+                    <option v-for="i in districtsList" :value="i._id">
+                      {{ i.name }}
+                    </option>
                   </select>
-
                 </div>
-                <p class="error-text">{{errors.district}}</p>
+                <p class="error-text">{{ errors.district }}</p>
               </div>
             </div>
           </div>
@@ -126,95 +136,113 @@ v-model="lastName"
             <div class="field">
               <label>ວິຊາທີ່ຮຽນ</label>
               <Field
-                  :name="`educations[${idx}].major`"
-                  as="input"
-                  type="text"
-                  placeholder="ການເງິນ ການບັນຊີ"
+                :name="`educations[${idx}].major`"
+                as="input"
+                type="text"
+                placeholder="ການເງິນ ການບັນຊີ"
               />
-              <ErrorMessage class="error-text" :name="`educations[${idx}].major`" />
+              <ErrorMessage
+                class="error-text"
+                :name="`educations[${idx}].major`"
+              />
             </div>
 
             <div class="field">
               <label>ສະຖາບັນການສຶກສາ</label>
               <Field
-                  :name="`educations[${idx}].university`"
-                  as="input"
-                  type="text"
-                  placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
+                :name="`educations[${idx}].university`"
+                as="input"
+                type="text"
+                placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
               />
-              <ErrorMessage class="error-text" :name="`educations[${idx}].university`" />
+              <ErrorMessage
+                class="error-text"
+                :name="`educations[${idx}].university`"
+              />
             </div>
             <div class="field">
               <label>ລະດັບການສຶກສາ</label>
               <div class="control">
                 <div class="select">
-
-                  <select  v-model="i.value.degree" >
-                    <option v-for="o in educationLevelList" :value="o._id">{{ o.name }}</option>
+                  <select v-model="i.value.degree">
+                    <option v-for="o in educationLevelList" :value="o._id">
+                      {{ o.name }}
+                    </option>
                   </select>
                 </div>
 
                 <div v-show="false">
                   <Field
-                      :name="`educations[${idx}].degree`"
-                      as="input"
-                      type="text"
-                      placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
+                    :name="`educations[${idx}].degree`"
+                    as="input"
+                    type="text"
+                    placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
                   />
                 </div>
-                <ErrorMessage class="error-text" :name="`educations[${idx}].degree`" />
+                <ErrorMessage
+                  class="error-text"
+                  :name="`educations[${idx}].degree`"
+                />
               </div>
             </div>
-
 
             <div class="field" v-if="!isLoading">
               <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
               <div class="selects">
-
-
                 <DateInput
-                    v-model="i.value.startDate"
-                    style="width: 100%;"
-                    :is-only-month-and-year="true"/>
+                  v-model="i.value.startDate"
+                  style="width: 100%"
+                  :is-only-month-and-year="true"
+                />
               </div>
 
               <div v-show="false">
                 <Field
-                    :name="`educations[${idx}].startDate`"
-                    as="input"
-                    type="text"
+                  :name="`educations[${idx}].startDate`"
+                  as="input"
+                  type="text"
                 />
               </div>
-              <ErrorMessage class="error-text" :name="`educations[${idx}].startDate`" />
+              <ErrorMessage
+                class="error-text"
+                :name="`educations[${idx}].startDate`"
+              />
             </div>
             <div
-
-                class="field" :class="{ disabledzzz: i.value.isCurrentlyStudying }">
+              class="field"
+              :class="{ disabledzzz: i.value.isCurrentlyStudying }"
+            >
               <label class="has-checkbox">
                 ຈົນເຖິງ
                 <!-- if true add class checked -->
                 <p
                   class="checkbox"
-                  @click="i.value.isCurrentlyStudying = !i.value.isCurrentlyStudying"
+                  @click="
+                    i.value.isCurrentlyStudying = !i.value.isCurrentlyStudying
+                  "
                   :class="{ checked: i.value.isCurrentlyStudying }"
                 >
                   ກຳລັງເປັນນັກສຶກຢູ່
                 </p>
               </label>
-              <div class="selects"  v-show="!i.value.isCurrentlyStudying">
+              <div class="selects" v-show="!i.value.isCurrentlyStudying">
                 <DateInput
-                    v-model="i.value.endDate"
-                    style="width: 100%;"
-                    :is-only-month-and-year="true"/>
+                  v-model="i.value.endDate"
+                  style="width: 100%"
+                  :is-only-month-and-year="true"
+                />
               </div>
               <div v-show="false">
                 <Field
-                    :name="`educations[${idx}].endDate`"
-                    as="input"
-                    type="text"
+                  :name="`educations[${idx}].endDate`"
+                  as="input"
+                  type="text"
                 />
               </div>
-              <ErrorMessage class="error-text" :name="`educations[${idx}].endDate`" />
+              <ErrorMessage
+                class="error-text"
+                :name="`educations[${idx}].endDate`"
+              />
             </div>
           </div>
 
@@ -224,31 +252,31 @@ v-model="lastName"
             </div>
             <div class="field">
               <div class="control">
-                <label
-                    @click="cvFileRef.click()"
-                    class="file-upload">
+                <label @click="cvFileRef.click()" class="file-upload">
                   <i class="fa-regular fa-arrow-up-from-bracket"></i>
                   <p>ກະລຸນາເລືອກໄຟສ</p>
                   <small
                     >Supported file format PDF, Word, JPG that has less than 5MB
                     size.</small
                   >
-<!--                  <input type="file" id="cv-file" />-->
+                  <!--                  <input type="file" id="cv-file" />-->
                 </label>
 
-                <input v-show="false" ref="cvFileRef" type="file" @change="onCVFileChange" />
+                <input
+                  v-show="false"
+                  ref="cvFileRef"
+                  type="file"
+                  @change="onCVFileChange"
+                />
               </div>
               <div class="uploaded-file" v-if="cvFile">
                 <p><i class="fa-regular fa-file-pdf"></i>{{ cvFile }}</p>
-<!--                <i class="fa-regular fa-trash"></i>-->
+                <!--                <i class="fa-regular fa-trash"></i>-->
               </div>
-              <p class="error-text">{{errors.cvFile}}</p>
-
+              <p class="error-text">{{ errors.cvFile }}</p>
             </div>
           </div>
-          <div
-               class="card"
-               :class="{ disabled: isHaveNoExp }">
+          <div class="card" :class="{ disabled: isHaveNoExp }">
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
 
@@ -261,88 +289,112 @@ v-model="lastName"
               </p>
             </div>
             <div v-for="(i, idx) in workHistories as any" :key="i.key">
-
               <div class="field">
                 <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
                 <Field
-                    :name="`workHistories[${idx}].company`"
-                    as="input"
-                    type="text"
-                    placeholder="ຊື່ບໍລິສັດ"
+                  :name="`workHistories[${idx}].company`"
+                  as="input"
+                  type="text"
+                  placeholder="ຊື່ບໍລິສັດ"
                 />
-                <ErrorMessage class="error-text" :name="`workHistories[${idx}].company`" />
+                <ErrorMessage
+                  class="error-text"
+                  :name="`workHistories[${idx}].company`"
+                />
               </div>
               <div class="field">
                 <label>ຕຳແໜ່ງງານ</label>
                 <Field
-                    :name="`workHistories[${idx}].position`"
-                    as="input"
-                    type="text"
-                    placeholder="ຕຳແໜ່ງງານ"
+                  :name="`workHistories[${idx}].position`"
+                  as="input"
+                  type="text"
+                  placeholder="ຕຳແໜ່ງງານ"
                 />
-                <ErrorMessage class="error-text" :name="`workHistories[${idx}].position`" />
+                <ErrorMessage
+                  class="error-text"
+                  :name="`workHistories[${idx}].position`"
+                />
               </div>
               <div class="field">
                 <label>ເລີ່ມເຮັດວຽກ</label>
                 <div class="selects">
                   <DateInput
-                      v-model="i.value.startDate"
-                      style="width: 100%;"
-                      :is-only-month-and-year="true"/>
+                    v-model="i.value.startDate"
+                    style="width: 100%"
+                    :is-only-month-and-year="true"
+                  />
                 </div>
                 <div v-show="false">
                   <Field
-                      :name="`workHistories[${idx}].startDate`"
-                      as="input"
-                      type="text"
+                    :name="`workHistories[${idx}].startDate`"
+                    as="input"
+                    type="text"
                   />
                 </div>
-                <ErrorMessage class="error-text" :name="`workHistories[${idx}].startDate`" />
+                <ErrorMessage
+                  class="error-text"
+                  :name="`workHistories[${idx}].startDate`"
+                />
               </div>
 
-              <div class="field" :class="{ disabledzzz: i.value.isCurrentlyWorking }">
+              <div
+                class="field"
+                :class="{ disabledzzz: i.value.isCurrentlyWorking }"
+              >
                 <label class="has-checkbox">
                   ຈົນເຖິງ
                   <!-- if true add class checked -->
                   <p
-                      class="checkbox"
-                      @click="i.value.isCurrentlyWorking = !i.value.isCurrentlyWorking"
-                      :class="{ checked: i.value.isCurrentlyWorking }"
+                    class="checkbox"
+                    @click="
+                      i.value.isCurrentlyWorking = !i.value.isCurrentlyWorking
+                    "
+                    :class="{ checked: i.value.isCurrentlyWorking }"
                   >
-               ນີ້ແມ່ນວຽກປັດຈຸບັນ
+                    ນີ້ແມ່ນວຽກປັດຈຸບັນ
                   </p>
                 </label>
                 <div class="selects" v-show="!i.value.isCurrentlyWorking">
                   <DateInput
-                      v-model="i.value.endDate"
-                      style="width: 100%;"
-                      :is-only-month-and-year="true"/>
+                    v-model="i.value.endDate"
+                    style="width: 100%"
+                    :is-only-month-and-year="true"
+                  />
                 </div>
                 <div v-show="false">
                   <Field
-                      :name="`workHistories[${idx}].endDate`"
-                      as="input"
-                      type="text"
+                    :name="`workHistories[${idx}].endDate`"
+                    as="input"
+                    type="text"
                   />
                 </div>
-                <ErrorMessage class="error-text" :name="`workHistories[${idx}].endDate`" />
+                <ErrorMessage
+                  class="error-text"
+                  :name="`workHistories[${idx}].endDate`"
+                />
               </div>
               <div class="field">
                 <label for="">ໜ້າທີ່ຮັບຜິດຊອບ</label>
                 <div class="control">
-                <textarea
+                  <textarea
                     v-model="i.value.detail"
-                    name="" id="" rows="5" ></textarea>
+                    name=""
+                    id=""
+                    rows="5"
+                  ></textarea>
 
                   <div v-show="false">
                     <Field
-                        :name="`workHistories[${idx}].detail`"
-                        as="input"
-                        type="text"
-                        placeholder="ໜ້າທີ່ຮັບຜິດຊອບ"
+                      :name="`workHistories[${idx}].detail`"
+                      as="input"
+                      type="text"
+                      placeholder="ໜ້າທີ່ຮັບຜິດຊອບ"
                     />
                   </div>
-                  <ErrorMessage class="error-text" :name="`workHistories[${idx}].detail`" />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`workHistories[${idx}].detail`"
+                  />
                 </div>
               </div>
             </div>
@@ -354,38 +406,51 @@ v-model="lastName"
             <div class="field">
               <label>ພາສາ</label>
               <div v-for="(i, idx) in languages as any" :key="i.key">
-                <div class="selects" >
+                <div class="selects">
                   <div class="select">
                     <select name="" id="" v-model="i.value.language">
                       <option value="" disabled selected>ເລືອກພາສາ</option>
-                      <option :value="i._id" v-for="i in languagesList as any">{{ i.name }}</option>
-
+                      <option :value="i._id" v-for="i in languagesList as any">
+                        {{ i.name }}
+                      </option>
                     </select>
-
                   </div>
 
                   <div class="select">
                     <select name="" id="" v-model="i.value.level">
                       <option value="" disabled selected>ລະດັບ</option>
-                      <option :value="i._id" v-for="i in languageLevelsList as any">{{ i.name }}</option>
+                      <option
+                        :value="i._id"
+                        v-for="i in languageLevelsList as any"
+                      >
+                        {{ i.name }}
+                      </option>
                     </select>
                   </div>
 
-                  <button @click="languagesRemove(idx)" v-if="idx !== 0">remove</button>
+                  <button @click="languagesRemove(idx)" v-if="idx !== 0">
+                    remove
+                  </button>
 
-                  <br>
-
+                  <br />
                 </div>
                 <div>
-                  <ErrorMessage class="error-text" :name="`languages[${idx}].language`" />
-                  <br>
-                  <ErrorMessage class="error-text" :name="`languages[${idx}].level`" />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`languages[${idx}].language`"
+                  />
+                  <br />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`languages[${idx}].level`"
+                  />
                 </div>
-
               </div>
 
-
-              <button class="button add-button small light-orange" @click="languagesPush({ language: '', level: '' })">
+              <button
+                class="button add-button small light-orange"
+                @click="languagesPush({ language: '', level: '' })"
+              >
                 ເພີ່ມ
               </button>
             </div>
@@ -396,40 +461,48 @@ v-model="lastName"
             </div>
             <div class="field">
               <label>ພາສາ</label>
-              <div  v-for="(i, idx) in otherSkills as any" :key="i.key">
-
-                <div class="selects" >
-                  <SkillInput v-model="i.value.skill"/>
-<!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
+              <div v-for="(i, idx) in otherSkills as any" :key="i.key">
+                <div class="selects">
+                  <SkillInput v-model="i.value.skill" />
+                  <!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
                   <div class="select">
                     <select name="" id="" v-model="i.value.level">
                       <option value="" disabled selected>ລະດັບ</option>
-                      <option :value="i._id" v-for="i in skillLevels as any">{{ i.name }}</option>
+                      <option :value="i._id" v-for="i in skillLevels as any">
+                        {{ i.name }}
+                      </option>
                     </select>
                   </div>
-                  <button @click="otherSkillsRemove(idx)" v-if="idx !== 0">remove</button>
+                  <button @click="otherSkillsRemove(idx)" v-if="idx !== 0">
+                    remove
+                  </button>
 
-                  <br>
-
-
+                  <br />
                 </div>
                 <div>
-                  <ErrorMessage class="error-text" :name="`otherSkills[${idx}].skill`" />
-                  <br>
-                  <ErrorMessage class="error-text" :name="`otherSkills[${idx}].level`" />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`otherSkills[${idx}].skill`"
+                  />
+                  <br />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`otherSkills[${idx}].level`"
+                  />
                 </div>
-                <br>
+                <br />
               </div>
               <button
-                  @click="otherSkillsPush({ skill: '', level: '' })"
-                  class="button add-button small light-orange">
+                @click="otherSkillsPush({ skill: '', level: '' })"
+                class="button add-button small light-orange"
+              >
                 ເພີ່ມ
               </button>
             </div>
           </div>
-          <button
-              type="submit"
-              class="button submit-button orange">ບັນທຶກຂໍ້ມູນ</button>
+          <button type="submit" class="button submit-button orange">
+            ບັນທຶກຂໍ້ມູນ
+          </button>
         </form>
       </div>
     </div>
@@ -438,73 +511,76 @@ v-model="lastName"
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useForm , useFieldArray, Field, ErrorMessage} from "vee-validate";
+import { useForm, useFieldArray, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
-import DateInput from '@/components/DateInput.vue'
-import dayjs from 'dayjs'
+import DateInput from "@/components/DateInput.vue";
+import dayjs from "dayjs";
 
-import SkillInput from '@/components/SkillInput.vue'
-
+import SkillInput from "@/components/SkillInput.vue";
 
 const { isAuth, user } = useAuth();
 const { $apiFetch } = useNuxtApp();
 
-const config= useRuntimeConfig();
+const config = useRuntimeConfig();
 
-const profileImgRef = ref()
-const isHaveNoExp = ref(false)
-const cvFileRef = ref()
-const profileImgObject = ref<any>(null)
-const cvFileObject = ref<any>(null)
+const profileImgRef = ref();
+const isHaveNoExp = ref(false);
+const cvFileRef = ref();
+const profileImgObject = ref<any>(null);
+const cvFileObject = ref<any>(null);
 
-const backupWorkingHistories = ref<any>({})
+const backupWorkingHistories = ref<any>({});
 
-const route = useRoute()
+const route = useRoute();
 
 const formState = ref({
-  profileImg: '',
-  gender: '',
-  firstName: '',
-  lastName: '',
-  dateOfBirth: '',
-  maritalStatus: '',
-  province: '',
-  district: '',
+  profileImg: "",
+  gender: "",
+  firstName: "",
+  lastName: "",
+  dateOfBirth: "",
+  maritalStatus: "",
+  province: "",
+  district: "",
 
-  educations: [{
-    major: '',
-    university: '',
-    degree: '',
-    startDate: '',
-    endDate: '',
-  }],
+  educations: [
+    {
+      major: "",
+      university: "",
+      degree: "",
+      startDate: "",
+      endDate: "",
+    },
+  ],
   isCurrentlyStudy: false,
 
-  cvFile: '',
+  cvFile: "",
 
-  workHistories: [{
-    company: '',
-    position: '',
-    startDate: '',
-    endDate: '',
-    detail: '',
-    isCurrentWork: false
-  }],
+  workHistories: [
+    {
+      company: "",
+      position: "",
+      startDate: "",
+      endDate: "",
+      detail: "",
+      isCurrentWork: false,
+    },
+  ],
 
-  languages: [{
-    language: '',
-    level: ''
-  }],
+  languages: [
+    {
+      language: "",
+      level: "",
+    },
+  ],
 
-  otherSkills: [{
-    skill: '',
-    level: ''
-  }]
-})
-
-
-
-
+  otherSkills: [
+    {
+      skill: "",
+      level: "",
+    },
+  ],
+});
 
 const {
   values,
@@ -518,48 +594,57 @@ const {
   validationSchema: yup.object({
     profileImg: yup.string().required("This field is required"),
     gender: yup.string().required("This field is required"),
-    firstName:  yup.string().required("This field is required"),
-    lastName:  yup.string().required("This field is required"),
-    dateOfBirth:  yup.string().required("This field is required"),
-    maritalStatus:  yup.string().required("This field is required"),
-    province:  yup.string().required("This field is required"),
-    district:  yup.string().required("This field is required"),
+    firstName: yup.string().required("This field is required"),
+    lastName: yup.string().required("This field is required"),
+    dateOfBirth: yup.string().required("This field is required"),
+    maritalStatus: yup.string().required("This field is required"),
+    province: yup.string().required("This field is required"),
+    district: yup.string().required("This field is required"),
 
-    cvFile: yup.string().required('This field is required'),
+    cvFile: yup.string().required("This field is required"),
 
-    educations: yup.array().of(
+    educations: yup
+      .array()
+      .of(
         yup.object().shape({
-          major: yup.string().required('This field is required'),
-          university: yup.string().required('This field is required'),
-          degree: yup.string().required('This field is required'),
-          startDate: yup.date().required('This field is required'),
+          major: yup.string().required("This field is required"),
+          university: yup.string().required("This field is required"),
+          degree: yup.string().required("This field is required"),
+          startDate: yup.date().required("This field is required"),
           // endDate: yup.date().required('This field is required'),
-          isCurrentlyStudying: yup.boolean().required('This field is required')
+          isCurrentlyStudying: yup.boolean().required("This field is required"),
         })
-    ).min(1, 'At least one education entry is required'),
-        //
-    workHistories: yup.array().of(
+      )
+      .min(1, "At least one education entry is required"),
+    //
+    workHistories: yup
+      .array()
+      .of(
         yup.object().shape({
-          company: yup.string().required('This field is required'),
-          position: yup.string().required('This field is required'),
-          startDate: yup.date().required('This field is required'),
-         // endDate: yup.date().required('This field is required'),
-          detail: yup.string().required('This field is required'),
-          isCurrentlyWorking: yup.boolean().required('This field is required'),
+          company: yup.string().required("This field is required"),
+          position: yup.string().required("This field is required"),
+          startDate: yup.date().required("This field is required"),
+          // endDate: yup.date().required('This field is required'),
+          detail: yup.string().required("This field is required"),
+          isCurrentlyWorking: yup.boolean().required("This field is required"),
         })
-    ).notRequired(),
-    languages: yup.array().of(
+      )
+      .notRequired(),
+    languages: yup
+      .array()
+      .of(
         yup.object().shape({
-          language: yup.string().required('This field is required'),
-          level: yup.string().required('This field is required'),
+          language: yup.string().required("This field is required"),
+          level: yup.string().required("This field is required"),
         })
-    ).min(1, 'At least one language entry is required'),
+      )
+      .min(1, "At least one language entry is required"),
     otherSkills: yup.array().of(
-        yup.object().shape({
-          skill: yup.string().required('This field is required'),
-          level: yup.string().required('This field is required'),
-        })
-    )
+      yup.object().shape({
+        skill: yup.string().required("This field is required"),
+        level: yup.string().required("This field is required"),
+      })
+    ),
   }),
 });
 
@@ -574,37 +659,50 @@ const [district, districtProps] = defineField("district");
 
 const [cvFile, cvFileProps] = defineField("cvFile");
 
-const { fields: educations, push: educationsPush, remove: educationsRemove } = useFieldArray('educations')
-const { fields: workHistories, push: workHistoriesPush, remove: workHistoriesRemove } = useFieldArray('workHistories')
-const { fields: languages, push: languagesPush, remove: languagesRemove } = useFieldArray('languages')
-const { fields: otherSkills, push: otherSkillsPush, remove: otherSkillsRemove } = useFieldArray('otherSkills')
-
+const {
+  fields: educations,
+  push: educationsPush,
+  remove: educationsRemove,
+} = useFieldArray("educations");
+const {
+  fields: workHistories,
+  push: workHistoriesPush,
+  remove: workHistoriesRemove,
+} = useFieldArray("workHistories");
+const {
+  fields: languages,
+  push: languagesPush,
+  remove: languagesRemove,
+} = useFieldArray("languages");
+const {
+  fields: otherSkills,
+  push: otherSkillsPush,
+  remove: otherSkillsRemove,
+} = useFieldArray("otherSkills");
 
 const noExp = ref(false);
 const isStudent = ref(false);
 const isCurrentWork = ref(false);
 
+const provincesList = ref<any>([]);
 
-const provincesList = ref<any>([])
+const districtsList = ref<any>([]);
 
-const districtsList = ref<any>([])
+const genderList = ref<any>([]);
+const maritalStatusList = ref<any>([]);
+const educationLevelList = ref<any>([]);
 
-const genderList = ref<any>([])
-const maritalStatusList = ref<any>([])
-const educationLevelList = ref<any>([])
+const degreesList = ref([]);
 
+const languagesList = ref([]);
 
-const degreesList = ref([])
+const languageLevelsList = ref([]);
 
-const languagesList  = ref([])
-
-const  languageLevelsList = ref([])
-
-const skills = ref([])
-const skillLevels = ref([])
+const skills = ref([]);
+const skillLevels = ref([]);
 
 const onSubmit = handleSubmit(async (values) => {
-  const object = values
+  const object = values;
 
   const form: any = {
     noExperience: isHaveNoExp.value,
@@ -614,8 +712,8 @@ const onSubmit = handleSubmit(async (values) => {
       dateOfBirth: object.dateOfBirth,
       genderId: object.gender,
       maritalStatusId: object.maritalStatus,
-    //  currentResidenceId: object.province,
-      districtId : object.district
+      //  currentResidenceId: object.province,
+      districtId: object.district,
     },
     educations: object.educations.map((i: any) => ({
       //_id: i._id,
@@ -627,358 +725,344 @@ const onSubmit = handleSubmit(async (values) => {
       currentlyStudying: i.isCurrentlyStudying,
     })),
     workHistories: object.workHistories.map((i: any) => ({
-     // _id: i._id,
+      // _id: i._id,
       company: i.company,
       position: i.position,
       startYear: i.startDate,
       endYear: i.endDate,
       isCurrentJob: i.isCurrentlyWorking,
-      responsibility: i.detail
+      responsibility: i.detail,
     })),
     language: object.languages.map((i: any) => ({
-     // _id: i._id,
+      // _id: i._id,
       LanguageId: i.language,
-      LanguageLevelId: i.level
+      LanguageLevelId: i.level,
     })),
     skill: object.otherSkills.map((i: any) => ({
       //_id: i._id,
       keySkill: i.skill,
-      skillLevelId: i.level
+      skillLevelId: i.level,
     })),
+  };
+
+  if (profileImgObject.value) {
+    form.profile.file = profileImgObject.value;
   }
 
-
-  if(profileImgObject.value) {
-    form.profile.file = profileImgObject.value
+  if (cvFileObject.value) {
+    form.cv = cvFileObject.value;
   }
-
-  if(cvFileObject.value) {
-    form.cv = cvFileObject.value
-  }
-
 
   // console.log(form)
 
-  const { data }: any = await useAsyncData('updateSeekerInfo', () =>
-      $apiFetch('/update-seeker-info-vipo', {
-        method: 'POST',
-        body: form
-      })
+  const { data }: any = await useAsyncData("updateSeekerInfo", () =>
+    $apiFetch("/update-seeker-info-vipo", {
+      method: "POST",
+      body: form,
+    })
   );
 
   //console.log(data)
 
-  window.location.reload()
-
-
-
-
-})
-
+  window.location.reload();
+});
 
 const onProfileImgChange = async ($event: any) => {
   const file = $event.target.files[0];
 
-  const formData = new FormData()
-  formData.append('file', file)
+  const formData = new FormData();
+  formData.append("file", file);
 
-  const { data }: any = await useAsyncData('uploadImg', () =>
-      $apiFetch('/upload-image', {
-        method: 'POST',
-        body: formData
-      })
+  const { data }: any = await useAsyncData("uploadImg", () =>
+    $apiFetch("/upload-image", {
+      method: "POST",
+      body: formData,
+    })
   );
 
-  if(data.value) {
-    profileImg.value = data.value.file.name
-    profileImgObject.value = data.value.file
-    profileImgRef.value.value = ''
+  if (data.value) {
+    profileImg.value = data.value.file.name;
+    profileImgObject.value = data.value.file;
+    profileImgRef.value.value = "";
   }
-
-}
-
-
-
+};
 
 const onCVFileChange = async ($event: any) => {
   const file = $event.target.files[0];
 
-  const formData = new FormData()
-  formData.append('file', file)
+  const formData = new FormData();
+  formData.append("file", file);
 
-  const { data }: any = await useAsyncData('uploadResume', () =>
-      $apiFetch('/upload-resume', {
-        method: 'POST',
-        body: formData
-      })
+  const { data }: any = await useAsyncData("uploadResume", () =>
+    $apiFetch("/upload-resume", {
+      method: "POST",
+      body: formData,
+    })
   );
 
-  if(data.value) {
-    cvFile.value = data.value.myFile.name
-    cvFileObject.value = data.value.myFile
-    cvFileRef.value.value = ''
+  if (data.value) {
+    cvFile.value = data.value.myFile.name;
+    cvFileObject.value = data.value.myFile;
+    cvFileRef.value.value = "";
   }
-
-}
-
+};
 
 const getProvinces = async () => {
   try {
-
-    const { data }: any = await useAsyncData('provinces', () =>
-        $apiFetch('/get-province-vipo', {
-          query: { lang: 'LA' },
-        })
+    const { data }: any = await useAsyncData("provinces", () =>
+      $apiFetch("/get-province-vipo", {
+        query: { lang: "LA" },
+      })
     );
-    provincesList.value = data.value.provinces
-
-  }catch(e) {
-    console.log(e)
+    provincesList.value = data.value.provinces;
+  } catch (e) {
+    console.log(e);
   }
-}
+};
 
 const getReuse = async (type: string) => {
   try {
-
-    const { data }: any = await useAsyncData('reuse' + type, () =>
-        $apiFetch('/get-reuse-vipo', {
-          query: { lang: 'LA', type },
-        })
+    const { data }: any = await useAsyncData("reuse" + type, () =>
+      $apiFetch("/get-reuse-vipo", {
+        query: { lang: "LA", type },
+      })
     );
 
-
-    const list =data.value.info
+    const list = data.value.info;
     switch (type) {
-     case 'Gender':
-       genderList.value = list
-       break; case 'MaritalStatus':
-       maritalStatusList.value = list
-       break; case 'Degree':
-       educationLevelList.value = list
-       break; case 'Language':
-       languagesList.value = list
-       break; case 'LanguageLevel':
-       languageLevelsList.value = list
-       break; case 'SkillLevel':
-       skillLevels.value = list
-       break;
+      case "Gender":
+        genderList.value = list;
+        break;
+      case "MaritalStatus":
+        maritalStatusList.value = list;
+        break;
+      case "Degree":
+        educationLevelList.value = list;
+        break;
+      case "Language":
+        languagesList.value = list;
+        break;
+      case "LanguageLevel":
+        languageLevelsList.value = list;
+        break;
+      case "SkillLevel":
+        skillLevels.value = list;
+        break;
     }
-
-
-  }catch(e) {
-    console.log(e)
+  } catch (e) {
+    console.log(e);
   }
-}
+};
 
-
-watch(() => province.value, () => {
-  if(province.value) {
-    const provinceIdx = provincesList.value.findIndex((i: any) => i._id === province.value)
-    districtsList.value = provincesList.value[provinceIdx].districts
-    district.value = districtsList.value[0]._id
-  }
-}, {immediate: true})
-
-watch(() => isHaveNoExp.value, () => {
-  if(isHaveNoExp.value) {
-    if(workHistories.value.length) {
-      backupWorkingHistories.value =   workHistories.value[0].value
+watch(
+  () => province.value,
+  () => {
+    if (province.value) {
+      const provinceIdx = provincesList.value.findIndex(
+        (i: any) => i._id === province.value
+      );
+      districtsList.value = provincesList.value[provinceIdx].districts;
+      district.value = districtsList.value[0]._id;
     }
+  },
+  { immediate: true }
+);
 
-    setTimeout(() => {
-      workHistoriesRemove(0)
-    }, 100)
-  }else {
+watch(
+  () => isHaveNoExp.value,
+  () => {
+    if (isHaveNoExp.value) {
+      if (workHistories.value.length) {
+        backupWorkingHistories.value = workHistories.value[0].value;
+      }
 
-    if(backupWorkingHistories.value) {
-      workHistoriesPush(backupWorkingHistories.value)
-    }else {
-      workHistoriesPush({
-        company: '',
-        position: '',
-        startDate: '',
-        endDate: '',
-        isCurrentlyWorking: false,
-      })
+      setTimeout(() => {
+        workHistoriesRemove(0);
+      }, 100);
+    } else {
+      if (backupWorkingHistories.value) {
+        workHistoriesPush(backupWorkingHistories.value);
+      } else {
+        workHistoriesPush({
+          company: "",
+          position: "",
+          startDate: "",
+          endDate: "",
+          isCurrentlyWorking: false,
+        });
+      }
     }
   }
-})
-
-
+);
 
 const getKeySkills = async () => {
-
-  const { data }: any = await useAsyncData('getKeySkills', () =>
-      $apiFetch('/get-keyskills-job-seeker-vipo', {
-        query: { lang: 'LA', page: 1, perPage: 10000, search: '' },
-      })
+  const { data }: any = await useAsyncData("getKeySkills", () =>
+    $apiFetch("/get-keyskills-job-seeker-vipo", {
+      query: { lang: "LA", page: 1, perPage: 10000, search: "" },
+    })
   );
 
-  skills.value = data.value.getKeySkill
+  skills.value = data.value.getKeySkill;
+};
 
-}
-
-
-
-const isLoading = ref(true)
+const isLoading = ref(true);
 
 //Type not matching in model: Country,State,SkillLevel,KeySkills,CurrentResidence,Nationality,BannerType,BlogType,Degree,CompanySize,Gender,Industry,JobEducationLevel,JobExperience,JobFunction,JobZone,Language,LanguageLevel,MaritalStatus,Province,Tag,SalaryRange,District,JobTag,SkillTag,AdditionalTag,JobLevel
 
-await getProvinces()
- getReuse('Gender')
- getReuse('MaritalStatus')
- getReuse('Degree')
- getReuse('Language')
- getReuse('LanguageLevel')
-  getReuse('SkillLevel')
-  getKeySkills()
-
-
+await getProvinces();
+getReuse("Gender");
+getReuse("MaritalStatus");
+getReuse("Degree");
+getReuse("Language");
+getReuse("LanguageLevel");
+getReuse("SkillLevel");
+getKeySkills();
 
 onMounted(async () => {
-
-setTimeout(() => {
+  setTimeout(() => {
     educationsPush({
-  major: '',
-  university: '',
-  degree: '',
-  startDate: '',
-  endDate: '',
-  isCurrentlyStudying: false,
-})
+      major: "",
+      university: "",
+      degree: "",
+      startDate: "",
+      endDate: "",
+      isCurrentlyStudying: false,
+    });
 
-  workHistoriesPush({
-    company: '',
-    position: '',
-    startDate: '',
-    endDate: '',
-    isCurrentlyWorking: false,
-  })
+    workHistoriesPush({
+      company: "",
+      position: "",
+      startDate: "",
+      endDate: "",
+      isCurrentlyWorking: false,
+    });
 
-  languagesPush({
-    language: '',
-    level: '',
-  })
+    languagesPush({
+      language: "",
+      level: "",
+    });
 
-  otherSkillsPush({
-    skill: '',
-    level: '',
-  })
-}, 1000)
+    otherSkillsPush({
+      skill: "",
+      level: "",
+    });
+  }, 1000);
 
-  if(!isAuth.value) {
-    alert('Please login first')
-    navigateTo('/auth/login')
-  }else {
+  if (!isAuth.value) {
+    alert("Please login first");
+    navigateTo("/auth/login");
+  } else {
+    setTimeout(() => {
+      if (user.value.cv && user.value.cv.src) {
+        cvFile.value = user.value.cv.src;
+      }
 
+      if (user.value.profile) {
+        profileImg.value = user.value.profile.file
+          ? user.value.profile.file.src
+          : "";
+        gender.value = user.value.profile.genderId
+          ? user.value.profile.genderId._id
+          : "";
+        firstName.value = user.value.profile.firstName
+          ? user.value.profile.firstName
+          : "";
+        lastName.value = user.value.profile.lastName
+          ? user.value.profile.lastName
+          : "";
+        dateOfBirth.value = user.value.profile.dateOfBirth
+          ? user.value.profile.dateOfBirth
+          : "";
+        maritalStatus.value = user.value.profile.maritalStatusId
+          ? user.value.profile.maritalStatusId._id
+          : "";
+        province.value = user.value.profile.districtId
+          ? user.value.profile.districtId.provinceId._id
+          : "";
+        district.value = user.value.profile.districtId
+          ? user.value.profile.districtId._id
+          : "";
+      }
 
- setTimeout(() => {
+      if (user.value.education && user.value.education.length) {
+        const i = user.value.education[user.value.education.length - 1];
+        educationsRemove(0);
+        educationsPush({
+          _id: i._id,
+          major: i.subject,
+          university: i.school,
+          degree: i.qualifications ? i.qualifications._id : "",
+          startDate: i.startYear,
+          endDate: i.endYear,
+          isCurrentlyStudying: i.currentlyStudying,
+        });
+      }
 
-   if (user.value.cv && user.value.cv.src) {
-     cvFile.value = user.value.cv.src
-   }
+      if (user.value.noExperience) {
+        isHaveNoExp.value = true;
+        workHistoriesRemove(0);
+      } else if (user.value.workHistory && user.value.workHistory.length) {
+        const i = user.value.workHistory[user.value.workHistory.length - 1];
+        workHistoriesRemove(0);
+        workHistoriesPush({
+          _id: i._id,
+          company: i.company,
+          position: i.position,
+          startDate: i.startYear,
+          endDate: i.endYear,
+          isCurrentlyWorking: i.isCurrentJob,
+          detail: i.responsibility,
+        });
+      }
 
-   if(user.value.profile) {
-     profileImg.value =  user.value.profile.file ? user.value.profile.file.src : ''
-     gender.value = user.value.profile.genderId ? user.value.profile.genderId._id : ''
-     firstName.value =  user.value.profile.firstName ? user.value.profile.firstName : ''
-     lastName.value =  user.value.profile.lastName ? user.value.profile.lastName : ''
-     dateOfBirth.value =  user.value.profile.dateOfBirth ? user.value.profile.dateOfBirth : ''
-     maritalStatus.value =  user.value.profile.maritalStatusId ? user.value.profile.maritalStatusId._id : ''
-     province.value = user.value.profile.districtId ? user.value.profile.districtId.provinceId._id : ''
-     district.value = user.value.profile.districtId ? user.value.profile.districtId._id : ''
-   }
+      if (user.value.languageSkill && user.value.languageSkill.length) {
+        // const i = user.value.languageSkill[user.value.languageSkill.length-1]
+        // languagesRemove(0)
+        // languagesPush({
+        //   _id: i._id,
+        //   language: i.LanguageId._id,
+        //   level: i.LanguageLevelId._id
+        // })
 
+        languagesRemove(0);
+        const list = user.value.languageSkill.map((i: any) => ({
+          _id: i._id,
+          language: i.LanguageId._id,
+          level: i.LanguageLevelId._id,
+        }));
 
-   if(user.value.education && user.value.education.length) {
-     const i = user.value.education[user.value.education.length-1]
-     educationsRemove(0)
-     educationsPush({
-       _id: i._id,
-       major: i.subject,
-       university: i.school,
-       degree: i.qualifications ? i.qualifications._id : '',
-       startDate: i.startYear,
-       endDate: i.endYear,
-       isCurrentlyStudying: i.currentlyStudying
-     })
-   }
+        for (let i = 0; i < list.length; i++) {
+          languagesPush(list[i]);
+        }
+      }
 
-   if(user.value.noExperience) {
-     isHaveNoExp.value = true
-     workHistoriesRemove(0)
-   }
-   else if(user.value.workHistory &&  user.value.workHistory.length) {
-     const i = user.value.workHistory[user.value.workHistory.length-1]
-     workHistoriesRemove(0)
-     workHistoriesPush({
-       _id: i._id,
-       company: i.company,
-       position: i.position,
-       startDate: i.startYear,
-       endDate: i.endYear,
-       isCurrentlyWorking: i.isCurrentJob,
-       detail: i.responsibility
-     })
-   }
+      if (user.value.skills && user.value.skills.length) {
+        // const i = user.value.skills[user.value.skills.length-1]
+        // otherSkillsRemove(0)
+        // otherSkillsPush({
+        //   _id: i._id,
+        //   skill: i.keySkillId._id,
+        //   level: i.skillLevelId._id
+        // })
 
-   if(user.value.languageSkill && user.value.languageSkill.length) {
-     // const i = user.value.languageSkill[user.value.languageSkill.length-1]
-     // languagesRemove(0)
-     // languagesPush({
-     //   _id: i._id,
-     //   language: i.LanguageId._id,
-     //   level: i.LanguageLevelId._id
-     // })
+        otherSkillsRemove(0);
+        const list = user.value.skills.map((i: any) => ({
+          _id: i._id,
+          skill: i.keySkillId.name,
+          level: i.skillLevelId._id,
+        }));
 
-     languagesRemove(0)
-     const list = user.value.languageSkill.map((i: any) => ({
-       _id: i._id,
-       language: i.LanguageId._id,
-       level: i.LanguageLevelId._id
-     }))
-
-     for (let i = 0; i < list.length; i++) {
-       languagesPush(list[i])
-     }
-   }
-
-   if(user.value.skills && user.value.skills.length) {
-     // const i = user.value.skills[user.value.skills.length-1]
-     // otherSkillsRemove(0)
-     // otherSkillsPush({
-     //   _id: i._id,
-     //   skill: i.keySkillId._id,
-     //   level: i.skillLevelId._id
-     // })
-
-
-     otherSkillsRemove(0)
-     const list = user.value.skills.map((i: any) => ({
-       _id: i._id,
-       skill: i.keySkillId.name,
-       level: i.skillLevelId._id
-     }))
-
-     for (let i = 0; i < list.length; i++) {
-       otherSkillsPush(list[i])
-     }
-
-   }
-
- }, 1500)
-
-
-
-
+        for (let i = 0; i < list.length; i++) {
+          otherSkillsPush(list[i]);
+        }
+      }
+    }, 1500);
 
     setTimeout(() => {
-        isLoading.value = false
-    }, 2000)
-
+      isLoading.value = false;
+    }, 2000);
   }
-})
-
+});
 </script>
 
 <style scoped lang="scss">

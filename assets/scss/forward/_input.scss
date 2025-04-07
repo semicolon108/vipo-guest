@@ -24,15 +24,15 @@ textarea {
     background-color: #fff;
   }
   &:not(:placeholder-shown) {
-    background-color: var(--orange-900) !important;
+    background-color: var(--orange-200) !important;
     box-shadow: 0 0 0 1px var(--orange-900);
-    color: #fff;
+    color: black;
   }
   &[type="time"]:valid {
     background-color: var(--orange-900);
-    color: #fff;
+    color: black;
     &::-webkit-calendar-picker-indicator {
-      filter: invert(100%) brightness(200%);
+      filter: invert(0%) brightness(200%);
     }
   }
   &[type="time"]:invalid {
