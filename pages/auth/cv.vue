@@ -518,6 +518,10 @@ import dayjs from "dayjs";
 
 import SkillInput from "@/components/SkillInput.vue";
 
+
+
+const { showToast } = useToast();
+
 const { isAuth, user } = useAuth();
 const { $apiFetch } = useNuxtApp();
 
@@ -762,9 +766,15 @@ const onSubmit = handleSubmit(async (values) => {
     })
   );
 
+  if(data.value) {
+
+    showToast("Your CV has been updated.", "Success");
+    window.location.reload();
+  }
+
   //console.log(data)
 
-  window.location.reload();
+
 });
 
 const onProfileImgChange = async ($event: any) => {
@@ -918,7 +928,10 @@ getReuse("LanguageLevel");
 getReuse("SkillLevel");
 getKeySkills();
 
+
+
 onMounted(async () => {
+
   setTimeout(() => {
     educationsPush({
       major: "",
