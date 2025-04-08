@@ -2,14 +2,13 @@
   <div>
     <NuxtLayout>
       <NuxtPage />
-
     </NuxtLayout>
-    <Toast/>
+    <Toast />
   </div>
 </template>
 
 <script setup lang="ts">
-import Toast from '@/components/Toast.vue'
+import Toast from "@/components/Toast.vue";
 
 // const { showToast } = useToast();
 //
@@ -20,69 +19,70 @@ import Toast from '@/components/Toast.vue'
 // })
 
 useSeoMeta({
-  title: '',
-  ogTitle: '',
-  description: '',
-  ogDescription: '',
-  ogImage: '',
-  ogImageSecureUrl: '',
-  ogImageWidth: '1280',
-  ogImageHeight: '720',
-  ogImageType: 'image/png',
-  ogImageAlt: '',
-  ogUrl: '',
-  ogSiteName: '',
-  ogLocale: 'en_US',
-  ogType: 'website',
-  keywords: '',
-  robots: 'follow, index',
-  twitterCard: 'summary_large_image',
-  twitterTitle: '',
-  twitterDescription: '',
-})
+  title: "",
+  ogTitle: "",
+  description: "",
+  ogDescription: "",
+  ogImage: "",
+  ogImageSecureUrl: "",
+  ogImageWidth: "1280",
+  ogImageHeight: "720",
+  ogImageType: "image/png",
+  ogImageAlt: "",
+  ogUrl: "",
+  ogSiteName: "",
+  ogLocale: "en_US",
+  ogType: "website",
+  keywords: "",
+  robots: "follow, index",
+  twitterCard: "summary_large_image",
+  twitterTitle: "",
+  twitterDescription: "",
+});
 
 const { isAuth, user } = useAuth();
 
 const { $apiFetch } = useNuxtApp();
 const { setUser } = useAuth();
 
-const route = useRoute()
+const route = useRoute();
 
-watch(() => route.path, () => {
-  if(isAuth.value && (route.path === '/auth/login' || route.path === '/auth/register')) {
-    navigateTo('/')
-  }
-}, {immediate: true})
-
+watch(
+  () => route.path,
+  () => {
+    if (
+      isAuth.value &&
+      (route.path === "/auth/login" || route.path === "/auth/register")
+    ) {
+      navigateTo("/");
+    }
+  },
+  { immediate: true }
+);
 
 const getCurrentUser = async () => {
-
-  const { data }: any = await useAsyncData('getCurrentUser', () =>
-      $apiFetch('/get-seeker-info-vipo')
+  const { data }: any = await useAsyncData("getCurrentUser", () =>
+    $apiFetch("/get-seeker-info-vipo")
   );
- const user = data.value
+  const user = data.value;
   if (user) {
-    console.log(  user)
+    console.log(user);
     setUser(data.value);
   }
+};
 
-}
-
-watch(() => isAuth.value, () => {
-  if(isAuth.value){
-    getCurrentUser()
-  }
-}, {immediate: true})
-
-
+watch(
+  () => isAuth.value,
+  () => {
+    if (isAuth.value) {
+      getCurrentUser();
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss">
-
-.error-text {
-  color: red;
-}
-
 body {
   font-family: var(--font-family);
   font-weight: 500;

@@ -13,31 +13,33 @@
               <h1>ຂໍ້ມູນສ່ວນໂຕ</h1>
             </div>
             <div class="field">
-              <div class="field">
-                <label for="">ຮູບຂອງເຈົ້າ</label>
-                <div class="control">
-                  <div @click="profileImgRef.click()">
-                    <img
-                      v-if="profileImgObject"
-                      :src="config.public.fileTmp + '/' + profileImg"
-                    />
-                    <img v-else-if="profileImg" :src="profileImg" />
-                    <label class="image-upload" v-else>
-                      <i class="fa-solid fa-camera"></i>
-                    </label>
-                  </div>
-
-                  <small class="image-size">ຮູບຕ້ອງມີຂະໜາດບໍ່ເກີນ 10MB</small>
-                  <input
-                    v-show="false"
-                    ref="profileImgRef"
-                    type="file"
-                    id="image"
-                    @change="onProfileImgChange"
+              <label for="">ຮູບຂອງເຈົ້າ</label>
+              <div class="control image-upload">
+                <div @click="profileImgRef.click()">
+                  <img
+                    v-if="profileImgObject"
+                    :src="config.public.fileTmp + '/' + profileImg"
                   />
+                  <img v-else-if="profileImg" :src="profileImg" />
+                  <label v-else>
+                    <i class="fa-solid fa-camera"></i>
+                  </label>
                 </div>
-                <p class="error-text">{{ errors.profileImg }}</p>
+
+                <small class="image-size">ຮູບຕ້ອງມີຂະໜາດບໍ່ເກີນ 10MB</small>
+                <input
+                  v-show="false"
+                  ref="profileImgRef"
+                  type="file"
+                  id="image"
+                  @change="onProfileImgChange"
+                />
               </div>
+              <p v-if="errors.profileImg" class="error-text">
+                {{ errors.profileImg }}
+              </p>
+            </div>
+            <div class="field">
               <label>ເພດ</label>
               <div class="control options">
                 <p
@@ -48,8 +50,9 @@
                   {{ i.name }}
                 </p>
               </div>
-              <p class="error-text">{{ errors.gender }}</p>
+              <p v-if="errors.gender" class="error-text">{{ errors.gender }}</p>
             </div>
+
             <div class="field">
               <label>ຊື່</label>
               <input
@@ -58,8 +61,11 @@
                 placeholder="ຊື່ຂອງເຈົ້າ"
                 v-model="firstName"
               />
-              <p class="error-text">{{ errors.firstName }}</p>
+              <p v-if="errors.firstName" class="error-text">
+                {{ errors.firstName }}
+              </p>
             </div>
+
             <div class="field">
               <label>ນາມສະກຸນ</label>
               <input
@@ -68,14 +74,18 @@
                 placeholder="ນາມສະກຸນ"
                 v-model="lastName"
               />
-              <p class="error-text">{{ errors.firstName }}</p>
+              <p v-if="errors.firstName" class="error-text">
+                {{ errors.firstName }}
+              </p>
             </div>
             <div class="field">
               <label>ວັນເດືອນປີເກີດ</label>
 
               <DateInput v-model="dateOfBirth" />
 
-              <p class="error-text">{{ errors.dateOfBirth }}</p>
+              <p v-if="errors.dateOfBirth" class="error-text">
+                {{ errors.dateOfBirth }}
+              </p>
             </div>
             <div class="field">
               <label>ສະຖານະແຕ່ງງານ</label>
@@ -88,7 +98,9 @@
                   {{ i.name }}
                 </p>
               </div>
-              <p class="error-text">{{ errors.maritalStatus }}</p>
+              <p v-if="errors.maritalStatus" class="error-text">
+                {{ errors.maritalStatus }}
+              </p>
             </div>
             <div class="field">
               <label>ແຂວງຢູ່ປະຈຸບັນ</label>
@@ -101,7 +113,9 @@
                     </option>
                   </select>
                 </div>
-                <p class="error-text">{{ errors.province }}</p>
+                <p v-if="errors.province" class="error-text">
+                  {{ errors.province }}
+                </p>
               </div>
             </div>
             <div class="field">
@@ -120,7 +134,9 @@
                     </option>
                   </select>
                 </div>
-                <p class="error-text">{{ errors.district }}</p>
+                <p v-if="errors.district" class="error-text">
+                  {{ errors.district }}
+                </p>
               </div>
             </div>
           </div>
@@ -266,7 +282,9 @@
                 />
               </div>
               <div class="uploaded-file" v-if="cvFile">
-                <p><i class="fa-regular fa-file-pdf"></i>{{ cvFile }}</p>
+                <span class="file-name"
+                  ><i class="fa-regular fa-file-pdf"></i>{{ cvFile }}</span
+                >
                 <!--                <i class="fa-regular fa-trash"></i>-->
               </div>
               <p class="error-text">{{ errors.cvFile }}</p>
@@ -400,7 +418,11 @@
             </div>
             <div class="field">
               <label>ພາສາ</label>
-              <div v-for="(i, idx) in languages as any" :key="i.key">
+              <div
+                class="selects-container"
+                v-for="(i, idx) in languages as any"
+                :key="i.key"
+              >
                 <div class="selects">
                   <div class="select">
                     <select name="" id="" v-model="i.value.language">
@@ -410,7 +432,6 @@
                       </option>
                     </select>
                   </div>
-
                   <div class="select">
                     <select name="" id="" v-model="i.value.level">
                       <option value="" disabled selected>ລະດັບ</option>
@@ -423,18 +444,17 @@
                     </select>
                   </div>
 
-                  <button @click="languagesRemove(idx)" v-if="idx !== 0">
-                    remove
-                  </button>
-
-                  <br />
-                </div>
-                <div>
+                  <a
+                    class="delete-button"
+                    @click="languagesRemove(idx)"
+                    v-if="idx !== 0"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
                   <ErrorMessage
                     class="error-text"
                     :name="`languages[${idx}].language`"
                   />
-                  <br />
                   <ErrorMessage
                     class="error-text"
                     :name="`languages[${idx}].level`"
@@ -456,7 +476,11 @@
             </div>
             <div class="field">
               <label>ພາສາ</label>
-              <div v-for="(i, idx) in otherSkills as any" :key="i.key">
+              <div
+                class="selects-container"
+                v-for="(i, idx) in otherSkills as any"
+                :key="i.key"
+              >
                 <div class="selects">
                   <SkillInput v-model="i.value.skill" />
                   <!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
@@ -468,24 +492,18 @@
                       </option>
                     </select>
                   </div>
-                  <button @click="otherSkillsRemove(idx)" v-if="idx !== 0">
-                    remove
-                  </button>
-
-                  <br />
+                  <a @click="otherSkillsRemove(idx)" v-if="idx !== 0">
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
                 </div>
-                <div>
-                  <ErrorMessage
-                    class="error-text"
-                    :name="`otherSkills[${idx}].skill`"
-                  />
-                  <br />
-                  <ErrorMessage
-                    class="error-text"
-                    :name="`otherSkills[${idx}].level`"
-                  />
-                </div>
-                <br />
+                <ErrorMessage
+                  class="error-text"
+                  :name="`otherSkills[${idx}].skill`"
+                />
+                <ErrorMessage
+                  class="error-text"
+                  :name="`otherSkills[${idx}].level`"
+                />
               </div>
               <button
                 @click="otherSkillsPush({ skill: '', level: '' })"
@@ -512,8 +530,6 @@ import DateInput from "@/components/DateInput.vue";
 import dayjs from "dayjs";
 
 import SkillInput from "@/components/SkillInput.vue";
-
-
 
 const { showToast } = useToast();
 
@@ -761,15 +777,12 @@ const onSubmit = handleSubmit(async (values) => {
     })
   );
 
-  if(data.value) {
-
+  if (data.value) {
     showToast("Your CV has been updated.", "Success");
     window.location.reload();
   }
 
   //console.log(data)
-
-
 });
 
 const onProfileImgChange = async ($event: any) => {
@@ -923,10 +936,7 @@ getReuse("LanguageLevel");
 getReuse("SkillLevel");
 getKeySkills();
 
-
-
 onMounted(async () => {
-
   setTimeout(() => {
     educationsPush({
       major: "",
@@ -1206,9 +1216,21 @@ section {
     }
   }
 }
-.selects {
-  display: flex;
-  gap: 1rem;
+.selects-container {
+  margin-bottom: 0.75rem;
+  .selects {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    a {
+      color: var(--orange-900);
+      cursor: pointer;
+    }
+    .select {
+      flex-grow: 1;
+    }
+  }
 }
 label.has-checkbox {
   display: flex !important;
@@ -1218,7 +1240,11 @@ label.has-checkbox {
     font-weight: 500;
   }
 }
-
+.error-text {
+  color: var(--red-900);
+  font-size: var(--xxsm-font);
+  display: inline-block;
+}
 textarea {
   background-color: var(--black-200);
   padding: 1rem;
@@ -1232,18 +1258,27 @@ textarea {
   width: 100%;
 }
 .image-upload {
-  background-color: var(--black-200);
-  min-width: 100px;
-  min-height: 100px;
-  max-width: 100px;
-  max-height: 100px;
-  border-radius: 8px;
-  cursor: pointer;
-  position: relative;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0 !important;
+  img {
+    display: block;
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+  }
+  label {
+    background-color: var(--black-200);
+    min-width: 100px;
+    min-height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0 !important;
+  }
 
   input {
     display: none;
@@ -1296,11 +1331,12 @@ textarea {
   border-radius: 8px;
   margin-top: 0.5rem;
   color: var(--deep-blue-900);
-  p {
-    display: flex;
-    align-items: center;
+  .file-name {
     font-weight: 600;
-    font-size: var(--md-font);
+    font-size: var(--sm-font);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
     i {
       margin-top: 0.15rem;
       margin-right: 0.25rem;

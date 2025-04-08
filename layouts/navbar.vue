@@ -15,16 +15,11 @@
           <a
             v-if="isAuth"
             @click="logout"
-            style="color: red; font-weight: bold"
-            class="button"
+            class="button logout"
             to="/auth/login"
           >
-            <i
-              class="fa fa-sign-out"
-              style="font-size: 16px; margin-top: 4px"
-              aria-hidden="true"
-            ></i>
-            <span>Logout</span></a
+            <i class="fa fa-sign-out" aria-hidden="true"></i>
+            <span>ອອກລະບົບ</span></a
           >
         </div>
       </div>
@@ -72,6 +67,16 @@ nav {
       &:hover {
         color: var(--orange-900);
       }
+    }
+  }
+  .logout {
+    font-size: var(--sm-font);
+    display: flex;
+    align-items: center;
+    color: var(--orange-900);
+    i {
+      font-size: var(--xsm-font);
+      padding-top: 0.25rem;
     }
   }
   .register-button {

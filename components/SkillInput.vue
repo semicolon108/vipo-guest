@@ -3,25 +3,24 @@
     <div class="multi-selector-container">
       <div class="input-box" @click="toggleSelectOption">
         <input
-            v-model="selectedSkill"
-            type="text"
-            placeholder="Enter or select skill"
-            style="width: 100%"
+          v-model="selectedSkill"
+          type="text"
+          placeholder="Enter or select skill"
+          style="width: 100%"
         />
       </div>
 
       <div
-          class="option-container"
-          v-if="showSelectOption"
-          style="overflow: auto; height: 400px"
+        class="option-container"
+        v-if="showSelectOption"
+        style="overflow: auto; height: 400px"
       >
-
         <ul>
           <li
-              v-for="skill in skills"
-              :key="skill._id"
-              @click="selectSkill(skill.name)"
-              :class="{ selected: selectedSkill === skill.name }"
+            v-for="skill in skills"
+            :key="skill._id"
+            @click="selectSkill(skill.name)"
+            :class="{ selected: selectedSkill === skill.name }"
           >
             <span></span>{{ skill.name }}
           </li>
@@ -57,32 +56,32 @@ const selectSkill = (name: string) => {
 
 // Fetch skill suggestions
 const getSkills = async () => {
-  const { data }: any = await useAsyncData('getKeySkills', () =>
-      $apiFetch('/get-keyskills-job-seeker-vipo', {
-        query: { lang: 'LA', page: 1, perPage: 100, search: selectedSkill.value },
-      })
+  const { data }: any = await useAsyncData("getKeySkills", () =>
+    $apiFetch("/get-keyskills-job-seeker-vipo", {
+      query: { lang: "LA", page: 1, perPage: 100, search: selectedSkill.value },
+    })
   );
   skills.value = data.value.getKeySkill || [];
 };
 
 // Sync input to v-model
 watch(
-    () => selectedSkill.value,
-    (newVal) => {
-      modelValue.value = newVal;
-      getSkills();
-    }
+  () => selectedSkill.value,
+  (newVal) => {
+    modelValue.value = newVal;
+    getSkills();
+  }
 );
 
 // Sync v-model to input
 watch(
-    () => modelValue.value,
-    (newVal) => {
-      if (newVal !== selectedSkill.value) {
-        selectedSkill.value = newVal || "";
-      }
-    },
-    { immediate: true }
+  () => modelValue.value,
+  (newVal) => {
+    if (newVal !== selectedSkill.value) {
+      selectedSkill.value = newVal || "";
+    }
+  },
+  { immediate: true }
 );
 
 // Initial load
@@ -90,9 +89,12 @@ await getSkills();
 </script>
 
 <style scoped lang="scss">
+.input-group {
+  flex-grow: 1;
+  width: 100%;
+}
 .multi-selector-container {
   position: relative;
-
   .input-box {
     display: flex;
     align-items: center;

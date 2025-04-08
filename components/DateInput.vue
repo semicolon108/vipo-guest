@@ -151,42 +151,4 @@ watch([dateFieldDay, dateFieldMonth, dateFieldYear], () => {
   align-items: center;
   gap: 0.5rem;
 }
-.select {
-  flex-grow: 1;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  position: relative;
-
-  &::after {
-    content: " ";
-    display: block;
-    height: 0.5em;
-    width: 0.5em;
-    border: 0.125em solid var(--primary-900);
-    border-right: 0;
-    border-top: 0;
-    margin-top: -0.25em;
-    pointer-events: none;
-    position: absolute;
-    transform: rotate(-45deg);
-    transform-origin: center;
-    inset-inline-end: 1em;
-    z-index: 4;
-  }
-
-  select {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    appearance: none;
-    padding: 0 calc(0.75em - 1px);
-    padding-inline-end: 2.25em;
-    width: 100%;
-  }
-
-  &.disabled select {
-    background-color: #eee;
-    pointer-events: none;
-  }
-}
 </style>

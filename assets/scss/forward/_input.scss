@@ -24,7 +24,7 @@ textarea {
     background-color: #fff;
   }
   &:not(:placeholder-shown) {
-    background-color: var(--orange-200) !important;
+    background-color: var(--orange-100) !important;
     box-shadow: 0 0 0 1px var(--orange-900);
     color: black;
   }
