@@ -8,6 +8,28 @@
 
 <script setup lang="ts">
 
+useSeoMeta({
+  title: '',
+  ogTitle: '',
+  description: '',
+  ogDescription: '',
+  ogImage: '',
+  ogImageSecureUrl: '',
+  ogImageWidth: '1280',
+  ogImageHeight: '720',
+  ogImageType: 'image/png',
+  ogImageAlt: '',
+  ogUrl: '',
+  ogSiteName: '',
+  ogLocale: 'en_US',
+  ogType: 'website',
+  keywords: '',
+  robots: 'follow, index',
+  twitterCard: 'summary_large_image',
+  twitterTitle: '',
+  twitterDescription: '',
+})
+
 const { isAuth, user } = useAuth();
 
 const { $apiFetch } = useNuxtApp();
