@@ -45,7 +45,13 @@
                   class="button small share-button">
                 <i class="fa-solid fa-link"></i> ແຊປະກາດວຽກ
               </button>
+
+
               <div
+                  v-if="detail.isApply"
+
+                  class="button small apply-button" style="background: gray; pointer-events: none">ສະໝັກແລ້ວ</div>
+              <div v-else
                   @click="applyJob"
                   class="button small apply-button">ສະໝັກວຽກນີ້</div>
             </div>
@@ -117,7 +123,7 @@ import {minutesToTimeString} from "~/utils/formatter";
 
 const { $apiFetch } = useNuxtApp();
 
-const { isAuth, user } = useAuth();
+const { isAuth, user, token } = useAuth();
 
 const config = useRuntimeConfig();
 
@@ -136,11 +142,10 @@ const getJobById = async () => {
         $apiFetch('/get-one-job-vipo', {
           method: 'POST',
           body: {
-            token: '',
+            token: token.value,
             _id: route.params._id },
         })
     )
-
 
     console.log(data)
     detail.value = data.value.info
@@ -164,18 +169,6 @@ const applyJob = async () => {
 
   try {
 
-  //   const { data, error } = await useAsyncData('userData', () =>
-  //       $apiFetch('/user/profile') // automatically prepends apiBase
-  //   );
-  //
-  //   const { data }: any = await useFetch(config.public.apiBase + '/apply-job-vipo', {
-  //     method: 'POST',
-  //     body: {
-  //       _id: route.params._id
-  //     },
-  // })
-
-
     const { data } = await useAsyncData('applyJob', () =>
         $apiFetch('/apply-job-vipo', {
           method: 'POST',
@@ -183,7 +176,13 @@ const applyJob = async () => {
         })
     );
 
-    console.log(data)
+    if(data.value) {
+      detail.value.isApply = true
+      //alert('Applied')
+    }
+
+
+
 
   }catch(e) {
     console.log(e)
@@ -199,6 +198,37 @@ onMounted(() => {
     shareRef.value.shareLink = 'https://new.vipo.cc' + route.fullPath
   })
 })
+
+
+useSeoMeta({
+  robots: 'follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large',
+  title: detail.value.title,
+  ogTitle:  detail.value.title,
+  description: detail.value.title,
+  ogDescription:  detail.value.title,
+  ogImage: '',
+  ogImageSecureUrl: '',
+  ogImageWidth: '1280',
+  ogImageHeight: '720',
+  ogImageType: 'image/jpeg',
+  ogImageAlt: detail.value.title,
+  ogUrl: 'https://new.vipo.cc' + route.fullPath,
+  ogSiteName: '',
+  ogType: 'article',
+  articlePublishedTime: detail.value.createdAt,
+  articleModifiedTime:  detail.value.updatedAt,
+  articleTag: [],
+  twitterCard: 'summary_large_image',
+  twitterTitle:  detail.value.title,
+  twitterDescription:  detail.value.title,
+  twitterImage: '',
+  twitterImageAlt: detail.value.title,
+  twitterLabel1: '',
+  twitterData1: '',
+  twitterLabel2: 'Time to read',
+  twitterData2: 'Less than a minute'
+})
+
 
 </script>
 

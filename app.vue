@@ -2,11 +2,44 @@
   <div>
     <NuxtLayout>
       <NuxtPage />
+
     </NuxtLayout>
+    <Toast/>
   </div>
 </template>
 
 <script setup lang="ts">
+import Toast from '@/components/Toast.vue'
+
+// const { showToast } = useToast();
+//
+// onMounted(() => {
+//   setTimeout(() => {
+//     showToast('success', 'Welcome to Vipo')
+//   }, 2000)
+// })
+
+useSeoMeta({
+  title: '',
+  ogTitle: '',
+  description: '',
+  ogDescription: '',
+  ogImage: '',
+  ogImageSecureUrl: '',
+  ogImageWidth: '1280',
+  ogImageHeight: '720',
+  ogImageType: 'image/png',
+  ogImageAlt: '',
+  ogUrl: '',
+  ogSiteName: '',
+  ogLocale: 'en_US',
+  ogType: 'website',
+  keywords: '',
+  robots: 'follow, index',
+  twitterCard: 'summary_large_image',
+  twitterTitle: '',
+  twitterDescription: '',
+})
 
 const { isAuth, user } = useAuth();
 

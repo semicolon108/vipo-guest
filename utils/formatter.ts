@@ -54,9 +54,11 @@ export const formatDefaultDate = (date: any) => {
 }
 
 
-export const minutesToTimeString = (minutes: number) => {
-    const hour = Math.floor(minutes / 60)
-    const minute = minutes % 60
-    const pad = (n: number) => String(n).padStart(2, '0')
-    return `${pad(hour)}:${pad(minute)}`
-}
+export const minutesToTimeString = (minutes: number): string => {
+    const hour24 = Math.floor(minutes / 60);
+    const minute = minutes % 60;
+    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12;
+    const ampm = hour24 >= 12 ? 'PM' : 'AM';
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${pad(hour12)}:${pad(minute)} ${ampm}`;
+};

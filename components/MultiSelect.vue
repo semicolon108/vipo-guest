@@ -6,9 +6,9 @@
         <p>
           {{
             fullList
-              .filter((i: any) => selectedList.includes(i._id))
-              .map((i: any) => i.name)
-              .join(", ")
+                .filter((i: any) => selectedList.includes(i._id))
+                .map((i: any) => i.name)
+                .join(", ")
           }}
         </p>
       </li>
@@ -18,14 +18,14 @@
         <input type="text" v-model="textSearch" placeholder="Search" required />
       </div>
       <div class="select-options">
-        <div class="options" v-for="i in filteredList">
+        <div class="options" v-for="i in filteredList" :key="i._id">
           <p class="option-item" @click="selectParentClick(i._id, 'parent')">
             <span :class="{ checked: selectedList.includes(i._id) }"></span>
             {{ i.name }}
           </p>
           <div v-if="hasChild" style="margin-left: 20px">
-            <div class="options" v-for="o in i.item">
-              <p class="option-item" @click="selectParentClick(o._id, 'child')">
+            <div class="options" v-for="o in i.item" :key="o._id">
+              <p class="option-item" @click="selectParentClick(o._id, 'child', i._id)">
                 <span :class="{ checked: selectedList.includes(o._id) }"></span>
                 {{ o.name }}
               </p>
@@ -35,37 +35,19 @@
       </div>
       <div class="buttons" v-if="!isSingle">
         <button class="button small orange" @click="save()">Apply</button>
-        <button class="button small light-grey" @click="showOptions = false">
-          Cancel
-        </button>
+        <button class="button small light-grey" @click="showOptions = false">Cancel</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, useModel, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
 const showOptions = ref(false);
-const selectParentClick = (id: string, type: string) => {
-  if (selectedList.value.includes(id)) {
-    const idx = selectedList.value.findIndex((i: any) => i === id);
-    selectedList.value.splice(idx, 1);
-  } else {
-    selectedList.value.push(id);
-  }
-  if (isSingle) {
-    selectedList.value = [id];
-    save();
-  }
-  autoSelect(type);
-};
-
-const modelValue = defineModel();
-
+const selectedList = ref<any[]>([]);
 const textSearch = ref("");
-
 const isLoading = ref(true);
 
 const {
@@ -74,135 +56,104 @@ const {
   isSingle = false,
 } = defineProps(["list", "hasChild", "isSingle"]);
 
+const modelValue = defineModel();
+const target = ref(null);
+onClickOutside(target, () => (showOptions.value = false));
+
+const selectParentClick = (id: string, type: string, parentId?: string) => {
+  const isSelected = selectedList.value.includes(id);
+
+  if (isSingle) {
+    selectedList.value = isSelected ? [] : [id];
+    save();
+  } else {
+    if (isSelected) {
+      selectedList.value = selectedList.value.filter((i) => i !== id);
+    } else {
+      selectedList.value = [...selectedList.value, id];
+    }
+  }
+
+  if (hasChild) autoSelect(id, type, parentId);
+};
+
+const autoSelect = (id: string, type: string, parentId?: string) => {
+  if (type === "parent") {
+    const parent = list.find((i: any) => i._id === id);
+    if (!parent) return;
+    const childs = parent.item.map((c: any) => c._id);
+
+    if (selectedList.value.includes(id)) {
+      selectedList.value = [...new Set([...selectedList.value, ...childs])];
+    } else {
+      selectedList.value = selectedList.value.filter((i) => !childs.includes(i));
+    }
+  }
+
+  if (type === "child" && parentId) {
+    const parent = list.find((i: any) => i._id === parentId);
+    if (!parent) return;
+    const childs = parent.item.map((c: any) => c._id);
+    const anyChildSelected = childs.some((id) => selectedList.value.includes(id));
+
+    if (anyChildSelected && !selectedList.value.includes(parentId)) {
+      selectedList.value.push(parentId);
+    } else if (!anyChildSelected && selectedList.value.includes(parentId)) {
+      selectedList.value = selectedList.value.filter((i) => i !== parentId);
+    }
+  }
+};
+
 const fullList = computed(() => {
   if (hasChild) {
-    const l: any = [];
-    list.map((i: any) => {
-      l.push({
-        _id: i._id,
-        name: i.name,
-      });
-      i.item.map((o: any) => {
-        l.push({
-          _id: o._id,
-          name: o.name,
-        });
+    const flatList: any[] = [];
+    list.forEach((i: any) => {
+      flatList.push({ _id: i._id, name: i.name });
+      i.item.forEach((o: any) => {
+        flatList.push({ _id: o._id, name: o.name });
       });
     });
-    return l;
-  } else {
-    return list;
+    return flatList;
   }
+  return list;
 });
 
 const filteredList = computed(() => {
+  const search = textSearch.value.toLowerCase();
   if (hasChild) {
-    const nList = list.filter((i: any) => {
-      const parent = i.name
-        .toLowerCase()
-        .includes(textSearch.value.toLowerCase());
-      const child = i.item
-        .map((o: any) => o.name)
-        .join(" ")
-        .toLowerCase()
-        .includes(textSearch.value.toLowerCase());
-      return parent || child;
+    return list.filter((i: any) => {
+      const parentMatch = i.name.toLowerCase().includes(search);
+      const childMatch = i.item.some((o: any) => o.name.toLowerCase().includes(search));
+      return parentMatch || childMatch;
     });
-
-    return nList;
   } else {
-    const nList = list.filter((i: any) => {
-      const parent = i.name
-        .toLowerCase()
-        .includes(textSearch.value.toLowerCase());
-      return parent;
-    });
-    return nList;
+    return list.filter((i: any) => i.name.toLowerCase().includes(search));
   }
 });
 
-const selectedList = ref<any>([]);
-
-const autoSelect = (type: string) => {
-  if (!hasChild) return;
-
-  if (type === "child") {
-    const childs = [];
-    const parents = list.map((i: any) => {
-      const c = i.item.map((i: any) => i._id);
-      childs.push([...c]);
-      return {
-        parent: i._id,
-        childs: c,
-      };
-    });
-
-    const parentsMapped = parents.map((i: any) => i.parent);
-
-    for (let i = 0; i < parentsMapped.length; i++) {
-      const parent = parentsMapped[i];
-      const childs = parents[i].childs;
-
-      if (childs.some((o: any) => selectedList.value.includes(o))) {
-        selectedList.value = [...selectedList.value, parent];
-      } else {
-        selectedList.value = selectedList.value.filter(
-          (o: any) => o !== parent
-        );
-      }
-    }
-  } else {
-    const childs = [];
-    const parents = list.map((i: any) => {
-      const c = i.item.map((i: any) => i._id);
-      childs.push([...c]);
-      return {
-        parent: i._id,
-        childs: c,
-      };
-    });
-    const parentsMapped = parents.map((i: any) => i.parent);
-
-    for (let i = 0; i < parentsMapped.length; i++) {
-      const parent = parentsMapped[i];
-      const childs = parents[i].childs;
-
-      if (selectedList.value.includes(parent)) {
-        selectedList.value = [...selectedList.value, ...childs];
-      } else {
-        selectedList.value = selectedList.value.filter(
-          (o: any) => !childs.includes(o)
-        );
-      }
-    }
-  }
-};
-
 const save = () => {
   showOptions.value = false;
+  modelValue.value = [...selectedList.value];
 };
 
 watch(
-  () => showOptions.value,
-  () => {
-    if (!isLoading.value) {
-      modelValue.value = selectedList.value;
+    () => showOptions.value,
+    (val) => {
+      if (!val && !isLoading.value) {
+        modelValue.value = [...selectedList.value];
+      }
     }
-  }
 );
 
 watch(
-  () => modelValue.value,
-  () => {
-    if (modelValue.value) {
-      selectedList.value = modelValue.value;
-    }
-  },
-  { immediate: true }
+    () => modelValue.value,
+    (val) => {
+      if (val) {
+        selectedList.value = [...val];
+      }
+    },
+    { immediate: true }
 );
-
-const target = ref(null);
-onClickOutside(target, (event) => (showOptions.value = false));
 
 onMounted(() => {
   setTimeout(() => {
@@ -214,6 +165,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .select-container {
   position: relative;
+
   input {
     position: relative;
     z-index: 2;
@@ -225,14 +177,11 @@ onMounted(() => {
       border-radius: 6px;
       display: flex;
       align-items: center;
-      padding-top: calc(0.5rem - 1px);
-      padding-bottom: calc(0.5rem - 1px);
-      padding-left: calc(0.75rem - 1px);
-      padding-right: 1.5rem;
+      padding: 0.5rem 1.5rem 0.5rem 0.75rem;
       cursor: pointer;
       position: relative;
-      border-radius: 6px;
       overflow: hidden;
+
       &::after {
         content: "\f078";
         font-family: "Font Awesome 6 Pro";
@@ -247,16 +196,14 @@ onMounted(() => {
         justify-content: center;
       }
 
-      &:hover {
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          background-color: rgba(#000, 0.05);
-        }
+      &:hover::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(#000, 0.05);
       }
 
       &.blank {
@@ -302,7 +249,6 @@ onMounted(() => {
       padding: 1rem;
 
       .options {
-        overflow-y: auto;
         padding: 0.15rem 0;
 
         .option-item {
@@ -324,7 +270,6 @@ onMounted(() => {
             &::before {
               content: "";
               display: inline-block;
-              vertical-align: text-top;
               width: 20px;
               height: 20px;
               border-radius: 3px;
@@ -332,23 +277,21 @@ onMounted(() => {
               transition: all ease-in-out 0.15s;
             }
 
-            &.checked {
-              &::before {
-                background-color: var(--orange-900);
-              }
+            &.checked::before {
+              background-color: var(--orange-900);
+            }
 
-              &::after {
-                content: "";
-                position: absolute;
-                left: 5px;
-                top: 9px;
-                background: #fff;
-                width: 2px;
-                height: 2px;
-                box-shadow: 2px 0 0 #fff, 4px 0 0 #fff, 4px -2px 0 #fff,
-                  4px -4px 0 #fff, 4px -6px 0 #fff, 4px -8px 0 #fff;
-                transform: rotate(45deg);
-              }
+            &.checked::after {
+              content: "";
+              position: absolute;
+              left: 5px;
+              top: 9px;
+              background: #fff;
+              width: 2px;
+              height: 2px;
+              box-shadow: 2px 0 0 #fff, 4px 0 0 #fff, 4px -2px 0 #fff,
+              4px -4px 0 #fff, 4px -6px 0 #fff, 4px -8px 0 #fff;
+              transform: rotate(45deg);
             }
           }
         }
@@ -356,7 +299,6 @@ onMounted(() => {
     }
 
     .buttons {
-      position: relative;
       display: flex;
       align-items: center;
       gap: 0.5rem;
