@@ -12,12 +12,7 @@
           <NuxtLink to="/auth/cv" class="button register-button">
             <i class="fa-light fa-file-pdf"></i> ຝາກປະຫວັດ
           </NuxtLink>
-          <a
-            v-if="isAuth"
-            @click="logout"
-            class="button logout"
-            to="/auth/login"
-          >
+          <a v-if="isAuth" @click="logout" class="logout" to="/auth/login">
             <i class="fa fa-sign-out" aria-hidden="true"></i>
             <span>ອອກລະບົບ</span></a
           >
@@ -73,7 +68,9 @@ nav {
     font-size: var(--sm-font);
     display: flex;
     align-items: center;
-    color: var(--orange-900);
+    color: var(--black-800);
+    gap: 0.25rem;
+    cursor: pointer;
     i {
       font-size: var(--xsm-font);
       padding-top: 0.25rem;

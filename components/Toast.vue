@@ -1,9 +1,10 @@
 <template>
   <div class="toast-container">
     <div
-        v-for="(toast, index) in toasts"
-        :key="toast.id"
-        :class="['toast', toast.type, { active: toast.active }]"
+      class="toast active"
+      v-for="(toast, index) in toasts"
+      :key="toast.id"
+      :class="['toast', toast.type, { active: toast.active }]"
     >
       <div class="toast-content">
         <i :class="['bi', 'icon', `bi-${getIcon(toast.type)}`]" />
@@ -19,7 +20,7 @@
 </template>
 
 <script setup>
-import { useToast } from '@/composables/useToast'
+import { useToast } from "@/composables/useToast";
 
 const { toasts, removeToast, getIcon, capitalize } = useToast();
 </script>
@@ -75,17 +76,15 @@ const { toasts, removeToast, getIcon, capitalize } = useToast();
 }
 
 .message .text {
-  font-size: 16px;
+  font-size: var(--md-font);
   font-weight: 400;
   color: #666666;
-  font-family: 'Outfit', serif;
   font-optical-sizing: auto;
-  font-style: normal;
 }
 
 .message .text.text-1 {
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: var(--black-900);
 }
 
 .toast .close {
@@ -129,13 +128,29 @@ const { toasts, removeToast, getIcon, capitalize } = useToast();
   }
 }
 
-.toast.success .icon { color: rgb(25 135 84); }
-.toast.error .icon { color: rgb(220 53 69); }
-.toast.warning .icon { color: rgb(255 193 7); }
-.toast.info .icon { color: rgb(13 202 240); }
+.toast.success .icon {
+  color: rgb(25 135 84);
+}
+.toast.error .icon {
+  color: rgb(220 53 69);
+}
+.toast.warning .icon {
+  color: rgb(255 193 7);
+}
+.toast.info .icon {
+  color: rgb(13 202 240);
+}
 
-.toast.success .progress:before { background: rgb(25 135 84); }
-.toast.error .progress:before { background: rgb(220 53 69); }
-.toast.warning .progress:before { background: rgb(255 193 7); }
-.toast.info .progress:before { background: rgb(13 202 240); }
+.toast.success .progress:before {
+  background: rgb(25 135 84);
+}
+.toast.error .progress:before {
+  background: rgb(220 53 69);
+}
+.toast.warning .progress:before {
+  background: rgb(255 193 7);
+}
+.toast.info .progress:before {
+  background: rgb(13 202 240);
+}
 </style>

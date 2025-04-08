@@ -1,4 +1,20 @@
 <template>
+  <section class="banner-section">
+    <div class="container">
+      <div class="swiper">
+        <div class="desktop">
+          <img
+            src="https://calculateaspectratio.com/img/16-9-aspect-ratio.png"
+          />
+        </div>
+        <div class="mobile">
+          <img
+            src="https://calculateaspectratio.com/img/16-9-aspect-ratio.png"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
   <section class="search-section">
     <div class="container">
       <h1 class="section-title">ຄົ້ນຫາວຽກ</h1>
@@ -248,12 +264,41 @@ await getJobs();
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
   }
-  svg {
-    position: absolute;
-    top: 100px;
+}
+.swiper {
+  img {
+    display: block;
+    object-fit: contain;
+    border-radius: 6px;
+    border: 3px solid red;
+    width: 100%;
+    cursor: pointer;
+    @media screen and (min-width: 769px) {
+      aspect-ratio: 16/6;
+    }
+    @media screen and (max-width: 768px) {
+      aspect-ratio: 16/9;
+    }
+  }
+  @media screen and (min-width: 769px) {
+    .desktop {
+      display: block;
+    }
+    .mobile {
+      img {
+        display: none;
+      }
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .desktop {
+      display: none;
+    }
+    .mobile {
+      display: block;
+    }
   }
 }
-
 .filter {
   display: flex;
   align-items: center;
