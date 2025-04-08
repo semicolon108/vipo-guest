@@ -12,7 +12,7 @@
                 type="text"
                 v-model="mobile"
                 v-bind="mobileProps"
-                placeholder="020"
+                placeholder=""
               />
 
               <p class="error-text">{{ errors.mobile }}</p>
@@ -66,7 +66,9 @@ const {
   setErrors,
 } = useForm({
   validationSchema: yup.object({
-    mobile: yup.string().required("This field is required"),
+    mobile: yup.string()
+        .required("This field is required")
+        .matches(/^\d{8}$/, "Mobile number must be exactly 8 digits"),
     password: yup.string().required("This field is required"),
   }),
 });
@@ -117,9 +119,9 @@ const onSubmit = handleSubmit((values) => {
   login(values);
 });
 
-onMounted(() => {
-  mobile.value = "58593344";
-});
+// onMounted(() => {
+//   mobile.value = "58593344";
+// });
 </script>
 
 <style scoped lang="scss">

@@ -7,7 +7,6 @@
       >
 
       <div class="page-content">
-
         <div class="start">
           <div class="box">
             <div class="box-header">
@@ -147,7 +146,7 @@ const getJobById = async () => {
         })
     )
 
-    console.log(data)
+   // console.log(data)
     detail.value = data.value.info
 
   }catch(e) {
@@ -160,7 +159,7 @@ const applyJob = async () => {
   if(!isAuth.value) {
     return navigateTo('/auth/login')
   }
-  if (!user.value.isCV) {
+  if (user.value.profile && !user.value.profile.firstName) {
     return navigateTo('/auth/cv')
   }
 

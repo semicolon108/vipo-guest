@@ -624,7 +624,7 @@ const {
     province: yup.string().required("This field is required"),
     district: yup.string().required("This field is required"),
 
-    cvFile: yup.string(),
+    cvFile: yup.string().required("This field is required"),
 
     educations: yup
       .array()
