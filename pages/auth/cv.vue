@@ -21,11 +21,7 @@
                       v-if="profileImgObject"
                       :src="config.public.fileTmp + '/' + profileImg"
                     />
-                    <img
-                      style="width: 160px"
-                      v-else-if="profileImg"
-                      :src="profileImg"
-                    />
+                    <img v-else-if="profileImg" :src="profileImg" />
                     <label class="image-upload" v-else>
                       <i class="fa-solid fa-camera"></i>
                     </label>
@@ -279,7 +275,6 @@
           <div class="card" :class="{ disabled: isHaveNoExp }">
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
-
               <p
                 class="checkbox"
                 @click="isHaveNoExp = !isHaveNoExp"
@@ -1125,6 +1120,9 @@ section {
 .disabled {
   &.card {
     background-color: var(--black-300) !important;
+    .card-header {
+      margin-bottom: 0 !important;
+    }
   }
   input,
   select,
