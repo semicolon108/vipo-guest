@@ -45,7 +45,13 @@
                   class="button small share-button">
                 <i class="fa-solid fa-link"></i> ແຊປະກາດວຽກ
               </button>
+
+
               <div
+                  v-if="detail.isApply"
+
+                  class="button small apply-button" style="background: gray; pointer-events: none">ສະໝັກແລ້ວ</div>
+              <div v-else
                   @click="applyJob"
                   class="button small apply-button">ສະໝັກວຽກນີ້</div>
             </div>
@@ -171,7 +177,13 @@ const applyJob = async () => {
         })
     );
 
-    alert('Applied')
+    if(data.value) {
+      detail.value.isApply = true
+      //alert('Applied')
+    }
+
+
+
 
   }catch(e) {
     console.log(e)
