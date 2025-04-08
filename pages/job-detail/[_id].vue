@@ -123,7 +123,7 @@ import {minutesToTimeString} from "~/utils/formatter";
 
 const { $apiFetch } = useNuxtApp();
 
-const { isAuth, user } = useAuth();
+const { isAuth, user, token } = useAuth();
 
 const config = useRuntimeConfig();
 
@@ -142,11 +142,10 @@ const getJobById = async () => {
         $apiFetch('/get-one-job-vipo', {
           method: 'POST',
           body: {
-            token: '',
+            token: token.value,
             _id: route.params._id },
         })
     )
-
 
     console.log(data)
     detail.value = data.value.info
