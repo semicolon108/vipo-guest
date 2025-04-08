@@ -6,7 +6,7 @@
           <h1>ຝາກປະຫວັດ</h1>
           <h3>ຝາກປະຫວັດເພື່ອໃຫ້ສະດວກ ແລະ ວ່ອງໄວໃນການສະໝັກວຽກ</h3>
         </div>
-        <form @submit.prevent="onSubmit" class="form-body">
+        <form @submit.prevent="onSubmitBeforeValidate" class="form-body">
           <!-- Personal Information -->
           <div class="card">
             <div class="card-header">
@@ -447,22 +447,25 @@
                   <a
                     class="delete-button"
                     @click="languagesRemove(idx)"
-                    v-if="idx !== 0"
+
                   >
                     <i class="fa-solid fa-trash"></i>
                   </a>
-                  <ErrorMessage
-                    class="error-text"
-                    :name="`languages[${idx}].language`"
-                  />
-                  <ErrorMessage
-                    class="error-text"
-                    :name="`languages[${idx}].level`"
-                  />
+            <div v-if="hasSubmitted">
+              <ErrorMessage
+                  class="error-text"
+                  :name="`languages[${idx}].language`"
+              />
+              <ErrorMessage
+                  class="error-text"
+                  :name="`languages[${idx}].level`"
+              />
+            </div>
                 </div>
               </div>
 
               <button
+                  type="button"
                 class="button add-button small light-orange"
                 @click="languagesPush({ language: '', level: '' })"
               >
@@ -482,7 +485,9 @@
                 :key="i.key"
               >
                 <div class="selects">
-                  <SkillInput v-model="i.value.skill" />
+                  <SkillInput v-model="i.value.skill"
+
+                  />
                   <!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
                   <div class="select">
                     <select name="" id="" v-model="i.value.level">
@@ -492,10 +497,11 @@
                       </option>
                     </select>
                   </div>
-                  <a @click="otherSkillsRemove(idx)" v-if="idx !== 0">
+                  <a @click="otherSkillsRemove(idx)" >
                     <i class="fa-solid fa-trash"></i>
                   </a>
                 </div>
+                <div v-if="hasSubmitted">
                 <ErrorMessage
                   class="error-text"
                   :name="`otherSkills[${idx}].skill`"
@@ -504,8 +510,10 @@
                   class="error-text"
                   :name="`otherSkills[${idx}].level`"
                 />
+                </div>
               </div>
               <button
+                  type="button"
                 @click="otherSkillsPush({ skill: '', level: '' })"
                 class="button add-button small light-orange"
               >
@@ -653,7 +661,7 @@ const {
           level: yup.string().required("This field is required"),
         })
       )
-      .min(1, "At least one language entry is required"),
+     ,
     otherSkills: yup.array().of(
       yup.object().shape({
         skill: yup.string().required("This field is required"),
@@ -716,7 +724,28 @@ const languageLevelsList = ref([]);
 const skills = ref([]);
 const skillLevels = ref([]);
 
+const hasSubmitted = ref(false);
+
+
+const onSubmitBeforeValidate = async () => {
+
+
+  hasSubmitted.value = true;
+
+  setTimeout(() => {
+    hasSubmitted.value = false
+  }, 5000)
+
+
+  await onSubmit();
+
+  // optional: you can check isValid here if you want to show a toast or log
+};
+
+
 const onSubmit = handleSubmit(async (values) => {
+
+
   const object = values;
 
   const form: any = {
@@ -748,16 +777,16 @@ const onSubmit = handleSubmit(async (values) => {
       isCurrentJob: i.isCurrentlyWorking,
       responsibility: i.detail,
     })),
-    language: object.languages.map((i: any) => ({
+    language: object.languages && object.languages.length ? object.languages.map((i: any) => ({
       // _id: i._id,
       LanguageId: i.language,
       LanguageLevelId: i.level,
-    })),
-    skill: object.otherSkills.map((i: any) => ({
+    })) : [],
+    skill: object.otherSkills && object.otherSkills.length ? object.otherSkills.map((i: any) => ({
       //_id: i._id,
       keySkill: i.skill,
       skillLevelId: i.level,
-    })),
+    })) : [],
   };
 
   if (profileImgObject.value) {
@@ -997,9 +1026,11 @@ onMounted(async () => {
         province.value = user.value.profile.districtId
           ? user.value.profile.districtId.provinceId._id
           : "";
+      setTimeout(() => {
         district.value = user.value.profile.districtId
-          ? user.value.profile.districtId._id
-          : "";
+            ? user.value.profile.districtId._id
+            : "";
+      })
       }
 
       if (user.value.education && user.value.education.length) {

@@ -7,6 +7,7 @@
           type="text"
           placeholder="Enter or select skill"
           style="width: 100%"
+          @keydown.enter.prevent="toggleSelectOption"
         />
       </div>
 
