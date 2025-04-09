@@ -1,18 +1,17 @@
 <template>
   <section class="banner-section">
     <div class="container">
-      <div class="swiper">
-        <div class="desktop">
-          <img
-            src="https://calculateaspectratio.com/img/16-9-aspect-ratio.png"
-          />
-        </div>
-        <div class="mobile">
-          <img
-            src="https://calculateaspectratio.com/img/16-9-aspect-ratio.png"
-          />
-        </div>
-      </div>
+      <Swiper
+        :modules="[Navigation, Pagination]"
+        :slides-per-view="1"
+        navigation
+        pagination
+        class="mySwiper swiper"
+      >
+        <SwiperSlide v-for="(slide, index) in slides" :key="index">
+          <img :src="slide" alt="Slide" />
+        </SwiperSlide>
+      </Swiper>
     </div>
   </section>
   <section class="search-section">
@@ -82,7 +81,19 @@
 </template>
 
 <script setup lang="ts">
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import MultiSelect from "@/components/MultiSelect.vue";
+
+// Swiper
+const slides = [
+  "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
+  "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
+  "/images/slide3.jpg",
+];
 
 const config = useRuntimeConfig();
 
@@ -270,7 +281,7 @@ await getJobs();
     display: block;
     object-fit: contain;
     border-radius: 6px;
-    border: 3px solid red;
+    border: 1px solid var(--black-300);
     width: 100%;
     cursor: pointer;
     @media screen and (min-width: 769px) {
@@ -278,24 +289,6 @@ await getJobs();
     }
     @media screen and (max-width: 768px) {
       aspect-ratio: 16/9;
-    }
-  }
-  @media screen and (min-width: 769px) {
-    .desktop {
-      display: block;
-    }
-    .mobile {
-      img {
-        display: none;
-      }
-    }
-  }
-  @media screen and (max-width: 768px) {
-    .desktop {
-      display: none;
-    }
-    .mobile {
-      display: block;
     }
   }
 }

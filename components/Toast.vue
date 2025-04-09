@@ -7,7 +7,13 @@
       :class="['toast', toast.type, { active: toast.active }]"
     >
       <div class="toast-content">
-        <i :class="['bi', 'icon', `bi-${getIcon(toast.type)}`]" />
+        <div class="icon">
+          <i
+            class="fa-solid"
+            :class="['fa-solid', `fa-${getIcon(toast.type)}`]"
+          />
+        </div>
+
         <div class="message">
           <span class="text text-1">{{ capitalize(toast.type) }}</span>
           <span class="text text-2">{{ toast.message }}</span>
@@ -63,9 +69,12 @@ const { toasts, removeToast, getIcon, capitalize } = useToast();
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 35px;
-  min-width: 35px;
-  font-size: 35px;
+  background-color: var(--deep-blue-900);
+  min-width: 50px;
+  min-height: 50px;
+  max-width: 50px;
+  max-height: 50px;
+  border-radius: 999px;
   color: #fff;
 }
 
@@ -115,7 +124,7 @@ const { toasts, removeToast, getIcon, capitalize } = useToast();
   right: 0;
   height: 100%;
   width: 100%;
-  background-color: #4070f4;
+  background-color: var(--deep-blue-900);
 }
 
 .progress.active:before {

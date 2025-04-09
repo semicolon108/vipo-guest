@@ -39,6 +39,7 @@
                 {{ errors.profileImg }}
               </p>
             </div>
+
             <div class="field">
               <label>ເພດ</label>
               <div class="control options">
@@ -268,12 +269,9 @@
                   <i class="fa-regular fa-arrow-up-from-bracket"></i>
                   <p>ກະລຸນາເລືອກໄຟສ</p>
                   <small
-                    >Supported file format PDF, Word, JPG that has less than 5MB
-                    size.</small
+                    >ຮັບສະເພາະໄຟສ PDF, Word, JPG ແລະ ຂະໜາດໄຟສບໍ່ເກີນ 5MB.</small
                   >
-                  <!--                  <input type="file" id="cv-file" />-->
                 </label>
-
                 <input
                   v-show="false"
                   ref="cvFileRef"
@@ -282,10 +280,10 @@
                 />
               </div>
               <div class="uploaded-file" v-if="cvFile">
-                <span class="file-name"
-                  ><i class="fa-regular fa-file-pdf"></i>{{ cvFile }}</span
-                >
-                <!--                <i class="fa-regular fa-trash"></i>-->
+                <span class="file-name">
+                  <i class="fa-regular fa-file-pdf"></i>
+                  {{ cvFile }}
+                </span>
               </div>
               <p class="error-text">{{ errors.cvFile }}</p>
             </div>
@@ -444,28 +442,24 @@
                     </select>
                   </div>
 
-                  <a
-                    class="delete-button"
-                    @click="languagesRemove(idx)"
-
-                  >
+                  <a class="delete-button" @click="languagesRemove(idx)">
                     <i class="fa-solid fa-trash"></i>
                   </a>
-            <div v-if="hasSubmitted">
-              <ErrorMessage
-                  class="error-text"
-                  :name="`languages[${idx}].language`"
-              />
-              <ErrorMessage
-                  class="error-text"
-                  :name="`languages[${idx}].level`"
-              />
-            </div>
+                </div>
+                <div v-if="hasSubmitted">
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`languages[${idx}].language`"
+                  />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`languages[${idx}].level`"
+                  />
                 </div>
               </div>
 
               <button
-                  type="button"
+                type="button"
                 class="button add-button small light-orange"
                 @click="languagesPush({ language: '', level: '' })"
               >
@@ -478,16 +472,14 @@
               <h1>ທັກສະອື່ນໆ (ຖ້າມີ)</h1>
             </div>
             <div class="field">
-              <label>ພາສາ</label>
+              <label>ທັກສະ</label>
               <div
                 class="selects-container"
                 v-for="(i, idx) in otherSkills as any"
                 :key="i.key"
               >
                 <div class="selects">
-                  <SkillInput v-model="i.value.skill"
-
-                  />
+                  <SkillInput v-model="i.value.skill" />
                   <!--                  <input type="text" class="input"  placeholder="ທັກສະ" />-->
                   <div class="select">
                     <select name="" id="" v-model="i.value.level">
@@ -497,23 +489,23 @@
                       </option>
                     </select>
                   </div>
-                  <a @click="otherSkillsRemove(idx)" >
+                  <a @click="otherSkillsRemove(idx)">
                     <i class="fa-solid fa-trash"></i>
                   </a>
                 </div>
                 <div v-if="hasSubmitted">
-                <ErrorMessage
-                  class="error-text"
-                  :name="`otherSkills[${idx}].skill`"
-                />
-                <ErrorMessage
-                  class="error-text"
-                  :name="`otherSkills[${idx}].level`"
-                />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`otherSkills[${idx}].skill`"
+                  />
+                  <ErrorMessage
+                    class="error-text"
+                    :name="`otherSkills[${idx}].level`"
+                  />
                 </div>
               </div>
               <button
-                  type="button"
+                type="button"
                 @click="otherSkillsPush({ skill: '', level: '' })"
                 class="button add-button small light-orange"
               >
@@ -653,15 +645,12 @@ const {
         })
       )
       .notRequired(),
-    languages: yup
-      .array()
-      .of(
-        yup.object().shape({
-          language: yup.string().required("This field is required"),
-          level: yup.string().required("This field is required"),
-        })
-      )
-     ,
+    languages: yup.array().of(
+      yup.object().shape({
+        language: yup.string().required("This field is required"),
+        level: yup.string().required("This field is required"),
+      })
+    ),
     otherSkills: yup.array().of(
       yup.object().shape({
         skill: yup.string().required("This field is required"),
@@ -726,26 +715,19 @@ const skillLevels = ref([]);
 
 const hasSubmitted = ref(false);
 
-
 const onSubmitBeforeValidate = async () => {
-
-
   hasSubmitted.value = true;
 
   setTimeout(() => {
-    hasSubmitted.value = false
-  }, 5000)
-
+    hasSubmitted.value = false;
+  }, 5000);
 
   await onSubmit();
 
   // optional: you can check isValid here if you want to show a toast or log
 };
 
-
 const onSubmit = handleSubmit(async (values) => {
-
-
   const object = values;
 
   const form: any = {
@@ -777,16 +759,22 @@ const onSubmit = handleSubmit(async (values) => {
       isCurrentJob: i.isCurrentlyWorking,
       responsibility: i.detail,
     })),
-    language: object.languages && object.languages.length ? object.languages.map((i: any) => ({
-      // _id: i._id,
-      LanguageId: i.language,
-      LanguageLevelId: i.level,
-    })) : [],
-    skill: object.otherSkills && object.otherSkills.length ? object.otherSkills.map((i: any) => ({
-      //_id: i._id,
-      keySkill: i.skill,
-      skillLevelId: i.level,
-    })) : [],
+    language:
+      object.languages && object.languages.length
+        ? object.languages.map((i: any) => ({
+            // _id: i._id,
+            LanguageId: i.language,
+            LanguageLevelId: i.level,
+          }))
+        : [],
+    skill:
+      object.otherSkills && object.otherSkills.length
+        ? object.otherSkills.map((i: any) => ({
+            //_id: i._id,
+            keySkill: i.skill,
+            skillLevelId: i.level,
+          }))
+        : [],
   };
 
   if (profileImgObject.value) {
@@ -807,7 +795,7 @@ const onSubmit = handleSubmit(async (values) => {
   );
 
   if (data.value) {
-    showToast("Your CV has been updated.", "Success");
+    showToast("ປະຫວັດຂອງທ່ານອັບເດດສຳເລັດແລ້ວ", "ສຳເລັດ");
     window.location.reload();
   }
 
@@ -1026,11 +1014,11 @@ onMounted(async () => {
         province.value = user.value.profile.districtId
           ? user.value.profile.districtId.provinceId._id
           : "";
-      setTimeout(() => {
-        district.value = user.value.profile.districtId
+        setTimeout(() => {
+          district.value = user.value.profile.districtId
             ? user.value.profile.districtId._id
             : "";
-      })
+        });
       }
 
       if (user.value.education && user.value.education.length) {
@@ -1119,7 +1107,7 @@ section {
   background-color: var(--black-200);
 }
 .register-form {
-  max-width: 500px;
+  max-width: 650px;
   margin-left: auto;
   margin-right: auto;
   .form-header {
@@ -1295,6 +1283,7 @@ textarea {
     min-height: 100px;
     max-width: 100px;
     max-height: 100px;
+    border-radius: 6px;
   }
   label {
     background-color: var(--black-200);

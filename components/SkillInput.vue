@@ -12,6 +12,7 @@
       </div>
 
       <div
+        ref="target"
         class="option-container"
         v-if="showSelectOption"
         style="overflow: auto; height: 400px"
@@ -33,6 +34,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import { onClickOutside } from "@vueuse/core";
+
+const target = ref<any>();
+onClickOutside(target, (event) => (showSelectOption.value = false));
 
 // v-model
 const modelValue = defineModel<string>();

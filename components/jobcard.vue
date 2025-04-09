@@ -1,15 +1,12 @@
 <template>
-  <div class="job-card" @click="$router.push('job-detail/' + detail._id)">
+  <NuxtLink class="job-card" :to="`/job-detail/${detail._id}`">
     <div class="jobcard-header">
       <div class="header-start">
-        <img
-          :src="detail.logo"
-          alt=""
-        />
+        <img :src="detail.logo" alt="" />
       </div>
       <div class="header-end">
         <small>ສະໝັກກ່ອນວັນທີ</small>
-        <p>{{formatDefaultDate(detail.closingDate) }}</p>
+        <p>{{ formatDefaultDate(detail.closingDate) }}</p>
       </div>
     </div>
     <div class="jobcard-body">
@@ -17,8 +14,10 @@
       <h3>{{ detail.title }}</h3>
       <ul>
         <li>
-
-          <span>{{minutesToTimeString(detail.startTime)}} - {{minutesToTimeString(detail.endTime)}}</span>
+          <span
+            >{{ minutesToTimeString(detail.startTime) }} -
+            {{ minutesToTimeString(detail.endTime) }}</span
+          >
         </li>
       </ul>
       <h6>{{ formatCurrency(detail.salary) }} ກີບ</h6>
@@ -26,21 +25,23 @@
     <div class="jobcard-footer">
       <div class="footer-start">
         <i class="fa-solid fa-location-dot"></i>
-        <p v-for="i in detail.workingLocation">{{ i.province }} </p>
+        <p v-for="i in detail.workingLocation">{{ i.province }}</p>
       </div>
       <div class="footer-end">
         <button class="button small">ສະໝັກ</button>
       </div>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">
+import {
+  formatCurrency,
+  formatDefaultDate,
+  minutesToTimeString,
+} from "~/utils/formatter";
 
-import {formatCurrency, formatDefaultDate, minutesToTimeString} from "~/utils/formatter";
-
-const {detail}: any = defineProps(['detail'])
-
+const { detail }: any = defineProps(["detail"]);
 </script>
 
 <style lang="scss" scoped>
