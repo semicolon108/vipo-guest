@@ -2,8 +2,8 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      apiBase: 'https://db-dev.108.jobs/client-vipo-api',  // Your API base URL
-      fileTmp: 'https://db-dev.108.jobs',
+      apiBase: "https://db-dev.108.jobs/client-vipo-api",
+      fileTmp: "https://db-dev.108.jobs",
     },
   },
   compatibilityDate: "2024-11-01",

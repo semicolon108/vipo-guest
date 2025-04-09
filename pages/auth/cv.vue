@@ -258,12 +258,23 @@
               />
             </div>
           </div>
-
+          <!-- CV file start -->
           <div class="card">
             <div class="card-header">
               <h1>ໄຟສຊີວະປະຫວັດ (ຊີວີ້)</h1>
             </div>
-            <div class="field">
+            <div class="tabs">
+              <ul>
+                <li
+                  v-for="(i, index) in cvFileUse"
+                  :class="{ checked: tabName === i }"
+                  @click="tabName = i"
+                >
+                  {{ i }}
+                </li>
+              </ul>
+            </div>
+            <div class="field" v-if="tabName === 'ຂ້ອຍມີຊີວີ້'">
               <div class="control">
                 <label @click="cvFileRef.click()" class="file-upload">
                   <i class="fa-regular fa-arrow-up-from-bracket"></i>
@@ -287,7 +298,31 @@
               </div>
               <p class="error-text">{{ errors.cvFile }}</p>
             </div>
+            <div
+              v-if="tabName === 'ໃຫ້ VIPO ສ້າງຊີວີ້ໃຫ້'"
+              class="vipo-cv-generator"
+            >
+              <div class="cv-box">
+                <div class="guide">
+                  <p>ຕື່ມຂໍ້ມູນທັງໝົດໃຫ້ຄົບຖ້ວນ.</p>
+                  <p>ກົດປຸ່ມບັນທຶກຂໍ້ມູນເພື່ອສ້າງຊີວີ້.</p>
+                  <p>ລະບົບຂອງ vipo.cc ຈະທຳການສ້າງຊີວີ້ອັດຕະໂນມັດ.</p>
+                  <p>ການສ້າງຊີວີ້ອາດໃຊ້ເລລາ 1 - 5 ນາທີ.</p>
+                </div>
+                <hr />
+                <div class="file">
+                  <div class="sample-file">
+                    <span></span>
+                  </div>
+                  <a
+                    ><i class="fa-solid fa-arrow-down-to-line"></i>ດາວໂຫລດໄຟສ</a
+                  >
+                </div>
+              </div>
+            </div>
           </div>
+          <!-- CV file end -->
+
           <div class="card" :class="{ disabled: isHaveNoExp }">
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
@@ -530,6 +565,9 @@ import DateInput from "@/components/DateInput.vue";
 import dayjs from "dayjs";
 
 import SkillInput from "@/components/SkillInput.vue";
+
+const tabName = ref("ຂ້ອຍມີຊີວີ້");
+const cvFileUse = ref<any>(["ຂ້ອຍມີຊີວີ້", "ໃຫ້ VIPO ສ້າງຊີວີ້ໃຫ້"]);
 
 const { showToast } = useToast();
 
@@ -1178,6 +1216,81 @@ section {
       //pointer-events: none;
       //user-select: none;
       color: var(--black-400);
+    }
+  }
+}
+.tabs {
+  margin-bottom: 0.5rem;
+  ul {
+    display: flex;
+    gap: 0.5rem;
+    li {
+      background-color: var(--black-200);
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0 1rem;
+      border-radius: 6px;
+      user-select: none;
+      cursor: pointer;
+      &::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        background-color: var(--black-500);
+      }
+      &.checked {
+        background-color: var(--light-blue-100);
+        color: var(--deep-blue-900);
+        &::before {
+          background-color: var(--deep-blue-900);
+          box-shadow: 0 0 6px 1px var(--deep-blue-900);
+        }
+      }
+    }
+  }
+}
+.cv-box {
+  border: 1px solid var(--black-300);
+  padding: 1rem;
+  border-radius: 6px;
+  .guide {
+    p {
+      font-size: var(--xsm-font);
+      &::before {
+        content: "-";
+        margin-right: 0.5rem;
+      }
+    }
+  } //guide
+  hr {
+    height: 1px;
+    background-color: var(--black-300);
+    border: none;
+    margin: 1rem 0;
+  }
+
+  .file {
+    display: flex;
+    gap: 1rem;
+    .sample-file {
+      width: 100px;
+      height: 120px;
+      background-color: var(--black-300);
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    a {
+      display: block;
+      margin-top: 0.5rem;
+      cursor: pointer;
+      color: var(--deep-blue-900);
+      i {
+        font-size: var(--md-font);
+        margin-right: 0.25rem;
+      }
     }
   }
 }
