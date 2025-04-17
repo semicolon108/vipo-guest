@@ -761,9 +761,9 @@ const onSubmitBeforeValidate = async () => {
   }, 5000);
 
   await onSubmit();
-
   // optional: you can check isValid here if you want to show a toast or log
 };
+
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values;
@@ -837,7 +837,6 @@ const onSubmit = handleSubmit(async (values) => {
     window.location.reload();
   }
 
-  //console.log(data)
 });
 
 const onProfileImgChange = async ($event: any) => {
@@ -1112,14 +1111,6 @@ onMounted(async () => {
       }
 
       if (user.value.skills && user.value.skills.length) {
-        // const i = user.value.skills[user.value.skills.length-1]
-        // otherSkillsRemove(0)
-        // otherSkillsPush({
-        //   _id: i._id,
-        //   skill: i.keySkillId._id,
-        //   level: i.skillLevelId._id
-        // })
-
         otherSkillsRemove(0);
         const list = user.value.skills.map((i: any) => ({
           _id: i._id,
