@@ -20,9 +20,7 @@ export default defineNuxtPlugin(() => {
             apiFetch,
         },
     };
-
 });
-
 
 // export default defineNuxtPlugin(() => {
 //     const config = useRuntimeConfig();
@@ -48,3 +46,5 @@ export default defineNuxtPlugin(() => {
 //     };
 //
 // });
+
+// reverse of useFetch i true way of useFetch will cry to hook iw will try fix you

@@ -584,56 +584,6 @@ const cvFileObject = ref<any>(null);
 
 const backupWorkingHistories = ref<any>({});
 
-const route = useRoute();
-
-const formState = ref({
-  profileImg: "",
-  gender: "",
-  firstName: "",
-  lastName: "",
-  dateOfBirth: "",
-  maritalStatus: "",
-  province: "",
-  district: "",
-
-  educations: [
-    {
-      major: "",
-      university: "",
-      degree: "",
-      startDate: "",
-      endDate: "",
-    },
-  ],
-  isCurrentlyStudy: false,
-
-  cvFile: "",
-
-  workHistories: [
-    {
-      company: "",
-      position: "",
-      startDate: "",
-      endDate: "",
-      detail: "",
-      isCurrentWork: false,
-    },
-  ],
-
-  languages: [
-    {
-      language: "",
-      level: "",
-    },
-  ],
-
-  otherSkills: [
-    {
-      skill: "",
-      level: "",
-    },
-  ],
-});
 
 const {
   values,
