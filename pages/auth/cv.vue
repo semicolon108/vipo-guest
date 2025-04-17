@@ -1040,14 +1040,7 @@ onMounted(async () => {
       }
 
       if (user.value.languageSkill && user.value.languageSkill.length) {
-        // const i = user.value.languageSkill[user.value.languageSkill.length-1]
-        // languagesRemove(0)
-        // languagesPush({
-        //   _id: i._id,
-        //   language: i.LanguageId._id,
-        //   level: i.LanguageLevelId._id
-        // })
-
+        
         languagesRemove(0);
         const list = user.value.languageSkill.map((i: any) => ({
           _id: i._id,
