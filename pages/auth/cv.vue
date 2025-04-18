@@ -928,6 +928,7 @@ getReuse("LanguageLevel");
 getReuse("SkillLevel");
 getKeySkills();
 
+
 onMounted(async () => {
   setTimeout(() => {
     educationsPush({

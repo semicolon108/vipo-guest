@@ -15,8 +15,8 @@ import Toast from "@/components/Toast.vue";
 useSeoMeta({
   title: "VIPO",
   ogTitle: "VIPO",
-  description: "VIPO",
-  ogDescription: "VIPO",
+  description: "",
+  ogDescription: "",
   ogImage: "",
   ogImageSecureUrl: "",
   ogImageWidth: "1280",

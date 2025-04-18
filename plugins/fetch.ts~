@@ -22,9 +22,6 @@ export default defineNuxtPlugin(() => {
     };
 });
 
-// its too dangerous i have the key yep it would be fine if u like it wapi right ? hahaha it look like i used to know
-
-
 // export default defineNuxtPlugin(() => {
 //     const config = useRuntimeConfig();
 //     const tokenCookie = useCookie('auth-token');

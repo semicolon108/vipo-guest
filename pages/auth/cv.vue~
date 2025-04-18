@@ -740,7 +740,6 @@ const onSubmit = handleSubmit(async (values) => {
     language:
       object.languages && object.languages.length
         ? object.languages.map((i: any) => ({
-            // _id: i._id,
             LanguageId: i.language,
             LanguageLevelId: i.level,
           }))
@@ -748,7 +747,6 @@ const onSubmit = handleSubmit(async (values) => {
     skill:
       object.otherSkills && object.otherSkills.length
         ? object.otherSkills.map((i: any) => ({
-            //_id: i._id,
             keySkill: i.skill,
             skillLevelId: i.level,
           }))
@@ -929,6 +927,9 @@ getReuse("Language");
 getReuse("LanguageLevel");
 getReuse("SkillLevel");
 getKeySkills();
+
+
+// please pe
 
 onMounted(async () => {
   setTimeout(() => {
