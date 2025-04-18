@@ -586,13 +586,11 @@ const backupWorkingHistories = ref<any>({});
 
 
 const {
-  values,
   errors,
   defineField,
   setFieldValue,
   handleSubmit,
   resetForm,
-  setErrors,
 } = useForm({
   validationSchema: yup.object({
     profileImg: yup.string().required("This field is required"),
@@ -648,16 +646,16 @@ const {
   }),
 });
 
-const [profileImg, profileImgProps] = defineField("profileImg");
-const [gender, genderProps] = defineField("gender");
-const [firstName, firstNameProps] = defineField("firstName");
-const [lastName, lastNameProps] = defineField("lastName");
-const [dateOfBirth, dateOfBirthProps] = defineField("dateOfBirth");
-const [maritalStatus, maritalStatusProps] = defineField("maritalStatus");
-const [province, provinceProps] = defineField("province");
-const [district, districtProps] = defineField("district");
+const [profileImg] = defineField("profileImg");
+const [gender] = defineField("gender");
+const [firstName] = defineField("firstName");
+const [lastName] = defineField("lastName");
+const [dateOfBirth] = defineField("dateOfBirth");
+const [maritalStatus] = defineField("maritalStatus");
+const [province] = defineField("province");
+const [district] = defineField("district");
 
-const [cvFile, cvFileProps] = defineField("cvFile");
+const [cvFile] = defineField("cvFile");
 
 const {
   fields: educations,
@@ -679,10 +677,6 @@ const {
   push: otherSkillsPush,
   remove: otherSkillsRemove,
 } = useFieldArray("otherSkills");
-
-const noExp = ref(false);
-const isStudent = ref(false);
-const isCurrentWork = ref(false);
 
 const provincesList = ref<any>([]);
 
@@ -711,7 +705,6 @@ const onSubmitBeforeValidate = async () => {
   }, 5000);
 
   await onSubmit();
-  // optional: you can check isValid here if you want to show a toast or log
 };
 
 
@@ -726,11 +719,9 @@ const onSubmit = handleSubmit(async (values) => {
       dateOfBirth: object.dateOfBirth,
       genderId: object.gender,
       maritalStatusId: object.maritalStatus,
-      //  currentResidenceId: object.province,
       districtId: object.district,
     },
     educations: object.educations.map((i: any) => ({
-      //_id: i._id,
       subject: i.major,
       school: i.university,
       qualifications: i.degree,
@@ -739,7 +730,6 @@ const onSubmit = handleSubmit(async (values) => {
       currentlyStudying: i.isCurrentlyStudying,
     })),
     workHistories: object.workHistories.map((i: any) => ({
-      // _id: i._id,
       company: i.company,
       position: i.position,
       startYear: i.startDate,
@@ -750,7 +740,6 @@ const onSubmit = handleSubmit(async (values) => {
     language:
       object.languages && object.languages.length
         ? object.languages.map((i: any) => ({
-            // _id: i._id,
             LanguageId: i.language,
             LanguageLevelId: i.level,
           }))
@@ -758,7 +747,6 @@ const onSubmit = handleSubmit(async (values) => {
     skill:
       object.otherSkills && object.otherSkills.length
         ? object.otherSkills.map((i: any) => ({
-            //_id: i._id,
             keySkill: i.skill,
             skillLevelId: i.level,
           }))
@@ -1040,7 +1028,7 @@ onMounted(async () => {
       }
 
       if (user.value.languageSkill && user.value.languageSkill.length) {
-        
+
         languagesRemove(0);
         const list = user.value.languageSkill.map((i: any) => ({
           _id: i._id,
@@ -1072,6 +1060,7 @@ onMounted(async () => {
     }, 2000);
   }
 });
+// expelled
 </script>
 
 <style scoped lang="scss">
