@@ -1,15 +1,10 @@
 <template>
   <section class="banner-section">
     <div class="container">
-      <Swiper
-        :modules="[Navigation, Pagination]"
-        :slides-per-view="1"
-        navigation
-        pagination
-        class="mySwiper swiper"
-      >
+      <Swiper :modules="[Navigation, Pagination, Autoplay]" :slides-per-view="1" :navigation="true" :pagination="true"
+        class="mySwiper swiper" :autoplay="{ delay: 4000, disableOnInteraction: false }">
         <SwiperSlide v-for="(slide, index) in slides" :key="index">
-          <img :src="slide" alt="Slide" />
+          <img :src="slide.image" alt="Slide" @click="clickBanner(slide._id, slide.url)" />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -19,38 +14,18 @@
       <h1 class="section-title">ຄົ້ນຫາວຽກ</h1>
       <div class="search-container">
         <div class="field">
-          <input
-            v-model="searchText"
-            type="text"
-            class="input"
-            placeholder="ຊອກຕຳແໜ່ງ"
-            required
-          />
+          <input v-model="searchText" type="text" class="input" placeholder="ຊອກຕຳແໜ່ງ" required />
         </div>
         <div class="field">
-          <MultiSelect
-            v-model="provinces"
-            :hasChild="true"
-            :list="provincesList"
-          />
+          <MultiSelect v-model="provinces" :hasChild="true" :list="provincesList" />
         </div>
 
         <div class="field time-range">
           <div class="control">
-            <input
-              v-model="workingTimeStart"
-              type="time"
-              placeholder="HH:MM"
-              required
-            />
+            <input v-model="workingTimeStart" type="time" placeholder="HH:MM" required />
           </div>
           <div class="control">
-            <input
-              v-model="workingTimeEnd"
-              type="time"
-              placeholder="HH:MM"
-              required
-            />
+            <input v-model="workingTimeEnd" type="time" placeholder="HH:MM" required />
           </div>
           <div v-if="workingTimeStart || workingTimeEnd">
             <a class="clear-button" @click="clearTime">ລົບເວລາ</a>
@@ -82,18 +57,19 @@
 
 <script setup lang="ts">
 import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import MultiSelect from "@/components/MultiSelect.vue";
 
 // Swiper
-const slides = [
-  "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
-  "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
-  "/images/slide3.jpg",
-];
+const slides = ref<any>([])
+//  [
+//   "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
+//   "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
+//   "/images/slide3.jpg",
+// ]
 
 const config = useRuntimeConfig();
 
@@ -213,6 +189,31 @@ const clearTime = () => {
   workingTimeEnd.value = "";
 };
 
+const getTopBanner = async () => {
+  try {
+    const { data }: any = await useFetch(
+      config.public.apiBase + "/get-top-banner-vipo")
+    slides.value = data.value.info
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const clickBanner = async (id: any, url: any) => {
+  try {
+    await $fetch(config.public.apiBase + "/record-banner-vipo",
+      {
+        method: "POST",
+        body: { _id: id }
+      })
+
+    window.open(url, '_blank')
+
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 const debouncedSearchText = ref("");
 let timeout: ReturnType<typeof setTimeout> | null = null;
 
@@ -262,20 +263,23 @@ if (route.query.provinces) {
   const raw = route.query.provinces;
   provinces.value = Array.isArray(raw) ? raw : [raw];
 }
-
+await getTopBanner();
 await getProvinces();
 await getJobs();
+
 </script>
 
 <style lang="scss" scoped>
 .search-section {
   position: relative;
   background-color: var(--orange-100);
+
   @media screen and (max-width: 768px) {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
   }
 }
+
 .swiper {
   img {
     display: block;
@@ -284,24 +288,30 @@ await getJobs();
     border: 1px solid var(--black-300);
     width: 100%;
     cursor: pointer;
+
     @media screen and (min-width: 769px) {
       aspect-ratio: 16/6;
     }
+
     @media screen and (max-width: 768px) {
       aspect-ratio: 16/9;
     }
   }
 }
+
 .filter {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+
   .start {
     display: flex;
+
     h1 {
       font-weight: 500;
     }
+
     span {
       margin-left: 0.25rem;
       font-weight: 700;
@@ -309,43 +319,53 @@ await getJobs();
     }
   }
 }
+
 .pages {
   padding: 2rem 0 0;
   display: flex;
   justify-content: center;
 }
+
 .job-card-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   flex-wrap: wrap;
+
   @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, 1fr);
   }
 }
+
 .section-title {
   font-weight: 700;
   font-size: var(--lg-font);
   margin-bottom: 0.5rem;
 }
+
 .search-container {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
   input {
     background-color: #fff;
   }
+
   .field {
     flex-grow: 1;
   }
 }
+
 .time-range {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+
   .control {
     flex-grow: 1;
   }
+
   .clear-button {
     white-space: pre;
     cursor: pointer;
