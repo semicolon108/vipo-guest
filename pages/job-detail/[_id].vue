@@ -31,7 +31,7 @@
                 </ul>
               </div>
               <div class="logo">
-                <img :src="detail.logo" />
+                <img :src="detail.logo" style="object-fit: contain" />
               </div>
             </div>
             <div class="buttons">

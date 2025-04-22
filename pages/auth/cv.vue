@@ -266,15 +266,20 @@
             <div class="tabs">
               <ul>
                 <li
-                  v-for="(i, index) in cvFileUse"
-                  :class="{ checked: tabName === i }"
-                  @click="tabName = i"
+                  :class="{ checked: !useVipoCV }"
+                  @click="useVipoCV = false"
                 >
-                  {{ i }}
+                  {{ cvFileUse[0] }}
+                </li>
+                <li
+                  :class="{ checked: useVipoCV }"
+                  @click="useVipoCV = true"
+                >
+                  {{ cvFileUse[1] }}
                 </li>
               </ul>
             </div>
-            <div class="field" v-if="tabName === 'ຂ້ອຍມີຊີວີ້'">
+            <div class="field" v-if="!useVipoCV">
               <div class="control">
                 <label @click="cvFileRef.click()" class="file-upload">
                   <i class="fa-regular fa-arrow-up-from-bracket"></i>
@@ -299,7 +304,7 @@
               <p class="error-text">{{ errors.cvFile }}</p>
             </div>
             <div
-              v-if="tabName === 'ໃຫ້ VIPO ສ້າງຊີວີ້ໃຫ້'"
+           v-else
               class="vipo-cv-generator"
             >
               <div class="cv-box">
@@ -311,10 +316,14 @@
                 </div>
                 <hr />
                 <div class="file">
-                  <div class="sample-file">
-                    <span></span>
-                  </div>
+                  <!--<div class="sample-file">-->
+                  <!--  <span></span>-->
+                  <!--</div>-->
+
                   <a
+                    v-if="vipoCVLink"
+                    :href="vipoCVLink"
+                    target="_blank"
                     ><i class="fa-solid fa-arrow-down-to-line"></i>ດາວໂຫລດໄຟສ</a
                   >
                 </div>
@@ -548,8 +557,18 @@
               </button>
             </div>
           </div>
-          <button type="submit" class="button submit-button orange">
+          <button type="submit"
+                  v-if="!isSubmitting"
+                  class="button submit-button orange">
             ບັນທຶກຂໍ້ມູນ
+          </button>
+
+          <button
+            v-else
+                disabled
+                  class="button submit-button orange">
+          <i class="fas fa-spinner fa-spin fa-4x"></i>
+            Loading...
           </button>
         </form>
       </div>
@@ -578,6 +597,10 @@ const config = useRuntimeConfig();
 
 const profileImgRef = ref();
 const isHaveNoExp = ref(false);
+
+const useVipoCV = ref(false);
+const vipoCVLink = ref('')
+
 const cvFileRef = ref();
 const profileImgObject = ref<any>(null);
 const cvFileObject = ref<any>(null);
@@ -694,6 +717,7 @@ const languageLevelsList = ref([]);
 const skills = ref([]);
 const skillLevels = ref([]);
 
+const isSubmitting = ref(false)
 const hasSubmitted = ref(false);
 
 const onSubmitBeforeValidate = async () => {
@@ -712,6 +736,7 @@ const onSubmit = handleSubmit(async (values) => {
 
   const form: any = {
     noExperience: isHaveNoExp.value,
+    vipoCVStatus: useVipoCV.value,
     profile: {
       firstName: object.firstName,
       lastName: object.lastName,
@@ -760,7 +785,11 @@ const onSubmit = handleSubmit(async (values) => {
     form.cv = cvFileObject.value;
   }
 
+
+
   // console.log(form)
+
+  isSubmitting.value = true
 
   const { data }: any = await useAsyncData("updateSeekerInfo", () =>
     $apiFetch("/update-seeker-info-vipo", {
@@ -770,6 +799,7 @@ const onSubmit = handleSubmit(async (values) => {
   );
 
   if (data.value) {
+    isSubmitting.value = false
     showToast("ປະຫວັດຂອງທ່ານອັບເດດສຳເລັດແລ້ວ", "ສຳເລັດ");
     window.location.reload();
   }
@@ -963,6 +993,13 @@ onMounted(async () => {
     navigateTo("/auth/login");
   } else {
     setTimeout(() => {
+      console.log(user.value)
+      useVipoCV.value = user.value.vipoCVStatus
+      if( useVipoCV.value) {
+        vipoCVLink.value = user.value.vipoCV ? user.value.vipoCV.src : ''
+      }
+
+
       if (user.value.cv && user.value.cv.src) {
         cvFile.value = user.value.cv.src;
       }

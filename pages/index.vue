@@ -194,11 +194,11 @@ const getTopBanner = async () => {
   try {
     const { data }: any = await useFetch(
       config.public.apiBase + "/get-top-banner-vipo")
-    slides.value = data.value.info
+      slides.value = data.value.info
   } catch (e) {
     console.log(e);
   }
-};
+}
 
 const clickBanner = async (id: any, url: any) => {
   try {

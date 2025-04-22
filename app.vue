@@ -60,8 +60,8 @@ const getCurrentUser = async () => {
   );
   const user = data.value;
   if (user) {
-    // console.log(user);
-    setUser(data.value);
+     console.log(user);
+    setUser(user);
   }
 };
 
