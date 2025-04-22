@@ -2,9 +2,7 @@
   <section class="job-detail-page">
     <Share ref="shareRef" />
     <div class="container">
-      <a class="back-button" @click="$router.back()"
-        ><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a
-      >
+      <a class="back-button" @click="$router.back()"><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a>
 
       <div class="page-content">
         <div class="start">
@@ -25,72 +23,62 @@
                   </li>
                   <li>
                     <div class="tags">
-                      <span>{{minutesToTimeString(detail.startTime)}} - {{minutesToTimeString(detail.endTime)}}</span>
+                      <span>{{ minutesToTimeString(detail.startTime) }} - {{ minutesToTimeString(detail.endTime)
+                      }}</span>
 
                     </div>
                   </li>
                 </ul>
               </div>
               <div class="logo">
-                <img
-                  :src="detail.logo"
-                />
+                <img :src="detail.logo" />
               </div>
             </div>
             <div class="buttons">
 
-              <button
-                  @click="shareRef.isPopupVisible = true"
-                  class="button small share-button">
+              <button @click="shareRef.isPopupVisible = true" class="button small share-button">
                 <i class="fa-solid fa-link"></i> ແຊປະກາດວຽກ
               </button>
 
 
-              <div
-                  v-if="detail.isApply"
-
-                  class="button small apply-button" style="background: gray; pointer-events: none">ສະໝັກແລ້ວ</div>
-              <div v-else
-                  @click="applyJob"
-                  class="button small apply-button">ສະໝັກວຽກນີ້</div>
+              <div v-if="detail.isApply" class="button small apply-button"
+                style="background: gray; pointer-events: none">ສະໝັກແລ້ວ</div>
+              <div v-else @click="applyJob" class="button small apply-button">ສະໝັກວຽກນີ້</div>
             </div>
             <div class="card-job-description">
               <div v-html="detail.description"></div>
-<!--              <h3>ໜ້າທີ່ຮັບຜິດຊອບ</h3>-->
-<!--              <ol>-->
-<!--                <li>-->
-<!--                  ການແນະນໍາສິນຄ້າ ແລະ ຂາຍສິນຄ້າ ປິດຍອດຂາຍໃຫ້ໄດ້ຕາມເປົ້າໜາຍ-->
-<!--                </li>-->
-<!--                <li>ການວາງແຜນກ່ອນອອກຢ້ຽມຢາມຮ້ານຄ້າໃນທຸກມື້</li>-->
-<!--                <li>ການອອກຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນທີ່ວາງໄວ້ ແລະ ມີຄວາມຕໍ່ເນື່ອງ</li>-->
-<!--                <li>-->
-<!--                  ການເກັບກຳຂໍ້ມູນການເຄື່ອນໄຫຼວການຂາຍຂອງຮ້ານຄ້າ, ຕະຫຼາດ ແລະ-->
-<!--                  ຄູ່ແຂ່ງ-->
-<!--                </li>-->
-<!--                <li>ມີກົນລະຍຸດໃນການນໍາສະເໜີສິນຄ້າ,</li>-->
-<!--                <li>ເຮັດໃຫ້ເຫັນເຖີງຄຸນນະພາບຫລາຍກວ່າລາຄາ</li>-->
-<!--                <li>ການລົງຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນການທີ່ວາງໄວ້,</li>-->
-<!--                <li>ການສ້າງສາຍສໍາພັນທີ່ດີກັບຮ້ານຄ້າ ການກວດນັບສະຕ໋ອກຮ້ານຄ້າ,</li>-->
-<!--                <li>ການເຕີມສະຕ໋ອກຂອງລຸ້ນທີ່ຂາດ</li>-->
-<!--                <li>ການເຕີມສະຕ໋ອກສີນຄ້າທີ່ຂາດໃຫ້ກັບຮ້ານຄ້າໄດ້ຄົບຖ້ວນ</li>-->
-<!--              </ol>-->
-<!--              <h3>ເງິນໄຂການສະໝັກ</h3>-->
-<!--              <ul>-->
-<!--                <li>ທັກສະການສື່ສານ</li>-->
-<!--                <li>ທັກສະການຫາຂໍ້ມູນ</li>-->
-<!--                <li>ທັກສະການໂນ້ມນ້າວ</li>-->
-<!--                <li>ທັກສະການປະສານງານ</li>-->
-<!--                <li>ຊັ້ນສູງ ຫຼື ປະລິນຍາຕີສາຂາທີ່ກ່ຽວຂ້ອງ</li>-->
-<!--                <li>Gender: ຍິງ/ຊາຍ</li>-->
-<!--                <li>Age: 20 ຂື້ນໄປ</li>-->
-<!--              </ul>-->
+              <!--              <h3>ໜ້າທີ່ຮັບຜິດຊອບ</h3>-->
+              <!--              <ol>-->
+              <!--                <li>-->
+              <!--                  ການແນະນໍາສິນຄ້າ ແລະ ຂາຍສິນຄ້າ ປິດຍອດຂາຍໃຫ້ໄດ້ຕາມເປົ້າໜາຍ-->
+              <!--                </li>-->
+              <!--                <li>ການວາງແຜນກ່ອນອອກຢ້ຽມຢາມຮ້ານຄ້າໃນທຸກມື້</li>-->
+              <!--                <li>ການອອກຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນທີ່ວາງໄວ້ ແລະ ມີຄວາມຕໍ່ເນື່ອງ</li>-->
+              <!--                <li>-->
+              <!--                  ການເກັບກຳຂໍ້ມູນການເຄື່ອນໄຫຼວການຂາຍຂອງຮ້ານຄ້າ, ຕະຫຼາດ ແລະ-->
+              <!--                  ຄູ່ແຂ່ງ-->
+              <!--                </li>-->
+              <!--                <li>ມີກົນລະຍຸດໃນການນໍາສະເໜີສິນຄ້າ,</li>-->
+              <!--                <li>ເຮັດໃຫ້ເຫັນເຖີງຄຸນນະພາບຫລາຍກວ່າລາຄາ</li>-->
+              <!--                <li>ການລົງຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນການທີ່ວາງໄວ້,</li>-->
+              <!--                <li>ການສ້າງສາຍສໍາພັນທີ່ດີກັບຮ້ານຄ້າ ການກວດນັບສະຕ໋ອກຮ້ານຄ້າ,</li>-->
+              <!--                <li>ການເຕີມສະຕ໋ອກຂອງລຸ້ນທີ່ຂາດ</li>-->
+              <!--                <li>ການເຕີມສະຕ໋ອກສີນຄ້າທີ່ຂາດໃຫ້ກັບຮ້ານຄ້າໄດ້ຄົບຖ້ວນ</li>-->
+              <!--              </ol>-->
+              <!--              <h3>ເງິນໄຂການສະໝັກ</h3>-->
+              <!--              <ul>-->
+              <!--                <li>ທັກສະການສື່ສານ</li>-->
+              <!--                <li>ທັກສະການຫາຂໍ້ມູນ</li>-->
+              <!--                <li>ທັກສະການໂນ້ມນ້າວ</li>-->
+              <!--                <li>ທັກສະການປະສານງານ</li>-->
+              <!--                <li>ຊັ້ນສູງ ຫຼື ປະລິນຍາຕີສາຂາທີ່ກ່ຽວຂ້ອງ</li>-->
+              <!--                <li>Gender: ຍິງ/ຊາຍ</li>-->
+              <!--                <li>Age: 20 ຂື້ນໄປ</li>-->
+              <!--              </ul>-->
             </div>
             <div class="share-card">
               <p>ໝູ່ຂອງເຈົ້າອາດເໝາະກັບວຽກນີ້</p>
-              <button class="button"
-                      @click="shareRef.isPopupVisible = true"
-
-              >
+              <button class="button" @click="shareRef.isPopupVisible = true">
                 <i class="fa-solid fa-link"></i> ສົ່ງວຽກນີ້ໃຫ້ໝູ່
               </button>
             </div>
@@ -99,16 +87,11 @@
 
         <div class="end">
           <div class="box ads">
-            <img
-              src="https://media.jobthai.com/v1/images/banners/4_331393_652d07112d4e2f780f783caf_1739262485961.jpeg?type=webp"
-            />
-            <img
-              src="https://media.jobthai.com/v1/images/banners/4_327313_67c14a2c0d4dd8d135499f61_1740720684910.jpeg?type=webp"
-            />
+            <img v-for="i in adsBanner" :src="i.image" @click="clickBanner(i._id, i.url)" />
+            <!-- <img
+              src="https://media.jobthai.com/v1/images/banners/4_327313_67c14a2c0d4dd8d135499f61_1740720684910.jpeg?type=webp" />
 
-            <img
-              src="https://www.jobthai.com/static/images/banner/freespace-super-hot-job.png?type=webp"
-            />
+            <img src="https://www.jobthai.com/static/images/banner/freespace-super-hot-job.png?type=webp" /> -->
           </div>
         </div>
       </div>
@@ -118,7 +101,7 @@
 
 <script setup lang="ts">
 import Share from '@/components/Share.vue'
-import {minutesToTimeString} from "~/utils/formatter";
+import { minutesToTimeString } from "~/utils/formatter";
 
 const { $apiFetch } = useNuxtApp();
 
@@ -132,31 +115,33 @@ const detail = ref<any>({})
 
 const shareRef = ref()
 
+const adsBanner = ref<any>([])
 
 
 const getJobById = async () => {
   try {
 
     const { data }: any = await useAsyncData('getJobDetail', () =>
-        $apiFetch('/get-one-job-vipo', {
-          method: 'POST',
-          body: {
-            token: token.value,
-            _id: route.params._id },
-        })
+      $apiFetch('/get-one-job-vipo', {
+        method: 'POST',
+        body: {
+          token: token.value,
+          _id: route.params._id
+        },
+      })
     )
 
-   // console.log(data)
+    // console.log(data)
     detail.value = data.value.info
 
-  }catch(e) {
+  } catch (e) {
     console.log(e)
   }
 }
 
 const applyJob = async () => {
 
-  if(!isAuth.value) {
+  if (!isAuth.value) {
     return navigateTo('/auth/login')
   }
   if (user.value.profile && !user.value.profile.firstName) {
@@ -164,18 +149,18 @@ const applyJob = async () => {
   }
 
   const isConfirmed = confirm('Are you sure you want to apply this job?');
-  if(!isConfirmed) return
+  if (!isConfirmed) return
 
   try {
 
     const { data } = await useAsyncData('applyJob', () =>
-        $apiFetch('/apply-job-vipo', {
-          method: 'POST',
-          body: { _id: route.params._id },
-        })
+      $apiFetch('/apply-job-vipo', {
+        method: 'POST',
+        body: { _id: route.params._id },
+      })
     );
 
-    if(data.value) {
+    if (data.value) {
       detail.value.isApply = true
       //alert('Applied')
     }
@@ -183,14 +168,39 @@ const applyJob = async () => {
 
 
 
-  }catch(e) {
+  } catch (e) {
     console.log(e)
   }
 }
 
+const clickBanner = async (id: any, url: any) => {
+  try {
 
-await  getJobById()
+    await $fetch(config.public.apiBase + "/record-banner-vipo",
+      {
+        method: "POST",
+        body: { _id: id }
+      })
 
+    window.open(url, '_blank')
+
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+const getTopBanner = async () => {
+  try {
+    const { data }: any = await useFetch(
+      config.public.apiBase + "/get-banner-ads-vipo")
+    adsBanner.value = data.value.info
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+await getJobById()
+await getTopBanner()
 
 onMounted(() => {
   setTimeout(() => {
@@ -202,9 +212,9 @@ onMounted(() => {
 useSeoMeta({
   robots: 'follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large',
   title: detail.value.title,
-  ogTitle:  detail.value.title,
+  ogTitle: detail.value.title,
   description: detail.value.title,
-  ogDescription:  detail.value.title,
+  ogDescription: detail.value.title,
   ogImage: '',
   ogImageSecureUrl: '',
   ogImageWidth: '1280',
@@ -215,11 +225,11 @@ useSeoMeta({
   ogSiteName: '',
   ogType: 'article',
   articlePublishedTime: detail.value.createdAt,
-  articleModifiedTime:  detail.value.updatedAt,
+  articleModifiedTime: detail.value.updatedAt,
   articleTag: [],
   twitterCard: 'summary_large_image',
-  twitterTitle:  detail.value.title,
-  twitterDescription:  detail.value.title,
+  twitterTitle: detail.value.title,
+  twitterDescription: detail.value.title,
   twitterImage: '',
   twitterImageAlt: detail.value.title,
   twitterLabel1: '',
@@ -234,6 +244,7 @@ useSeoMeta({
 <style lang="scss" scoped>
 .job-detail-page {
   min-height: calc(100vh - 8rem);
+
   .back-button {
     font-size: var(--sm-font);
     cursor: pointer;
@@ -244,26 +255,34 @@ useSeoMeta({
     margin-bottom: 1rem;
     color: var(--black-600);
     transition: all ease-in-out 0.15s;
+
     &:hover {
       color: var(--orange-900);
     }
+
     i {
       margin-top: 0.25rem;
     }
   }
+
   .page-content {
     display: grid;
     grid-template-columns: 70% 30%;
     gap: 1rem;
+
     @media screen and (max-width: 768px) {
       grid-template-columns: 100%;
     }
+
     .ads {
       padding: 1rem;
+
       img {
         width: 100%;
         display: block;
         border-radius: 6px;
+        cursor: pointer;
+
         &:not(:last-child) {
           margin-bottom: 1rem;
         }
@@ -277,38 +296,49 @@ useSeoMeta({
   padding: 1.5rem;
   border-radius: 8px;
   font-size: var(--md-font);
+
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
+
   .box-header {
     display: flex;
+
     .box-header-start {
       flex-grow: 1;
+
       .job-title {
         font-size: var(--lg-font);
         font-weight: 800;
       }
+
       .salary {
         font-weight: 600;
       }
+
       ul {
         margin-top: 0.75rem;
+
         li {
           font-size: var(--sm-font);
           color: var(--black-800);
           font-weight: 600;
+
           small {
             font-size: var(--sm-font);
             font-weight: 700;
             margin-right: 0.25rem;
           }
+
           i {
             font-size: var(--sm-font);
           }
+
           .tags {
             margin-top: 0.25rem;
             display: flex;
             gap: 0.25rem;
+
             span {
               background-color: var(--black-200);
               padding: 0 0.5rem;
@@ -323,6 +353,7 @@ useSeoMeta({
         }
       }
     }
+
     .logo {
       img {
         display: block;
@@ -333,6 +364,7 @@ useSeoMeta({
         padding: 0.75rem;
         border-radius: 8px;
         border: 1px solid var(--black-300);
+
         @media screen and (max-width: 768px) {
           max-width: 60px;
           max-height: 60px;
@@ -342,25 +374,30 @@ useSeoMeta({
       }
     }
   }
+
   .buttons {
     margin-top: 1rem;
     display: flex;
     gap: 0.5rem;
+
     .share-button {
       background-color: var(--orange-100);
       color: var(--orange-900);
       border: 1px solid var(--orange-300);
     }
+
     .apply-button {
       background-color: var(--orange-900);
       color: #fff;
     }
   }
+
   .card-job-description {
     border: 1px solid var(--black-300);
     border-radius: 6px;
     padding: 1rem;
     margin-top: 1.5rem;
+
     h1,
     h2,
     h3,
@@ -370,25 +407,31 @@ useSeoMeta({
     b {
       font-weight: 700;
     }
+
     ul,
     ol {
       margin: 0.5rem 0;
+
       li {
         margin-left: 2rem;
         line-height: 1.5;
       }
     }
+
     ul li {
       list-style-type: disc;
     }
+
     img {
       width: 100%;
       display: block;
+
       &:not(:last-child) {
         margin: 1rem 0;
       }
     }
   }
+
   .share-card {
     border-radius: 8px;
     margin-top: 1rem;
@@ -398,9 +441,11 @@ useSeoMeta({
     justify-content: space-between;
     height: 5rem;
     background-color: var(--orange-100);
+
     p {
       font-weight: 600;
     }
+
     button {
       display: flex;
       align-items: center;
