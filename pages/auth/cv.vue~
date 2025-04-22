@@ -929,8 +929,6 @@ getReuse("SkillLevel");
 getKeySkills();
 
 
-// please pe
-
 onMounted(async () => {
   setTimeout(() => {
     educationsPush({

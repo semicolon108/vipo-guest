@@ -584,7 +584,6 @@ const cvFileObject = ref<any>(null);
 
 const backupWorkingHistories = ref<any>({});
 
-
 const {
   errors,
   defineField,

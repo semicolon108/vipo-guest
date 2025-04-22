@@ -15,8 +15,8 @@ import Toast from "@/components/Toast.vue";
 useSeoMeta({
   title: "VIPO",
   ogTitle: "VIPO",
-  description: "",
-  ogDescription: "",
+  description: "VIPO",
+  ogDescription: "VIPO",
   ogImage: "",
   ogImageSecureUrl: "",
   ogImageWidth: "1280",
@@ -34,7 +34,8 @@ useSeoMeta({
   twitterDescription: "",
 });
 
-const { isAuth, user } = useAuth();
+
+const { isAuth } = useAuth();
 
 const { $apiFetch } = useNuxtApp();
 const { setUser } = useAuth();
@@ -74,6 +75,7 @@ watch(
   },
   { immediate: true }
 );
+
 </script>
 
 <style lang="scss">

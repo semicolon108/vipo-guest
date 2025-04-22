@@ -11,7 +11,6 @@
 import Toast from "@/components/Toast.vue";
 
 
-
 useSeoMeta({
   title: "VIPO",
   ogTitle: "VIPO",
@@ -34,7 +33,7 @@ useSeoMeta({
   twitterDescription: "",
 });
 
-const { isAuth, user } = useAuth();
+const { isAuth } = useAuth();
 
 const { $apiFetch } = useNuxtApp();
 const { setUser } = useAuth();
@@ -53,6 +52,7 @@ watch(
   },
   { immediate: true }
 );
+
 
 const getCurrentUser = async () => {
   const { data }: any = await useAsyncData("getCurrentUser", () =>
@@ -74,6 +74,7 @@ watch(
   },
   { immediate: true }
 );
+
 </script>
 
 <style lang="scss">
