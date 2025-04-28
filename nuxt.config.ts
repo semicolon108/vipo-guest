@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
+
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
@@ -9,9 +11,11 @@ export default defineNuxtConfig({
       //     fileTmp: "https://db-dev.108.jobs",
     },
   },
+
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
   ssr: true,
+
   app: {
     head: {
       link: [
@@ -36,9 +40,12 @@ export default defineNuxtConfig({
       ],
     },
   },
+
   css: [
     "@/assets/css/base.css",
     "@/assets/css/font.css",
     "@/assets/css/all.css",
   ],
+
+  modules: ["nuxt-tiptap-editor"],
 });

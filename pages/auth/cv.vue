@@ -308,13 +308,14 @@
               class="vipo-cv-generator"
             >
               <div class="cv-box">
-                <div class="guide">
+                <div class="guide" v-if="!vipoCVLink">
                   <p>ຕື່ມຂໍ້ມູນທັງໝົດໃຫ້ຄົບຖ້ວນ.</p>
                   <p>ກົດປຸ່ມບັນທຶກຂໍ້ມູນເພື່ອສ້າງຊີວີ້.</p>
                   <p>ລະບົບຂອງ vipo.cc ຈະທຳການສ້າງຊີວີ້ອັດຕະໂນມັດ.</p>
                   <p>ການສ້າງຊີວີ້ອາດໃຊ້ເລລາ 1 - 5 ນາທີ.</p>
+                  <hr />
                 </div>
-                <hr />
+
                 <div class="file">
                   <!--<div class="sample-file">-->
                   <!--  <span></span>-->
@@ -324,7 +325,8 @@
                     v-if="vipoCVLink"
                     :href="vipoCVLink"
                     target="_blank"
-                    ><i class="fa-solid fa-arrow-down-to-line"></i>ດາວໂຫລດໄຟສ</a
+                    >
+                    <i class="fa-solid fa-arrow-down-to-line"></i>ດາວໂຫລດໄຟສ</a
                   >
                 </div>
               </div>
@@ -373,6 +375,7 @@
               <div class="field">
                 <label>ເລີ່ມເຮັດວຽກ</label>
                 <div class="selects">
+           
                   <DateInput
                     v-model="i.value.startDate"
                     style="width: 100%"
@@ -410,6 +413,7 @@
                   </p>
                 </label>
                 <div class="selects" v-show="!i.value.isCurrentlyWorking">
+
                   <DateInput
                     v-model="i.value.endDate"
                     style="width: 100%"
@@ -431,12 +435,16 @@
               <div class="field">
                 <label for="">ໜ້າທີ່ຮັບຜິດຊອບ</label>
                 <div class="control">
-                  <textarea
-                    v-model="i.value.detail"
-                    name=""
-                    id=""
-                    rows="5"
-                  ></textarea>
+<!--                  <textarea-->
+<!--                    v-model="i.value.detail"-->
+<!--                    name=""-->
+<!--                    id=""-->
+<!--                    rows="5"-->
+<!--                  ></textarea>-->
+
+                <ClientOnly>
+                  <TextEditor v-model="i.value.detail"  />
+                </ClientOnly>
 
                   <div v-show="false">
                     <Field
@@ -480,7 +488,7 @@
                       <option
                         :value="i._id"
                         v-for="i in languageLevelsList as any"
-                      >
+                      >ໜ້າທີ່ຮັບຜິດຊອບ
                         {{ i.name }}
                       </option>
                     </select>
@@ -577,6 +585,10 @@
 </template>
 
 <script setup lang="ts">
+definePageMeta({
+  ssr: false
+})
+
 import { ref } from "vue";
 import { useForm, useFieldArray, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
@@ -584,6 +596,8 @@ import DateInput from "@/components/DateInput.vue";
 import dayjs from "dayjs";
 
 import SkillInput from "@/components/SkillInput.vue";
+
+
 
 const tabName = ref("ຂ້ອຍມີຊີວີ້");
 const cvFileUse = ref<any>(["ຂ້ອຍມີຊີວີ້", "ໃຫ້ VIPO ສ້າງຊີວີ້ໃຫ້"]);
@@ -633,7 +647,7 @@ const {
           major: yup.string().required("This field is required"),
           university: yup.string().required("This field is required"),
           degree: yup.string().required("This field is required"),
-          startDate: yup.date().required("This field is required"),
+      //    startDate: yup.string().required("This field is required"),
           // endDate: yup.date().required('This field is required'),
           isCurrentlyStudying: yup.boolean().required("This field is required"),
         })
@@ -646,7 +660,7 @@ const {
         yup.object().shape({
           company: yup.string().required("This field is required"),
           position: yup.string().required("This field is required"),
-          startDate: yup.date().required("This field is required"),
+       //   startDate: yup.string().required("This field is required"),
           // endDate: yup.date().required('This field is required'),
           detail: yup.string().required("This field is required"),
           isCurrentlyWorking: yup.boolean().required("This field is required"),
@@ -993,7 +1007,7 @@ onMounted(async () => {
     navigateTo("/auth/login");
   } else {
     setTimeout(() => {
-      console.log(user.value)
+   //   console.log(user.value)
       useVipoCV.value = user.value.vipoCVStatus
       if( useVipoCV.value) {
         vipoCVLink.value = user.value.vipoCV ? user.value.vipoCV.src : ''
