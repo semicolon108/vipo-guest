@@ -352,7 +352,7 @@
               </p>
             </div>
             <div v-for="(i, idx) in workHistories as any" :key="i.key">
-              <div class="field">
+              <div class="field" id="workHistories[0].company">
                 <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
                 <Field
                   :name="`workHistories[${idx}].company`"
@@ -365,7 +365,7 @@
                   :name="`workHistories[${idx}].company`"
                 />
               </div>
-              <div class="field">
+              <div class="field"  id="workHistories[0].position">
                 <label>ຕຳແໜ່ງງານ</label>
                 <Field
                   :name="`workHistories[${idx}].position`"
@@ -378,7 +378,7 @@
                   :name="`workHistories[${idx}].position`"
                 />
               </div>
-              <div class="field">
+              <div class="field"  id="workHistories[0].startDate">
                 <label>ເລີ່ມເຮັດວຽກ</label>
                 <div class="selects">
 
@@ -438,7 +438,7 @@
                   :name="`workHistories[${idx}].endDate`"
                 />
               </div>
-              <div class="field">
+              <div class="field"  id="workHistories[0].detail">
                 <label for="">ໜ້າທີ່ຮັບຜິດຊອບ</label>
                 <div class="control">
 <!--                  <textarea-->
