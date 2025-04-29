@@ -1,5 +1,6 @@
 <template>
   <section>
+    <Loading v-if="isSubmitting"/>
     <div class="container">
       <div class="register-form">
         <div class="form-header">
@@ -12,10 +13,10 @@
             <div class="card-header">
               <h1>ຂໍ້ມູນສ່ວນໂຕ</h1>
             </div>
-            <div class="field">
+            <div class="field" id="profileImg">
               <label for="">ຮູບຂອງເຈົ້າ</label>
               <div class="control image-upload">
-                <div @click="profileImgRef.click()">
+                <div @click="profileImgRef.click()" >
                   <img
                     v-if="profileImgObject"
                     :src="config.public.fileTmp + '/' + profileImg"
@@ -40,9 +41,9 @@
               </p>
             </div>
 
-            <div class="field">
+            <div class="field" id="gender">
               <label>ເພດ</label>
-              <div class="control options">
+              <div class="control options"  >
                 <p
                   v-for="i in genderList"
                   @click="gender = i._id"
@@ -54,9 +55,10 @@
               <p v-if="errors.gender" class="error-text">{{ errors.gender }}</p>
             </div>
 
-            <div class="field">
+            <div class="field"   id="firstName">
               <label>ຊື່</label>
               <input
+
                 type="text"
                 class="input"
                 placeholder="ຊື່ຂອງເຈົ້າ"
@@ -67,28 +69,29 @@
               </p>
             </div>
 
-            <div class="field">
+            <div class="field"  id="lastName">
               <label>ນາມສະກຸນ</label>
               <input
+
                 type="text"
                 class="input"
                 placeholder="ນາມສະກຸນ"
                 v-model="lastName"
               />
-              <p v-if="errors.firstName" class="error-text">
-                {{ errors.firstName }}
+              <p v-if="errors.lastName" class="error-text">
+                {{ errors.lastName }}
               </p>
             </div>
-            <div class="field">
+            <div class="field" id="dateOfBirth">
               <label>ວັນເດືອນປີເກີດ</label>
 
-              <DateInput v-model="dateOfBirth" />
+              <DateInput v-model="dateOfBirth"  />
 
               <p v-if="errors.dateOfBirth" class="error-text">
                 {{ errors.dateOfBirth }}
               </p>
             </div>
-            <div class="field">
+            <div class="field" id="maritalStatus">
               <label>ສະຖານະແຕ່ງງານ</label>
               <div class="control options">
                 <p
@@ -103,7 +106,7 @@
                 {{ errors.maritalStatus }}
               </p>
             </div>
-            <div class="field">
+            <div class="field" id="province">
               <label>ແຂວງຢູ່ປະຈຸບັນ</label>
               <div class="control">
                 <div class="select">
@@ -119,7 +122,7 @@
                 </p>
               </div>
             </div>
-            <div class="field">
+            <div class="field" id="district">
               <label>ເມືອງຢູ່ປະຈຸບັນ</label>
               <div class="control">
                 <div class="select">
@@ -146,7 +149,7 @@
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
             </div>
-            <div class="field">
+            <div class="field" id="educations[0].major">
               <label>ວິຊາທີ່ຮຽນ</label>
               <Field
                 :name="`educations[${idx}].major`"
@@ -160,7 +163,7 @@
               />
             </div>
 
-            <div class="field">
+            <div class="field" id="educations[0].university">
               <label>ສະຖາບັນການສຶກສາ</label>
               <Field
                 :name="`educations[${idx}].university`"
@@ -173,7 +176,7 @@
                 :name="`educations[${idx}].university`"
               />
             </div>
-            <div class="field">
+            <div class="field" id="educations[0].degree">
               <label>ລະດັບການສຶກສາ</label>
               <div class="control">
                 <div class="select">
@@ -199,7 +202,7 @@
               </div>
             </div>
 
-            <div class="field" v-if="!isLoading">
+            <div class="field" v-if="!isLoading" id="educations[0].startDate">
               <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
               <div class="selects">
                 <DateInput
@@ -238,7 +241,7 @@
                   ກຳລັງເປັນນັກສຶກຢູ່
                 </p>
               </label>
-              <div class="selects" v-show="!i.value.isCurrentlyStudying">
+              <div class="selects" v-show="!i.value.isCurrentlyStudying"  id="educations[0].endDate">
                 <DateInput
                   v-model="i.value.endDate"
                   style="width: 100%"
@@ -296,10 +299,13 @@
                 />
               </div>
               <div class="uploaded-file" v-if="cvFile">
-                <span class="file-name">
+                <a class="file-name"
+                   :href="cvFile"
+                   target="_blank"
+                   style="cursor: pointer">
                   <i class="fa-regular fa-file-pdf"></i>
                   {{ cvFile }}
-                </span>
+                </a>
               </div>
               <p class="error-text">{{ errors.cvFile }}</p>
             </div>
@@ -375,7 +381,7 @@
               <div class="field">
                 <label>ເລີ່ມເຮັດວຽກ</label>
                 <div class="selects">
-           
+
                   <DateInput
                     v-model="i.value.startDate"
                     style="width: 100%"
@@ -571,6 +577,8 @@
             ບັນທຶກຂໍ້ມູນ
           </button>
 
+
+
           <button
             v-else
                 disabled
@@ -581,6 +589,7 @@
         </form>
       </div>
     </div>
+
   </section>
 </template>
 
@@ -596,7 +605,11 @@ import DateInput from "@/components/DateInput.vue";
 import dayjs from "dayjs";
 
 import SkillInput from "@/components/SkillInput.vue";
+import Loading from '@/components/Loading.vue';
 
+
+// Default to top is instant
+const { scrollToAnchor } = useAnchorScroll()
 
 
 const tabName = ref("ຂ້ອຍມີຊີວີ້");
@@ -622,6 +635,7 @@ const cvFileObject = ref<any>(null);
 const backupWorkingHistories = ref<any>({});
 
 const {
+
   errors,
   defineField,
   setFieldValue,
@@ -741,6 +755,16 @@ const onSubmitBeforeValidate = async () => {
     hasSubmitted.value = false;
   }, 5000);
 
+
+  let idx = 0
+  for(let i in errors.value) {
+    if(idx > 0) break;
+    console.log(i)
+    scrollToAnchor(i)
+    idx++
+  }
+
+
   await onSubmit();
 };
 
@@ -799,10 +823,6 @@ const onSubmit = handleSubmit(async (values) => {
     form.cv = cvFileObject.value;
   }
 
-
-
-  // console.log(form)
-
   isSubmitting.value = true
 
   const { data }: any = await useAsyncData("updateSeekerInfo", () =>
@@ -832,6 +852,7 @@ const onProfileImgChange = async ($event: any) => {
       body: formData,
     })
   );
+
 
   if (data.value) {
     profileImg.value = data.value.file.name;

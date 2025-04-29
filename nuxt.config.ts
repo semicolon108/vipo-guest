@@ -47,5 +47,5 @@ export default defineNuxtConfig({
     "@/assets/css/all.css",
   ],
 
-  modules: ["nuxt-tiptap-editor"],
+  modules: ["nuxt-tiptap-editor", "nuxt-anchorscroll"],
 });

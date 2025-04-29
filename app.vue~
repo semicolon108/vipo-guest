@@ -79,7 +79,7 @@ watch(
 
 <style lang="scss">
 .error-text {
-  color: red !important;
+  color: red;
 }
 body {
   font-family: var(--font-family);
