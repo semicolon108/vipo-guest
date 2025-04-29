@@ -451,6 +451,7 @@
                 <ClientOnly>
                   <TextEditor v-model="i.value.detail"     @keydown.enter.prevent />
                 </ClientOnly>
+                  
 
                   <div v-show="false">
                     <Field
