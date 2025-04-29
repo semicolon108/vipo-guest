@@ -1,6 +1,6 @@
 <template>
   <section>
-    <Loading v-if="isSubmitting"/>
+    <Loading v-if="isSubmitting" />
     <div class="container">
       <div class="register-form">
         <div class="form-header">
@@ -16,7 +16,7 @@
             <div class="field" id="profileImg">
               <label for="">ຮູບຂອງເຈົ້າ</label>
               <div class="control image-upload">
-                <div @click="profileImgRef.click()" >
+                <div @click="profileImgRef.click()">
                   <img
                     v-if="profileImgObject"
                     :src="config.public.fileTmp + '/' + profileImg"
@@ -43,7 +43,7 @@
 
             <div class="field" id="gender">
               <label>ເພດ</label>
-              <div class="control options"  >
+              <div class="control options">
                 <p
                   v-for="i in genderList"
                   @click="gender = i._id"
@@ -55,10 +55,9 @@
               <p v-if="errors.gender" class="error-text">{{ errors.gender }}</p>
             </div>
 
-            <div class="field"   id="firstName">
+            <div class="field" id="firstName">
               <label>ຊື່</label>
               <input
-
                 type="text"
                 class="input"
                 placeholder="ຊື່ຂອງເຈົ້າ"
@@ -69,10 +68,9 @@
               </p>
             </div>
 
-            <div class="field"  id="lastName">
+            <div class="field" id="lastName">
               <label>ນາມສະກຸນ</label>
               <input
-
                 type="text"
                 class="input"
                 placeholder="ນາມສະກຸນ"
@@ -85,7 +83,7 @@
             <div class="field" id="dateOfBirth">
               <label>ວັນເດືອນປີເກີດ</label>
 
-              <DateInput v-model="dateOfBirth"  />
+              <DateInput v-model="dateOfBirth" />
 
               <p v-if="errors.dateOfBirth" class="error-text">
                 {{ errors.dateOfBirth }}
@@ -144,7 +142,6 @@
               </div>
             </div>
           </div>
-
           <div class="card" v-for="(i, idx) in educations as any" :key="i.key">
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
@@ -201,7 +198,6 @@
                 />
               </div>
             </div>
-
             <div class="field" v-if="!isLoading" id="educations[0].startDate">
               <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
               <div class="selects">
@@ -241,7 +237,11 @@
                   ກຳລັງເປັນນັກສຶກຢູ່
                 </p>
               </label>
-              <div class="selects" v-show="!i.value.isCurrentlyStudying"  id="educations[0].endDate">
+              <div
+                class="selects"
+                v-show="!i.value.isCurrentlyStudying"
+                id="educations[0].endDate"
+              >
                 <DateInput
                   v-model="i.value.endDate"
                   style="width: 100%"
@@ -268,16 +268,10 @@
             </div>
             <div class="tabs">
               <ul>
-                <li
-                  :class="{ checked: !useVipoCV }"
-                  @click="useVipoCV = false"
-                >
+                <li :class="{ checked: !useVipoCV }" @click="useVipoCV = false">
                   {{ cvFileUse[0] }}
                 </li>
-                <li
-                  :class="{ checked: useVipoCV }"
-                  @click="useVipoCV = true"
-                >
+                <li :class="{ checked: useVipoCV }" @click="useVipoCV = true">
                   {{ cvFileUse[1] }}
                 </li>
               </ul>
@@ -299,20 +293,19 @@
                 />
               </div>
               <div class="uploaded-file" v-if="cvFile">
-                <a class="file-name"
-                   :href="cvFile"
-                   target="_blank"
-                   style="cursor: pointer">
+                <a
+                  class="file-name"
+                  :href="cvFile"
+                  target="_blank"
+                  style="cursor: pointer"
+                >
                   <i class="fa-regular fa-file-pdf"></i>
                   {{ cvFile }}
                 </a>
               </div>
               <p class="error-text">{{ errors.cvFile }}</p>
             </div>
-            <div
-           v-else
-              class="vipo-cv-generator"
-            >
+            <div v-else class="vipo-cv-generator">
               <div class="cv-box">
                 <div class="guide" v-if="!vipoCVLink">
                   <p>ຕື່ມຂໍ້ມູນທັງໝົດໃຫ້ຄົບຖ້ວນ.</p>
@@ -323,17 +316,19 @@
                 </div>
 
                 <div class="file">
-                  <!--<div class="sample-file">-->
-                  <!--  <span></span>-->
-                  <!--</div>-->
+                  <!-- <div class="sample-file">
+                    <span></span>
+                  </div> -->
 
-                  <a
+                  <button
+                    class="button blue"
                     v-if="vipoCVLink"
                     :href="vipoCVLink"
                     target="_blank"
-                    >
-                    <i class="fa-solid fa-arrow-down-to-line"></i>ດາວໂຫລດໄຟສ</a
                   >
+                    <i class="fa-solid fa-arrow-down-to-line"></i
+                    >ດາວໂຫລດໄຟສຊີວີ້
+                  </button>
                 </div>
               </div>
             </div>
@@ -365,7 +360,7 @@
                   :name="`workHistories[${idx}].company`"
                 />
               </div>
-              <div class="field"  id="workHistories[0].position">
+              <div class="field" id="workHistories[0].position">
                 <label>ຕຳແໜ່ງງານ</label>
                 <Field
                   :name="`workHistories[${idx}].position`"
@@ -378,10 +373,9 @@
                   :name="`workHistories[${idx}].position`"
                 />
               </div>
-              <div class="field"  id="workHistories[0].startDate">
+              <div class="field" id="workHistories[0].startDate">
                 <label>ເລີ່ມເຮັດວຽກ</label>
                 <div class="selects">
-
                   <DateInput
                     v-model="i.value.startDate"
                     style="width: 100%"
@@ -419,7 +413,6 @@
                   </p>
                 </label>
                 <div class="selects" v-show="!i.value.isCurrentlyWorking">
-
                   <DateInput
                     v-model="i.value.endDate"
                     style="width: 100%"
@@ -438,22 +431,15 @@
                   :name="`workHistories[${idx}].endDate`"
                 />
               </div>
-              <div class="field"  id="workHistories[0].detail">
+              <div class="field" id="workHistories[0].detail">
                 <label for="">ໜ້າທີ່ຮັບຜິດຊອບ</label>
                 <div class="control">
-<!--                  <textarea-->
-<!--                    v-model="i.value.detail"-->
-<!--                    name=""-->
-<!--                    id=""-->
-<!--                    rows="5"-->
-<!--                  ></textarea>-->
-
-
-
-                <ClientOnly>
-                  <TextEditor v-model="i.value.detail"     @keydown.enter.prevent />
-                </ClientOnly>
-
+                  <ClientOnly>
+                    <TextEditor
+                      v-model="i.value.detail"
+                      @keydown.enter.prevent
+                    />
+                  </ClientOnly>
 
                   <div v-show="false">
                     <Field
@@ -497,7 +483,8 @@
                       <option
                         :value="i._id"
                         v-for="i in languageLevelsList as any"
-                      >ໜ້າທີ່ຮັບຜິດຊອບ
+                      >
+                        ໜ້າທີ່ຮັບຜິດຊອບ
                         {{ i.name }}
                       </option>
                     </select>
@@ -574,32 +561,27 @@
               </button>
             </div>
           </div>
-          <button @click="onSubmitBeforeValidate"
-                  v-if="!isSubmitting"
-                  class="button submit-button orange">
+          <button
+            @click="onSubmitBeforeValidate"
+            v-if="!isSubmitting"
+            class="button submit-button orange"
+          >
             ບັນທຶກຂໍ້ມູນ
           </button>
-
-
-
-          <button
-            v-else
-                disabled
-                  class="button submit-button orange">
-          <i class="fas fa-spinner fa-spin fa-4x"></i>
+          <button v-else disabled class="button submit-button orange">
+            <i class="fas fa-spinner fa-spin fa-4x"></i>
             Loading...
           </button>
         </form>
       </div>
     </div>
-
   </section>
 </template>
 
 <script setup lang="ts">
 definePageMeta({
-  ssr: false
-})
+  ssr: false,
+});
 
 import { ref } from "vue";
 import { useForm, useFieldArray, Field, ErrorMessage } from "vee-validate";
@@ -608,12 +590,10 @@ import DateInput from "@/components/DateInput.vue";
 import dayjs from "dayjs";
 
 import SkillInput from "@/components/SkillInput.vue";
-import Loading from '@/components/Loading.vue';
-
+import Loading from "@/components/Loading.vue";
 
 // Default to top is instant
-const { scrollToAnchor } = useAnchorScroll()
-
+const { scrollToAnchor } = useAnchorScroll();
 
 const tabName = ref("ຂ້ອຍມີຊີວີ້");
 const cvFileUse = ref<any>(["ຂ້ອຍມີຊີວີ້", "ໃຫ້ VIPO ສ້າງຊີວີ້ໃຫ້"]);
@@ -629,7 +609,7 @@ const profileImgRef = ref();
 const isHaveNoExp = ref(false);
 
 const useVipoCV = ref(false);
-const vipoCVLink = ref('')
+const vipoCVLink = ref("");
 
 const cvFileRef = ref();
 const profileImgObject = ref<any>(null);
@@ -637,67 +617,66 @@ const cvFileObject = ref<any>(null);
 
 const backupWorkingHistories = ref<any>({});
 
-const {
+const { errors, defineField, setFieldValue, handleSubmit, resetForm } = useForm(
+  {
+    validationSchema: yup.object({
+      profileImg: yup.string().required("This field is required"),
+      gender: yup.string().required("This field is required"),
+      firstName: yup.string().required("This field is required"),
+      lastName: yup.string().required("This field is required"),
+      dateOfBirth: yup.string().required("This field is required"),
+      maritalStatus: yup.string().required("This field is required"),
+      province: yup.string().required("This field is required"),
+      district: yup.string().required("This field is required"),
 
-  errors,
-  defineField,
-  setFieldValue,
-  handleSubmit,
-  resetForm,
-} = useForm({
-  validationSchema: yup.object({
-    profileImg: yup.string().required("This field is required"),
-    gender: yup.string().required("This field is required"),
-    firstName: yup.string().required("This field is required"),
-    lastName: yup.string().required("This field is required"),
-    dateOfBirth: yup.string().required("This field is required"),
-    maritalStatus: yup.string().required("This field is required"),
-    province: yup.string().required("This field is required"),
-    district: yup.string().required("This field is required"),
+      cvFile: yup.string(),
 
-    cvFile: yup.string(),
-
-    educations: yup
-      .array()
-      .of(
+      educations: yup
+        .array()
+        .of(
+          yup.object().shape({
+            major: yup.string().required("This field is required"),
+            university: yup.string().required("This field is required"),
+            degree: yup.string().required("This field is required"),
+            //    startDate: yup.string().required("This field is required"),
+            // endDate: yup.date().required('This field is required'),
+            isCurrentlyStudying: yup
+              .boolean()
+              .required("This field is required"),
+          })
+        )
+        .min(1, "At least one education entry is required"),
+      //
+      workHistories: yup
+        .array()
+        .of(
+          yup.object().shape({
+            company: yup.string().required("This field is required"),
+            position: yup.string().required("This field is required"),
+            //   startDate: yup.string().required("This field is required"),
+            // endDate: yup.date().required('This field is required'),
+            detail: yup.string().required("This field is required"),
+            isCurrentlyWorking: yup
+              .boolean()
+              .required("This field is required"),
+          })
+        )
+        .notRequired(),
+      languages: yup.array().of(
         yup.object().shape({
-          major: yup.string().required("This field is required"),
-          university: yup.string().required("This field is required"),
-          degree: yup.string().required("This field is required"),
-      //    startDate: yup.string().required("This field is required"),
-          // endDate: yup.date().required('This field is required'),
-          isCurrentlyStudying: yup.boolean().required("This field is required"),
+          language: yup.string().required("This field is required"),
+          level: yup.string().required("This field is required"),
         })
-      )
-      .min(1, "At least one education entry is required"),
-    //
-    workHistories: yup
-      .array()
-      .of(
+      ),
+      otherSkills: yup.array().of(
         yup.object().shape({
-          company: yup.string().required("This field is required"),
-          position: yup.string().required("This field is required"),
-       //   startDate: yup.string().required("This field is required"),
-          // endDate: yup.date().required('This field is required'),
-          detail: yup.string().required("This field is required"),
-          isCurrentlyWorking: yup.boolean().required("This field is required"),
+          skill: yup.string().required("This field is required"),
+          level: yup.string().required("This field is required"),
         })
-      )
-      .notRequired(),
-    languages: yup.array().of(
-      yup.object().shape({
-        language: yup.string().required("This field is required"),
-        level: yup.string().required("This field is required"),
-      })
-    ),
-    otherSkills: yup.array().of(
-      yup.object().shape({
-        skill: yup.string().required("This field is required"),
-        level: yup.string().required("This field is required"),
-      })
-    ),
-  }),
-});
+      ),
+    }),
+  }
+);
 
 const [profileImg] = defineField("profileImg");
 const [gender] = defineField("gender");
@@ -748,7 +727,7 @@ const languageLevelsList = ref([]);
 const skills = ref([]);
 const skillLevels = ref([]);
 
-const isSubmitting = ref(false)
+const isSubmitting = ref(false);
 const hasSubmitted = ref(false);
 
 const onSubmitBeforeValidate = async () => {
@@ -758,19 +737,16 @@ const onSubmitBeforeValidate = async () => {
     hasSubmitted.value = false;
   }, 5000);
 
-
-  let idx = 0
-  for(let i in errors.value) {
-    if(idx > 0) break;
-    console.log(i)
-    scrollToAnchor(i)
-    idx++
+  let idx = 0;
+  for (let i in errors.value) {
+    if (idx > 0) break;
+    console.log(i);
+    scrollToAnchor(i);
+    idx++;
   }
-
 
   await onSubmit();
 };
-
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values;
@@ -826,7 +802,7 @@ const onSubmit = handleSubmit(async (values) => {
     form.cv = cvFileObject.value;
   }
 
-  isSubmitting.value = true
+  isSubmitting.value = true;
 
   const { data }: any = await useAsyncData("updateSeekerInfo", () =>
     $apiFetch("/update-seeker-info-vipo", {
@@ -836,11 +812,10 @@ const onSubmit = handleSubmit(async (values) => {
   );
 
   if (data.value) {
-    isSubmitting.value = false
+    isSubmitting.value = false;
     showToast("ປະຫວັດຂອງທ່ານອັບເດດສຳເລັດແລ້ວ", "ສຳເລັດ");
     window.location.reload();
   }
-
 });
 
 const onProfileImgChange = async ($event: any) => {
@@ -855,7 +830,6 @@ const onProfileImgChange = async ($event: any) => {
       body: formData,
     })
   );
-
 
   if (data.value) {
     profileImg.value = data.value.file.name;
@@ -995,7 +969,6 @@ getReuse("LanguageLevel");
 getReuse("SkillLevel");
 getKeySkills();
 
-
 onMounted(async () => {
   setTimeout(() => {
     educationsPush({
@@ -1031,16 +1004,15 @@ onMounted(async () => {
     navigateTo("/auth/login");
   } else {
     setTimeout(() => {
-   //   console.log(user.value)
-      useVipoCV.value = user.value.vipoCVStatus
-      if( useVipoCV.value) {
-        vipoCVLink.value = user.value.vipoCV ? user.value.vipoCV.src : ''
+      //   console.log(user.value)
+      useVipoCV.value = user.value.vipoCVStatus;
+      if (useVipoCV.value) {
+        vipoCVLink.value = user.value.vipoCV ? user.value.vipoCV.src : "";
       }
-
 
       if (user.value.cv && user.value.cv.src) {
         cvFile.value = user.value.cv.src;
-        useVipoCV.value = false
+        useVipoCV.value = false;
       }
 
       if (user.value.profile) {
@@ -1104,7 +1076,6 @@ onMounted(async () => {
       }
 
       if (user.value.languageSkill && user.value.languageSkill.length) {
-
         languagesRemove(0);
         const list = user.value.languageSkill.map((i: any) => ({
           _id: i._id,

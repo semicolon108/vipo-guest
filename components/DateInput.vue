@@ -5,7 +5,7 @@
       v-show="!isOnlyMonthAndYear"
       :class="{ disabled: isDisabled }"
     >
-      <select v-model="dateFieldDay" :disabled="isDisabled">
+      <select v-model="dateFieldDay" :disabled="isDisabled" required>
         <option disabled value="">DD</option>
         <option v-for="i in dayOptionsComputed" :key="i" :value="i">
           {{ i }}
@@ -14,7 +14,7 @@
     </div>
 
     <div class="select" :class="{ disabled: isDisabled }">
-      <select v-model="dateFieldMonth" :disabled="isDisabled">
+      <select v-model="dateFieldMonth" :disabled="isDisabled" required>
         <option disabled value="">MM</option>
         <option
           v-for="(month, idx) in monthOptions"
@@ -27,7 +27,7 @@
     </div>
 
     <div class="select" :class="{ disabled: isDisabled }">
-      <select v-model="dateFieldYear" :disabled="isDisabled">
+      <select v-model="dateFieldYear" :disabled="isDisabled" required>
         <option disabled value="">YYYY</option>
         <option v-for="year in yearOptions" :key="year" :value="year">
           {{ year }}

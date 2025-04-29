@@ -72,6 +72,10 @@
       color: #fff;
     }
   }
+  &.blue {
+    background-color: var(--deep-blue-900);
+    color: #fff;
+  }
   &.light-blue {
     background-color: var(--light-blue-100);
     box-shadow: 0 0 0 1px var(--deep-blue-900);

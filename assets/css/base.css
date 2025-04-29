@@ -145,6 +145,10 @@
   background-color: var(--orange-900);
   color: #fff;
 }
+.button.blue {
+  background-color: var(--deep-blue-900);
+  color: #fff;
+}
 .button.light-blue {
   background-color: var(--light-blue-100);
   box-shadow: 0 0 0 1px var(--deep-blue-900);
