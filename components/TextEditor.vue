@@ -123,6 +123,8 @@
 
 <script setup>
 // Define the prop for v-model
+import {h} from "vue";
+
 const props = defineProps({
   modelValue: {
     type: String,
@@ -142,7 +144,8 @@ const editor = useEditor({
   extensions: [TiptapStarterKit],
   onUpdate: (value) => {
 
-    const htmlContent = value.editor.view.dom.innerHTML
+    let htmlContent = value.editor.view.dom.innerHTML
+    if(htmlContent == `<p><br class="ProseMirror-trailingBreak"></p>`) htmlContent = '';
     emit('update:modelValue',htmlContent);
 
   },

@@ -7,7 +7,7 @@
           <h1>ຝາກປະຫວັດ</h1>
           <h3>ຝາກປະຫວັດເພື່ອໃຫ້ສະດວກ ແລະ ວ່ອງໄວໃນການສະໝັກວຽກ</h3>
         </div>
-        <form @submit.prevent="onSubmitBeforeValidate" class="form-body">
+        <form @submit.prevent class="form-body">
           <!-- Personal Information -->
           <div class="card">
             <div class="card-header">
@@ -448,10 +448,12 @@
 <!--                    rows="5"-->
 <!--                  ></textarea>-->
 
+
+
                 <ClientOnly>
                   <TextEditor v-model="i.value.detail"     @keydown.enter.prevent />
                 </ClientOnly>
-                  
+
 
                   <div v-show="false">
                     <Field
@@ -572,7 +574,7 @@
               </button>
             </div>
           </div>
-          <button type="submit"
+          <button @click="onSubmitBeforeValidate"
                   v-if="!isSubmitting"
                   class="button submit-button orange">
             ບັນທຶກຂໍ້ມູນ
@@ -1038,6 +1040,7 @@ onMounted(async () => {
 
       if (user.value.cv && user.value.cv.src) {
         cvFile.value = user.value.cv.src;
+        useVipoCV.value = false
       }
 
       if (user.value.profile) {
