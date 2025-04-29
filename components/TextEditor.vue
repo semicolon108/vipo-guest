@@ -38,10 +38,6 @@
         >
           <i class="fas fa-code"></i> Code
         </button>
-      </div>
-
-      <!-- Paragraph/Heading Group -->
-      <div class="group">
         <button
             @click="editor.chain().focus().setParagraph().run()"
             :class="{ 'is-active': editor.isActive('paragraph') }"
@@ -49,6 +45,11 @@
         >
           Paragraph
         </button>
+      </div>
+
+      <!-- Paragraph/Heading Group -->
+      <div class="group">
+
 
         <button
             @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
@@ -73,18 +74,6 @@
         >
           H3
         </button>
-      </div>
-
-      <!-- List and Block Elements Group -->
-      <div class="group">
-        <button
-            @click="editor.chain().focus().toggleBulletList().run()"
-            :class="{ 'is-active': editor.isActive('bulletList') }"
-            class="editor-btn"
-        >
-          <i class="fas fa-list-ul"></i> Bullet List
-        </button>
-
         <button
             @click="editor.chain().focus().toggleOrderedList().run()"
             :class="{ 'is-active': editor.isActive('orderedList') }"
@@ -92,14 +81,6 @@
         >
           <i class="fas fa-list-ol"></i> Ordered List
         </button>
-
-
-      </div>
-
-      <!-- Alignment and Undo/Redo Group -->
-      <div class="group">
-
-
         <button
             @click="editor.chain().focus().undo().run()"
             :disabled="!editor.can().chain().focus().undo().run()"
@@ -116,8 +97,17 @@
           <i class="fas fa-redo"></i> Redo
         </button>
       </div>
+
+
+
+
     </div>
-    <TiptapEditorContent :editor="editor" />
+
+
+
+      <TiptapEditorContent :editor="editor"  class="my-editor"  />
+
+
   </div>
 </template>
 
@@ -160,7 +150,23 @@ onBeforeUnmount(() => {
 });
 </script>
 
+
+<style>
+.my-editor {
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 8px;
+  overflow-y: auto;
+}
+
+/* This is the actual typing area */
+.my-editor .ProseMirror {
+  min-height: 150px; /* minimum height */
+  outline: none; /* optional: removes blue border on focus */
+}
+</style>
 <style scoped>
+
 
 .editor-content-wrapper {
   min-height: 300px; /* Adjust this value as needed */
