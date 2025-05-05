@@ -484,7 +484,6 @@
                         :value="i._id"
                         v-for="i in languageLevelsList as any"
                       >
-                        ໜ້າທີ່ຮັບຜິດຊອບ
                         {{ i.name }}
                       </option>
                     </select>
@@ -1006,14 +1005,14 @@ onMounted(async () => {
     setTimeout(() => {
       //   console.log(user.value)
       useVipoCV.value = user.value.vipoCVStatus;
-      if (useVipoCV.value) {
+      if (user.value.vipoCV &&  user.value.vipoCV.src) {
         vipoCVLink.value = user.value.vipoCV ? user.value.vipoCV.src : "";
       }
 
-      if (user.value.cv && user.value.cv.src) {
-        cvFile.value = user.value.cv.src;
-        useVipoCV.value = false;
-      }
+      // if (user.value.cv && user.value.cv.src) {
+      //   cvFile.value = user.value.cv.src;
+      //   useVipoCV.value = false;
+      // }
 
       if (user.value.profile) {
         profileImg.value = user.value.profile.file
