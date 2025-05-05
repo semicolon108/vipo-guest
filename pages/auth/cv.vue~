@@ -325,7 +325,6 @@
                     v-if="vipoCVLink"
                     :href="vipoCVLink"
                     target="_blank"
-                    style="color: white"
                   >
                     <i class="fa-solid fa-arrow-down-to-line"></i
                     >ດາວໂຫລດໄຟສຊີວີ້
