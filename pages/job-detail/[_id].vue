@@ -2,7 +2,9 @@
   <section class="job-detail-page">
     <Share ref="shareRef" />
     <div class="container">
-      <a class="back-button" @click="$router.back()"><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a>
+      <a class="back-button" @click="$router.back()"
+        ><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a
+      >
 
       <div class="page-content">
         <div class="start">
@@ -15,17 +17,19 @@
                   <li>
                     <i class="fa-regular fa-building"></i>
                     {{ detail.companyName }}
-
                   </li>
                   <li>
                     <i class="fa-regular fa-location-dot"></i>
-                    <span v-for="i in detail.workingLocation">{{ i.province }} </span>
+                    <span v-for="i in detail.workingLocation"
+                      >{{ i.province }}
+                    </span>
                   </li>
                   <li>
                     <div class="tags">
-                      <span>{{ minutesToTimeString(detail.startTime) }} - {{ minutesToTimeString(detail.endTime)
-                      }}</span>
-
+                      <span
+                        >{{ minutesToTimeString(detail.startTime) }} -
+                        {{ minutesToTimeString(detail.endTime) }}</span
+                      >
                     </div>
                   </li>
                 </ul>
@@ -35,46 +39,26 @@
               </div>
             </div>
             <div class="buttons">
-
-              <button @click="shareRef.isPopupVisible = true" class="button small share-button">
+              <button
+                @click="shareRef.isPopupVisible = true"
+                class="button small share-button"
+              >
                 <i class="fa-solid fa-link"></i> ແຊປະກາດວຽກ
               </button>
 
-
-              <div v-if="detail.isApply" class="button small apply-button"
-                style="background: gray; pointer-events: none">ສະໝັກແລ້ວ</div>
-              <div v-else @click="applyJob" class="button small apply-button">ສະໝັກວຽກນີ້</div>
+              <div
+                v-if="detail.isApply"
+                class="button small apply-button"
+                style="background: gray; pointer-events: none"
+              >
+                ສະໝັກແລ້ວ
+              </div>
+              <div v-else @click="applyJob" class="button small apply-button">
+                ສະໝັກວຽກນີ້
+              </div>
             </div>
             <div class="card-job-description">
               <div v-html="detail.description"></div>
-              <!--              <h3>ໜ້າທີ່ຮັບຜິດຊອບ</h3>-->
-              <!--              <ol>-->
-              <!--                <li>-->
-              <!--                  ການແນະນໍາສິນຄ້າ ແລະ ຂາຍສິນຄ້າ ປິດຍອດຂາຍໃຫ້ໄດ້ຕາມເປົ້າໜາຍ-->
-              <!--                </li>-->
-              <!--                <li>ການວາງແຜນກ່ອນອອກຢ້ຽມຢາມຮ້ານຄ້າໃນທຸກມື້</li>-->
-              <!--                <li>ການອອກຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນທີ່ວາງໄວ້ ແລະ ມີຄວາມຕໍ່ເນື່ອງ</li>-->
-              <!--                <li>-->
-              <!--                  ການເກັບກຳຂໍ້ມູນການເຄື່ອນໄຫຼວການຂາຍຂອງຮ້ານຄ້າ, ຕະຫຼາດ ແລະ-->
-              <!--                  ຄູ່ແຂ່ງ-->
-              <!--                </li>-->
-              <!--                <li>ມີກົນລະຍຸດໃນການນໍາສະເໜີສິນຄ້າ,</li>-->
-              <!--                <li>ເຮັດໃຫ້ເຫັນເຖີງຄຸນນະພາບຫລາຍກວ່າລາຄາ</li>-->
-              <!--                <li>ການລົງຢ້ຽມຢາມຮ້ານຄ້າຕາມແຜນການທີ່ວາງໄວ້,</li>-->
-              <!--                <li>ການສ້າງສາຍສໍາພັນທີ່ດີກັບຮ້ານຄ້າ ການກວດນັບສະຕ໋ອກຮ້ານຄ້າ,</li>-->
-              <!--                <li>ການເຕີມສະຕ໋ອກຂອງລຸ້ນທີ່ຂາດ</li>-->
-              <!--                <li>ການເຕີມສະຕ໋ອກສີນຄ້າທີ່ຂາດໃຫ້ກັບຮ້ານຄ້າໄດ້ຄົບຖ້ວນ</li>-->
-              <!--              </ol>-->
-              <!--              <h3>ເງິນໄຂການສະໝັກ</h3>-->
-              <!--              <ul>-->
-              <!--                <li>ທັກສະການສື່ສານ</li>-->
-              <!--                <li>ທັກສະການຫາຂໍ້ມູນ</li>-->
-              <!--                <li>ທັກສະການໂນ້ມນ້າວ</li>-->
-              <!--                <li>ທັກສະການປະສານງານ</li>-->
-              <!--                <li>ຊັ້ນສູງ ຫຼື ປະລິນຍາຕີສາຂາທີ່ກ່ຽວຂ້ອງ</li>-->
-              <!--                <li>Gender: ຍິງ/ຊາຍ</li>-->
-              <!--                <li>Age: 20 ຂື້ນໄປ</li>-->
-              <!--              </ul>-->
             </div>
             <div class="share-card">
               <p>ໝູ່ຂອງເຈົ້າອາດເໝາະກັບວຽກນີ້</p>
@@ -87,11 +71,11 @@
 
         <div class="end">
           <div class="box ads">
-            <img v-for="i in adsBanner" :src="i.image" @click="clickBanner(i._id, i.url)" />
-            <!-- <img
-              src="https://media.jobthai.com/v1/images/banners/4_327313_67c14a2c0d4dd8d135499f61_1740720684910.jpeg?type=webp" />
-
-            <img src="https://www.jobthai.com/static/images/banner/freespace-super-hot-job.png?type=webp" /> -->
+            <img
+              v-for="i in adsBanner"
+              :src="i.image"
+              @click="clickBanner(i._id, i.url)"
+            />
           </div>
         </div>
       </div>
@@ -100,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import Share from '@/components/Share.vue'
+import Share from "@/components/Share.vue";
 import { minutesToTimeString } from "~/utils/formatter";
 
 const { $apiFetch } = useNuxtApp();
@@ -109,136 +93,123 @@ const { isAuth, user, token } = useAuth();
 
 const config = useRuntimeConfig();
 
-const route = useRoute()
+const route = useRoute();
 
-const detail = ref<any>({})
+const detail = ref<any>({});
 
-const shareRef = ref()
+const shareRef = ref();
 
-const adsBanner = ref<any>([])
-
+const adsBanner = ref<any>([]);
 
 const getJobById = async () => {
   try {
-
-    const { data }: any = await useAsyncData('getJobDetail', () =>
-      $apiFetch('/get-one-job-vipo', {
-        method: 'POST',
+    const { data }: any = await useAsyncData("getJobDetail", () =>
+      $apiFetch("/get-one-job-vipo", {
+        method: "POST",
         body: {
           token: token.value,
-          _id: route.params._id
+          _id: route.params._id,
         },
-      })
-    )
-
-    // console.log(data)
-    detail.value = data.value.info
-
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-const applyJob = async () => {
-
-  if (!isAuth.value) {
-    return navigateTo('/auth/login')
-  }
-  if (user.value.profile && !user.value.profile.firstName) {
-    return navigateTo('/auth/cv')
-  }
-
-  const isConfirmed = confirm('Are you sure you want to apply this job?');
-  if (!isConfirmed) return
-
-  try {
-
-    const { data } = await useAsyncData('applyJob', () =>
-      $apiFetch('/apply-job-vipo', {
-        method: 'POST',
-        body: { _id: route.params._id },
       })
     );
 
-    if (data.value) {
-      detail.value.isApply = true
-      //alert('Applied')
-    }
-
-
-
-
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-const clickBanner = async (id: any, url: any) => {
-  try {
-
-    await $fetch(config.public.apiBase + "/record-banner-vipo",
-      {
-        method: "POST",
-        body: { _id: id }
-      })
-
-    window.open(url, '_blank')
-
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-const getTopBanner = async () => {
-  try {
-    const { data }: any = await useFetch(
-      config.public.apiBase + "/get-banner-ads-vipo")
-    adsBanner.value = data.value.info
+    // console.log(data)
+    detail.value = data.value.info;
   } catch (e) {
     console.log(e);
   }
 };
 
-await getJobById()
-await getTopBanner()
+const applyJob = async () => {
+  if (!isAuth.value) {
+    return navigateTo("/auth/login");
+  }
+  if (user.value.profile && !user.value.profile.firstName) {
+    return navigateTo("/auth/cv");
+  }
+
+  const isConfirmed = confirm("Are you sure you want to apply this job?");
+  if (!isConfirmed) return;
+
+  try {
+    const { data } = await useAsyncData("applyJob", () =>
+      $apiFetch("/apply-job-vipo", {
+        method: "POST",
+        body: { _id: route.params._id },
+      })
+    );
+
+    if (data.value) {
+      detail.value.isApply = true;
+      //alert('Applied')
+    }
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const clickBanner = async (id: any, url: any) => {
+  try {
+    await $fetch(config.public.apiBase + "/record-banner-vipo", {
+      method: "POST",
+      body: { _id: id },
+    });
+
+    window.open(url, "_blank");
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const getTopBanner = async () => {
+  try {
+    const { data }: any = await useFetch(
+      config.public.apiBase + "/get-banner-ads-vipo"
+    );
+    adsBanner.value = data.value.info;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+await getJobById();
+await getTopBanner();
 
 onMounted(() => {
   setTimeout(() => {
-    shareRef.value.shareLink = 'https://new.vipo.cc' + route.fullPath
-  })
-})
-
+    shareRef.value.shareLink = "https://new.vipo.cc" + route.fullPath;
+  });
+});
 
 useSeoMeta({
-  robots: 'follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large',
+  robots:
+    "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
   title: detail.value.title,
   ogTitle: detail.value.title,
   description: detail.value.title,
   ogDescription: detail.value.title,
-  ogImage: '',
-  ogImageSecureUrl: '',
-  ogImageWidth: '1280',
-  ogImageHeight: '720',
-  ogImageType: 'image/jpeg',
+  ogImage: detail.value.shareImage,
+  ogImageSecureUrl: "",
+  ogImageWidth: "1280",
+  ogImageHeight: "630",
+  ogImageType: "image/jpeg",
   ogImageAlt: detail.value.title,
-  ogUrl: 'https://new.vipo.cc' + route.fullPath,
-  ogSiteName: '',
-  ogType: 'article',
+  ogUrl: "https://new.vipo.cc" + route.fullPath,
+  ogSiteName: "",
+  ogType: "article",
   articlePublishedTime: detail.value.createdAt,
   articleModifiedTime: detail.value.updatedAt,
   articleTag: [],
-  twitterCard: 'summary_large_image',
+  twitterCard: "summary_large_image",
   twitterTitle: detail.value.title,
   twitterDescription: detail.value.title,
-  twitterImage: '',
+  twitterImage: "",
   twitterImageAlt: detail.value.title,
-  twitterLabel1: '',
-  twitterData1: '',
-  twitterLabel2: 'Time to read',
-  twitterData2: 'Less than a minute'
-})
-
-
+  twitterLabel1: "",
+  twitterData1: "",
+  twitterLabel2: "Time to read",
+  twitterData2: "Less than a minute",
+});
 </script>
 
 <style lang="scss" scoped>

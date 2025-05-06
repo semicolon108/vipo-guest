@@ -76,5 +76,9 @@ select {
     outline: 0;
     appearance: none;
     position: relative;
+    &:invalid {
+      background-color: var(--black-200) !important;
+      box-shadow: 0 0 0 1px var(--black-300);
+    }
   }
 }

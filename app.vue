@@ -10,16 +10,16 @@
 <script setup lang="ts">
 import Toast from "@/components/Toast.vue";
 
-
 useSeoMeta({
-  title: "VIPO",
-  ogTitle: "VIPO",
-  description: "VIPO",
+  title: "VIPO - ວີໂປ",
+  ogTitle: "VIPO - ວີໂປ ພື້ນທີ່ຊອກວຽກສຳລັບນັກສຶກສາ ແລະນັກສຶກສາໃໝ່",
+  description:
+    "Volunteer work, Internship, Apprenticeship, Part-Time jobs and Opportunities for Zero-Experience.",
   ogDescription: "VIPO",
   ogImage: "",
   ogImageSecureUrl: "",
   ogImageWidth: "1280",
-  ogImageHeight: "720",
+  ogImageHeight: "630",
   ogImageType: "image/png",
   ogImageAlt: "",
   ogUrl: "",
@@ -53,14 +53,13 @@ watch(
   { immediate: true }
 );
 
-
 const getCurrentUser = async () => {
   const { data }: any = await useAsyncData("getCurrentUser", () =>
     $apiFetch("/get-seeker-info-vipo")
   );
   const user = data.value;
   if (user) {
-  //   console.log(user);
+    //   console.log(user);
     setUser(user);
   }
 };
@@ -74,7 +73,6 @@ watch(
   },
   { immediate: true }
 );
-
 </script>
 
 <style lang="scss">

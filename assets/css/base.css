@@ -255,6 +255,10 @@ select {
   appearance: none;
   position: relative;
 }
+.select select:invalid {
+  background-color: var(--black-200) !important;
+  box-shadow: 0 0 0 1px var(--black-300);
+}
 
 html,
 body,

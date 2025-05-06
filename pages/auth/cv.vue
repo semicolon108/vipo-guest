@@ -142,6 +142,49 @@
               </div>
             </div>
           </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h1>ປະເພດວຽກທີ່ສົນໃຈ</h1>
+            </div>
+            <div class="field" id="firstName">
+              <label
+                >ຕຳແໜ່ງງານປະຈຸບັນ ຫຼື ຕຳແໜ່ງງານທີ່ສົນໃຈ <span>*</span></label
+              >
+              <input type="text" class="input" placeholder="ພະນັກງານຂາຍ" />
+              <p class="error-text">
+                {{ errors.firstName }}
+              </p>
+            </div>
+            <div class="field" id="firstName">
+              <label>ເງິນເດືອນທີ່ຕ້ອງການ</label>
+              <input type="text" class="input" placeholder="3.000.000" />
+              <p class="error-text">
+                {{ errors.firstName }}
+              </p>
+            </div>
+            <div class="field" id="firstName">
+              <label>ຢາກເຮັດວຽກຢູ່ ແຂວງ/ເມືອງ ໃດ</label>
+              <input type="text" class="input" placeholder="ເລືອກເມືອງ" />
+              <p class="error-text">
+                {{ errors.firstName }}
+              </p>
+            </div>
+            <div class="field" id="firstName">
+              <label>ຢາກເຮັດວຽກກັບທຸລະກິດປະເພດໃດ</label>
+              <div class="select">
+                <select name="" id="" required>
+                  <option value="" selected disabled>ເລືອກປະເພດທຸລະກິດ</option>
+                  <option>ໂຮງແຮມ ແລະ ຮ້ານອາຫານ</option>
+                </select>
+              </div>
+              <p class="error-text">
+                {{ errors.firstName }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Eudcation -->
           <div class="card" v-for="(i, idx) in educations as any" :key="i.key">
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
@@ -261,6 +304,7 @@
               />
             </div>
           </div>
+
           <!-- CV file start -->
           <div class="card">
             <div class="card-header">
@@ -1006,9 +1050,9 @@ onMounted(async () => {
     setTimeout(() => {
       //   console.log(user.value)
 
-      console.log(user.value)
+      console.log(user.value);
       useVipoCV.value = user.value.vipoCVStatus;
-      if (user.value.vipoCV &&  user.value.vipoCV.src) {
+      if (user.value.vipoCV && user.value.vipoCV.src) {
         vipoCVLink.value = user.value.vipoCV ? user.value.vipoCV.src : "";
       }
 
@@ -1159,6 +1203,9 @@ section {
           margin-bottom: 0.35rem;
           font-weight: 600;
           font-size: var(--sm-font);
+          span {
+            color: red;
+          }
         }
         input,
         select {
@@ -1361,6 +1408,7 @@ textarea {
   width: 100%;
 }
 .image-upload {
+  display: inline-block;
   img {
     display: block;
     min-width: 100px;
@@ -1368,6 +1416,8 @@ textarea {
     max-width: 100px;
     max-height: 100px;
     border-radius: 6px;
+    object-fit: cover;
+    border: 2px solid var(--black-300);
   }
   label {
     background-color: var(--black-200);
