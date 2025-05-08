@@ -147,40 +147,61 @@
             <div class="card-header">
               <h1>ປະເພດວຽກທີ່ສົນໃຈ</h1>
             </div>
-            <div class="field" id="firstName">
+            <div class="field" id="currentJobTitle">
               <label
-                >ຕຳແໜ່ງງານປະຈຸບັນ ຫຼື ຕຳແໜ່ງງານທີ່ສົນໃຈ <span>*</span></label
+                >ຕຳແໜ່ງງານປະຈຸບັນ ຫຼື ຕຳແໜ່ງງານທີ່ສົນໃຈ
+<!--                <span>*</span>-->
+              </label
               >
-              <input type="text" class="input" placeholder="ພະນັກງານຂາຍ" />
+              <input v-model="currentJobTitle" type="text" class="input" placeholder="ພະນັກງານຂາຍ" />
               <p class="error-text">
-                {{ errors.firstName }}
+                {{ errors.currentJobTitle }}
               </p>
             </div>
-            <div class="field" id="firstName">
+            <div class="field" id="expectedSalary">
               <label>ເງິນເດືອນທີ່ຕ້ອງການ</label>
-              <input type="text" class="input" placeholder="3.000.000" />
+              <CurrencyInput v-model="expectedSalary"/>
+<!--              <input v-model="expectedSalary" type="text" class="input" placeholder="3.000.000" />-->
               <p class="error-text">
-                {{ errors.firstName }}
+                {{ errors.expectedSalary }}
               </p>
             </div>
-            <div class="field" id="firstName">
-              <label>ຢາກເຮັດວຽກຢູ່ ແຂວງ/ເມືອງ ໃດ</label>
-              <input type="text" class="input" placeholder="ເລືອກເມືອງ" />
-              <p class="error-text">
-                {{ errors.firstName }}
-              </p>
-            </div>
-            <div class="field" id="firstName">
-              <label>ຢາກເຮັດວຽກກັບທຸລະກິດປະເພດໃດ</label>
-              <div class="select">
-                <select name="" id="" required>
-                  <option value="" selected disabled>ເລືອກປະເພດທຸລະກິດ</option>
-                  <option>ໂຮງແຮມ ແລະ ຮ້ານອາຫານ</option>
-                </select>
+            <div class="field" id="provinceId">
+              <label>ຢາກເຮັດວຽກຢູ່ແຂວງໃດ</label>
+
+
+              <div class="control">
+                <div class="select">
+                  <select v-model="provinceId" name="" id="">
+                    <option value="" selected disabled>ເລືອກແຂວງ</option>
+                    <option :value="i._id" v-for="i in provincesList">
+                      {{ i.name }}
+                    </option>
+                  </select>
+                </div>
+                <p v-if="errors.provinceId" class="error-text">
+                  {{ errors.provinceId }}
+                </p>
               </div>
-              <p class="error-text">
-                {{ errors.firstName }}
-              </p>
+
+
+            </div>
+            <div class="field" id="industryId">
+              <label>ຢາກເຮັດວຽກກັບທຸລະກິດປະເພດໃດ</label>
+
+              <div class="control">
+                <div class="select">
+                  <select v-model="industryId" name="" id="">
+                    <option value="" selected disabled>ເລືອກແຂວງ</option>
+                    <option :value="i._id" v-for="i in industryList">
+                      {{ i.name }}
+                    </option>
+                  </select>
+                </div>
+                <p v-if="errors.industryId" class="error-text">
+                  {{ errors.industryId }}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -636,6 +657,8 @@ import dayjs from "dayjs";
 import SkillInput from "@/components/SkillInput.vue";
 import Loading from "@/components/Loading.vue";
 
+import CurrencyInput from '@/components/CurrencyInput.vue'
+
 // Default to top is instant
 const { scrollToAnchor } = useAnchorScroll();
 
@@ -718,6 +741,12 @@ const { errors, defineField, setFieldValue, handleSubmit, resetForm } = useForm(
           level: yup.string().required("This field is required"),
         })
       ),
+
+      currentJobTitle: yup.string().required("This field is required"),
+      expectedSalary: yup.string().required("This field is required"),
+      industryId: yup.string().required("This field is required"),
+      provinceId: yup.string().required("This field is required"),
+
     }),
   }
 );
@@ -732,6 +761,12 @@ const [province] = defineField("province");
 const [district] = defineField("district");
 
 const [cvFile] = defineField("cvFile");
+
+const [currentJobTitle] = defineField("currentJobTitle");
+
+const [expectedSalary] = defineField("expectedSalary");
+const [industryId] = defineField("industryId");
+const [provinceId] = defineField("provinceId");
 
 const {
   fields: educations,
@@ -768,6 +803,8 @@ const languagesList = ref([]);
 
 const languageLevelsList = ref([]);
 
+const industryList = ref<any>([])
+
 const skills = ref([]);
 const skillLevels = ref([]);
 
@@ -791,6 +828,7 @@ const onSubmitBeforeValidate = async () => {
 
   await onSubmit();
 };
+
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values;
@@ -836,6 +874,14 @@ const onSubmit = handleSubmit(async (values) => {
             skillLevelId: i.level,
           }))
         : [],
+
+    workPreference: {
+      currentJobTitle: object.currentJobTitle,
+      currency: "₭",
+      expectedSalary: object.expectedSalary,
+      industryId: object.industryId,
+      provinceId: object.provinceId,
+    }
   };
 
   if (profileImgObject.value) {
@@ -943,6 +989,9 @@ const getReuse = async (type: string) => {
       case "SkillLevel":
         skillLevels.value = list;
         break;
+      case "Industry":
+        industryList.value = list;
+        break;
     }
   } catch (e) {
     console.log(e);
@@ -1011,6 +1060,7 @@ getReuse("Degree");
 getReuse("Language");
 getReuse("LanguageLevel");
 getReuse("SkillLevel");
+getReuse("Industry");
 getKeySkills();
 
 onMounted(async () => {
@@ -1088,6 +1138,21 @@ onMounted(async () => {
             : "";
         });
       }
+
+     if(user.value.workPreferences) {
+       currentJobTitle.value = user.value.workPreferences.currentJobTitle
+       expectedSalary.value = user.value.workPreferences.salary
+       provinceId.value = user.value.workPreferences.workLocation[0]._id
+       industryId.value = user.value.workPreferences.industryId[0]._id
+     }
+
+      // workPreference: {
+      //   currentJobTitle: object.currentJobTitle,
+      //       currency: "₭",
+      //       expectedSalary: object.expectedSalary,
+      //       industryId: object.industryId,
+      //       provinceId: object.provinceId,
+      // }
 
       if (user.value.education && user.value.education.length) {
         const i = user.value.education[user.value.education.length - 1];

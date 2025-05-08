@@ -142,6 +142,68 @@
               </div>
             </div>
           </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h1>ປະເພດວຽກທີ່ສົນໃຈ</h1>
+            </div>
+            <div class="field" id="currentJobTitle">
+              <label
+                >ຕຳແໜ່ງງານປະຈຸບັນ ຫຼື ຕຳແໜ່ງງານທີ່ສົນໃຈ <span>*</span></label
+              >
+              <input v-model="currentJobTitle" type="text" class="input" placeholder="ພະນັກງານຂາຍ" />
+              <p class="error-text">
+                {{ errors.currentJobTitle }}
+              </p>
+            </div>
+            <div class="field" id="expectedSalary">
+              <label>ເງິນເດືອນທີ່ຕ້ອງການ</label>
+              <CurrencyInput v-model="expectedSalary"/>
+<!--              <input v-model="expectedSalary" type="text" class="input" placeholder="3.000.000" />-->
+              <p class="error-text">
+                {{ errors.expectedSalary }}
+              </p>
+            </div>
+            <div class="field" id="provinceId">
+              <label>ຢາກເຮັດວຽກຢູ່ແຂວງໃດ</label>
+
+
+              <div class="control">
+                <div class="select">
+                  <select v-model="provinceId" name="" id="">
+                    <option value="" selected disabled>ເລືອກແຂວງ</option>
+                    <option :value="i._id" v-for="i in provincesList">
+                      {{ i.name }}
+                    </option>
+                  </select>
+                </div>
+                <p v-if="errors.provinceId" class="error-text">
+                  {{ errors.provinceId }}
+                </p>
+              </div>
+
+
+            </div>
+            <div class="field" id="industryId">
+              <label>ຢາກເຮັດວຽກກັບທຸລະກິດປະເພດໃດ</label>
+
+              <div class="control">
+                <div class="select">
+                  <select v-model="industryId" name="" id="">
+                    <option value="" selected disabled>ເລືອກແຂວງ</option>
+                    <option :value="i._id" v-for="i in industryList">
+                      {{ i.name }}
+                    </option>
+                  </select>
+                </div>
+                <p v-if="errors.industryId" class="error-text">
+                  {{ errors.industryId }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Eudcation -->
           <div class="card" v-for="(i, idx) in educations as any" :key="i.key">
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
@@ -261,6 +323,7 @@
               />
             </div>
           </div>
+
           <!-- CV file start -->
           <div class="card">
             <div class="card-header">
@@ -325,6 +388,7 @@
                     v-if="vipoCVLink"
                     :href="vipoCVLink"
                     target="_blank"
+                    style="color: white"
                   >
                     <i class="fa-solid fa-arrow-down-to-line"></i
                     >ດາວໂຫລດໄຟສຊີວີ້
@@ -591,6 +655,8 @@ import dayjs from "dayjs";
 import SkillInput from "@/components/SkillInput.vue";
 import Loading from "@/components/Loading.vue";
 
+import CurrencyInput from '@/components/CurrencyInput.vue'
+
 // Default to top is instant
 const { scrollToAnchor } = useAnchorScroll();
 
@@ -673,6 +739,12 @@ const { errors, defineField, setFieldValue, handleSubmit, resetForm } = useForm(
           level: yup.string().required("This field is required"),
         })
       ),
+
+      currentJobTitle: yup.string().required("This field is required"),
+      expectedSalary: yup.string().required("This field is required"),
+      industryId: yup.string().required("This field is required"),
+      provinceId: yup.string().required("This field is required"),
+
     }),
   }
 );
@@ -687,6 +759,12 @@ const [province] = defineField("province");
 const [district] = defineField("district");
 
 const [cvFile] = defineField("cvFile");
+
+const [currentJobTitle] = defineField("currentJobTitle");
+
+const [expectedSalary] = defineField("expectedSalary");
+const [industryId] = defineField("industryId");
+const [provinceId] = defineField("provinceId");
 
 const {
   fields: educations,
@@ -723,6 +801,8 @@ const languagesList = ref([]);
 
 const languageLevelsList = ref([]);
 
+const industryList = ref<any>([])
+
 const skills = ref([]);
 const skillLevels = ref([]);
 
@@ -746,6 +826,7 @@ const onSubmitBeforeValidate = async () => {
 
   await onSubmit();
 };
+
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values;
@@ -791,6 +872,14 @@ const onSubmit = handleSubmit(async (values) => {
             skillLevelId: i.level,
           }))
         : [],
+
+    workPreference: {
+      currentJobTitle: object.currentJobTitle,
+      currency: "₭",
+      expectedSalary: object.expectedSalary,
+      industryId: object.industryId,
+      provinceId: object.provinceId,
+    }
   };
 
   if (profileImgObject.value) {
@@ -898,6 +987,9 @@ const getReuse = async (type: string) => {
       case "SkillLevel":
         skillLevels.value = list;
         break;
+      case "Industry":
+        industryList.value = list;
+        break;
     }
   } catch (e) {
     console.log(e);
@@ -966,6 +1058,7 @@ getReuse("Degree");
 getReuse("Language");
 getReuse("LanguageLevel");
 getReuse("SkillLevel");
+getReuse("Industry");
 getKeySkills();
 
 onMounted(async () => {
@@ -1005,9 +1098,9 @@ onMounted(async () => {
     setTimeout(() => {
       //   console.log(user.value)
 
-      console.log(user.value)
+      console.log(user.value);
       useVipoCV.value = user.value.vipoCVStatus;
-      if (user.value.vipoCV &&  user.value.vipoCV.src) {
+      if (user.value.vipoCV && user.value.vipoCV.src) {
         vipoCVLink.value = user.value.vipoCV ? user.value.vipoCV.src : "";
       }
 
@@ -1043,6 +1136,21 @@ onMounted(async () => {
             : "";
         });
       }
+
+     if(user.value.workPreferences) {
+       currentJobTitle.value = user.value.workPreferences.currentJobTitle
+       expectedSalary.value = user.value.workPreferences.salary
+       provinceId.value = user.value.workPreferences.workLocation[0]._id
+       industryId.value = user.value.workPreferences.industryId[0]._id
+     }
+
+      // workPreference: {
+      //   currentJobTitle: object.currentJobTitle,
+      //       currency: "₭",
+      //       expectedSalary: object.expectedSalary,
+      //       industryId: object.industryId,
+      //       provinceId: object.provinceId,
+      // }
 
       if (user.value.education && user.value.education.length) {
         const i = user.value.education[user.value.education.length - 1];
@@ -1158,6 +1266,9 @@ section {
           margin-bottom: 0.35rem;
           font-weight: 600;
           font-size: var(--sm-font);
+          span {
+            color: red;
+          }
         }
         input,
         select {
@@ -1360,6 +1471,7 @@ textarea {
   width: 100%;
 }
 .image-upload {
+  display: inline-block;
   img {
     display: block;
     min-width: 100px;
@@ -1367,6 +1479,8 @@ textarea {
     max-width: 100px;
     max-height: 100px;
     border-radius: 6px;
+    object-fit: cover;
+    border: 2px solid var(--black-300);
   }
   label {
     background-color: var(--black-200);
