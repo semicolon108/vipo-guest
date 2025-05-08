@@ -81,12 +81,14 @@ const handleResend = async () => {
   errorMessage.value = ''
 
   try {
-    
+
+
     const form = {
+      mobile: route.query.mobile,
       verifyToken:  route.query.token
     }
 
-    const { data, error }: any = await useFetch(`${config.public.apiBase}/resend-verify-mobile-email-vipo`, {
+    const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-verification-code-vipo`, {
       method: 'POST',
       body: form,
     });
