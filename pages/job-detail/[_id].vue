@@ -40,6 +40,7 @@
               </div>
             </div>
             <div class="buttons">
+              
               <button
                 @click="shareRef.isPopupVisible = true"
                 class="button small share-button"
