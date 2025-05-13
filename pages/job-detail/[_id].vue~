@@ -27,9 +27,8 @@
                   <li>
                     <div class="tags">
                       <span
-                        v-for="i in detail.workTime || []"
-                        >{{ minutesToTimeString(i.startTime) }} -
-                        {{ minutesToTimeString(i.endTime) }}</span
+                        >{{ minutesToTimeString(detail.startTime) }} -
+                        {{ minutesToTimeString(detail.endTime) }}</span
                       >
                     </div>
                   </li>

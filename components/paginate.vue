@@ -3,7 +3,6 @@
     <label for="">ໜ້າ</label>
     <div class="select">
       <select name="" id="" class="small">
-
         <option v-for="i in lastPage" :value="i">{{ i }}</option>
       </select>
     </div>

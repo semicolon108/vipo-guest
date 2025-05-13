@@ -81,7 +81,7 @@ const handleResend = async () => {
   errorMessage.value = ''
 
   try {
-    
+
     const form = {
       verifyToken:  route.query.token
     }

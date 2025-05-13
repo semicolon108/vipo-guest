@@ -15,8 +15,8 @@
       <ul>
         <li v-for="i in detail.workTime || []">
           <span
-            >{{ minutesToTimeString(i.startTime) }} -
-            {{ minutesToTimeString(i.endTime) }}</span
+            >{{ minutesToTimeString(detail.startTime) }} -
+            {{ minutesToTimeString(detail.endTime) }}</span
           >
         </li>
       </ul>
