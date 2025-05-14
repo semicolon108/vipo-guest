@@ -150,25 +150,28 @@
             <div class="field" id="currentJobTitle">
               <label
                 >ຕຳແໜ່ງງານປະຈຸບັນ ຫຼື ຕຳແໜ່ງງານທີ່ສົນໃຈ
-<!--                <span>*</span>-->
-              </label
-              >
-              <input v-model="currentJobTitle" type="text" class="input" placeholder="ພະນັກງານຂາຍ" />
+                <!--                <span>*</span>-->
+              </label>
+              <input
+                v-model="currentJobTitle"
+                type="text"
+                class="input"
+                placeholder="ພະນັກງານຂາຍ"
+              />
               <p class="error-text">
                 {{ errors.currentJobTitle }}
               </p>
             </div>
             <div class="field" id="expectedSalary">
               <label>ເງິນເດືອນທີ່ຕ້ອງການ</label>
-              <CurrencyInput v-model="expectedSalary"/>
-<!--              <input v-model="expectedSalary" type="text" class="input" placeholder="3.000.000" />-->
+              <CurrencyInput v-model="expectedSalary" />
+              <!--              <input v-model="expectedSalary" type="text" class="input" placeholder="3.000.000" />-->
               <p class="error-text">
                 {{ errors.expectedSalary }}
               </p>
             </div>
             <div class="field" id="provinceId">
               <label>ຢາກເຮັດວຽກຢູ່ແຂວງໃດ</label>
-
 
               <div class="control">
                 <div class="select">
@@ -183,8 +186,6 @@
                   {{ errors.provinceId }}
                 </p>
               </div>
-
-
             </div>
             <div class="field" id="industryId">
               <label>ຢາກເຮັດວຽກກັບທຸລະກິດປະເພດໃດ</label>
@@ -573,7 +574,7 @@
 
               <button
                 type="button"
-                class="button add-button small light-orange"
+                class="button add-button small orange"
                 @click="languagesPush({ language: '', level: '' })"
               >
                 ເພີ່ມ
@@ -620,7 +621,7 @@
               <button
                 type="button"
                 @click="otherSkillsPush({ skill: '', level: '' })"
-                class="button add-button small light-orange"
+                class="button add-button small orange"
               >
                 ເພີ່ມ
               </button>
@@ -657,7 +658,7 @@ import dayjs from "dayjs";
 import SkillInput from "@/components/SkillInput.vue";
 import Loading from "@/components/Loading.vue";
 
-import CurrencyInput from '@/components/CurrencyInput.vue'
+import CurrencyInput from "@/components/CurrencyInput.vue";
 
 // Default to top is instant
 const { scrollToAnchor } = useAnchorScroll();
@@ -746,7 +747,6 @@ const { errors, defineField, setFieldValue, handleSubmit, resetForm } = useForm(
       expectedSalary: yup.string().required("This field is required"),
       industryId: yup.string().required("This field is required"),
       provinceId: yup.string().required("This field is required"),
-
     }),
   }
 );
@@ -803,7 +803,7 @@ const languagesList = ref([]);
 
 const languageLevelsList = ref([]);
 
-const industryList = ref<any>([])
+const industryList = ref<any>([]);
 
 const skills = ref([]);
 const skillLevels = ref([]);
@@ -828,7 +828,6 @@ const onSubmitBeforeValidate = async () => {
 
   await onSubmit();
 };
-
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values;
@@ -881,7 +880,7 @@ const onSubmit = handleSubmit(async (values) => {
       expectedSalary: object.expectedSalary,
       industryId: object.industryId,
       provinceId: object.provinceId,
-    }
+    },
   };
 
   if (profileImgObject.value) {
@@ -1139,12 +1138,12 @@ onMounted(async () => {
         });
       }
 
-     if(user.value.workPreferences) {
-       currentJobTitle.value = user.value.workPreferences.currentJobTitle
-       expectedSalary.value = user.value.workPreferences.salary
-       provinceId.value = user.value.workPreferences.workLocation[0]._id
-       industryId.value = user.value.workPreferences.industryId[0]._id
-     }
+      if (user.value.workPreferences) {
+        currentJobTitle.value = user.value.workPreferences.currentJobTitle;
+        expectedSalary.value = user.value.workPreferences.salary;
+        provinceId.value = user.value.workPreferences.workLocation[0]._id;
+        industryId.value = user.value.workPreferences.industryId[0]._id;
+      }
 
       // workPreference: {
       //   currentJobTitle: object.currentJobTitle,
