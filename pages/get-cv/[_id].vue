@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    
+
   </div>
 </template>
 
@@ -20,6 +20,7 @@ function downloadFile(url: string, filename: string) {
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+  
 }
 
 
