@@ -24,8 +24,15 @@ cursor: pointer;
 ">ສົ່ງອີກຄັ້ງ</a>
 
 
+
+
+
+
             <p style="font-size: 11px">
-              {{ isSending ? 'Sending...' : cooldown > 0 ? `ກະລຸນາລໍຖ້າ ${cooldown}s ເພື່ອສົ່ງອີກຄັ້ງ` : '' }}
+              <span v-if="isSending">Sending...</span>
+              <span v-else-if="cooldown > 0">
+                ກະລຸນາລໍຖ້າ <b style="color: #ff6d00">{{ cooldown }}s</b> ເພື່ອສົ່ງອີກຄັ້ງ
+              </span>
             </p>
 
             <br>
@@ -59,7 +66,6 @@ cursor: pointer;
 <script setup lang="ts">
 import {useForm} from "vee-validate";
 import * as yup from "yup";
-
 
 const route = useRoute()
 const apiError = ref('')
@@ -187,6 +193,8 @@ const verifyOtp = async () => {
     const token = data.value.token
     navigateTo('/auth/set-password?type=forgotPassword&mobile=' + form.mobile + '&token=' + token)
   }
+
+
 }
 
 
@@ -194,7 +202,7 @@ const onSubmit = handleSubmit((values) => {
   verifyOtp()
 })
 
-
+startCooldown(30)
 
 </script>
 
