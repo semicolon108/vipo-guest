@@ -67,7 +67,6 @@ cursor: pointer;
 import {useForm} from "vee-validate";
 import * as yup from "yup";
 
-
 const route = useRoute()
 const apiError = ref('')
 const config = useRuntimeConfig();
