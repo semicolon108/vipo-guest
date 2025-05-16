@@ -21,15 +21,16 @@
                   <li>
                     <i class="fa-regular fa-location-dot"></i>
 
-                    <span style="margin-left: 4px">{{detail.isWorkingLocation.join(', ')}}</span>
-<!--                    <span v-for="i in detail.workingLocation"-->
-<!--                      >{{ i.province }}-->
-<!--                    </span>-->
+                    <span style="margin-left: 4px">{{
+                      detail.isWorkingLocation.join(", ")
+                    }}</span>
+                    <!--                    <span v-for="i in detail.workingLocation"-->
+                    <!--                      >{{ i.province }}-->
+                    <!--                    </span>-->
                   </li>
                   <li>
                     <div class="tags">
-                      <span
-                        v-for="i in detail.workTime || []"
+                      <span v-for="i in detail.workTime || []"
                         >{{ minutesToTimeString(i.startTime) }} -
                         {{ minutesToTimeString(i.endTime) }}</span
                       >
@@ -42,7 +43,6 @@
               </div>
             </div>
             <div class="buttons">
-
               <button
                 @click="shareRef.isPopupVisible = true"
                 class="button small share-button"
@@ -91,7 +91,7 @@
 import Share from "@/components/Share.vue";
 import { minutesToTimeString } from "~/utils/formatter";
 
-import {baseURL} from "~/utils/global-variables";
+import { baseURL } from "~/utils/global-variables";
 
 const { $apiFetch } = useNuxtApp();
 
@@ -366,46 +366,6 @@ useSeoMeta({
     .apply-button {
       background-color: var(--orange-900);
       color: #fff;
-    }
-  }
-
-  .card-job-description {
-    border: 1px solid var(--black-300);
-    border-radius: 6px;
-    padding: 1rem;
-    margin-top: 1.5rem;
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    b {
-      font-weight: 700;
-    }
-
-    ul,
-    ol {
-      margin: 0.5rem 0;
-
-      li {
-        margin-left: 2rem;
-        line-height: 1.5;
-      }
-    }
-
-    ul li {
-      list-style-type: disc;
-    }
-
-    img {
-      width: 100%;
-      display: block;
-
-      &:not(:last-child) {
-        margin: 1rem 0;
-      }
     }
   }
 

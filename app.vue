@@ -95,4 +95,44 @@ section {
   margin-left: auto;
   margin-right: auto;
 }
+
+.card-job-description {
+  border: 1px solid var(--black-300);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  b {
+    font-weight: 700;
+  }
+
+  ul,
+  ol {
+    margin: 0.5rem 0;
+
+    li {
+      margin-left: 2rem;
+      line-height: 1.5;
+    }
+  }
+
+  ul li {
+    list-style-type: disc !important;
+  }
+
+  img {
+    width: 100%;
+    display: block;
+
+    &:not(:last-child) {
+      margin: 1rem 0;
+    }
+  }
+}
 </style>
