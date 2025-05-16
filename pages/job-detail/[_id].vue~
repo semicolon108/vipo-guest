@@ -20,9 +20,11 @@
                   </li>
                   <li>
                     <i class="fa-regular fa-location-dot"></i>
-                    <span v-for="i in detail.workingLocation"
-                      >{{ i.province }}
-                    </span>
+
+                    <span style="margin-left: 2px">{{detail.isWorkingLocation.join(', ')}}</span>
+<!--                    <span v-for="i in detail.workingLocation"-->
+<!--                      >{{ i.province }}-->
+<!--                    </span>-->
                   </li>
                   <li>
                     <div class="tags">
@@ -40,7 +42,7 @@
               </div>
             </div>
             <div class="buttons">
-              
+
               <button
                 @click="shareRef.isPopupVisible = true"
                 class="button small share-button"
@@ -88,6 +90,8 @@
 <script setup lang="ts">
 import Share from "@/components/Share.vue";
 import { minutesToTimeString } from "~/utils/formatter";
+
+import {baseURL} from "~/utils/global-variables";
 
 const { $apiFetch } = useNuxtApp();
 
@@ -179,7 +183,7 @@ await getTopBanner();
 
 onMounted(() => {
   setTimeout(() => {
-    shareRef.value.shareLink = "https://new.vipo.cc" + route.fullPath;
+    shareRef.value.shareLink = baseURL + route.fullPath;
   });
 });
 
@@ -196,7 +200,7 @@ useSeoMeta({
   ogImageHeight: "630",
   ogImageType: "image/jpeg",
   ogImageAlt: detail.value.title,
-  ogUrl: "https://new.vipo.cc" + route.fullPath,
+  ogUrl: baseURL + route.fullPath,
   ogSiteName: "",
   ogType: "article",
   articlePublishedTime: detail.value.createdAt,

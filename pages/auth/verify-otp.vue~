@@ -77,8 +77,6 @@ const errorMessage = ref('')
 const cooldown = ref(0)
 let cooldownTimer: NodeJS.Timeout | null = null
 
-
-
 const handleResend = async () => {
   if (isSending.value || cooldown.value > 0) return
 
@@ -105,7 +103,6 @@ const handleResend = async () => {
       return
     }
 
-
     successMessage.value = 'OTP sent successfully!'
     startCooldown(30) // 30-second cooldown
   } catch (err: any) {
@@ -128,7 +125,6 @@ function startCooldown(seconds: number) {
     }
   }, 1000)
 }
-
 
 const {
   values,

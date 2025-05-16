@@ -1,12 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import { apiBase, fileTmp } from "./utils/global-variables";
+
 
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      apiBase,
-     fileTmp,
+      apiBase: "https://db.108.jobs/client-vipo-api",
+      fileTmp: "https://db.108.jobs",
 
       //     apiBase: "https://db-dev.108.jobs/client-vipo-api",
       //     fileTmp: "https://db-dev.108.jobs",

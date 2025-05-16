@@ -77,8 +77,6 @@ const errorMessage = ref('')
 const cooldown = ref(0)
 let cooldownTimer: NodeJS.Timeout | null = null
 
-
-
 const handleResend = async () => {
   if (isSending.value || cooldown.value > 0) return
 
@@ -104,7 +102,6 @@ const handleResend = async () => {
       }, 2000)
       return
     }
-
 
     successMessage.value = 'OTP sent successfully!'
     startCooldown(30) // 30-second cooldown
@@ -192,8 +189,6 @@ const verifyOtp = async () => {
     const token = data.value.token
     navigateTo('/auth/set-password?type=forgotPassword&mobile=' + form.mobile + '&token=' + token)
   }
-
-
 }
 
 

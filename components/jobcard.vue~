@@ -15,8 +15,8 @@
       <ul>
         <li v-for="i in detail.workTime || []">
           <span
-            >{{ minutesToTimeString(detail.startTime) }} -
-            {{ minutesToTimeString(detail.endTime) }}</span
+            >{{ minutesToTimeString(i.startTime) }} -
+            {{ minutesToTimeString(i.endTime) }}</span
           >
         </li>
       </ul>
@@ -25,7 +25,18 @@
     <div class="jobcard-footer">
       <div class="footer-start">
         <i class="fa-solid fa-location-dot"></i>
-        <p v-for="i in detail.workingLocation">{{ i.province }}</p>
+
+        <p style="
+
+
+  max-width: 2000px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+
+
+">{{ detail.isWorkingLocation.join(', ') }}</p>
       </div>
       <div class="footer-end">
         <button class="button small">ສະໝັກ</button>
@@ -41,7 +52,8 @@ import {
   minutesToTimeString,
 } from "~/utils/formatter";
 
-const { detail }: any = defineProps(["detail"]);
+const { detail }: any = defineProps(["detail"])
+
 </script>
 
 <style lang="scss" scoped>
