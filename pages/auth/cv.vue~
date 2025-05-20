@@ -149,24 +149,29 @@
             </div>
             <div class="field" id="currentJobTitle">
               <label
-                >ຕຳແໜ່ງງານປະຈຸບັນ ຫຼື ຕຳແໜ່ງງານທີ່ສົນໃຈ <span>*</span></label
-              >
-              <input v-model="currentJobTitle" type="text" class="input" placeholder="ພະນັກງານຂາຍ" />
+                >ຕຳແໜ່ງງານປະຈຸບັນ ຫຼື ຕຳແໜ່ງງານທີ່ສົນໃຈ
+                <!--                <span>*</span>-->
+              </label>
+              <input
+                v-model="currentJobTitle"
+                type="text"
+                class="input"
+                placeholder="ພະນັກງານຂາຍ"
+              />
               <p class="error-text">
                 {{ errors.currentJobTitle }}
               </p>
             </div>
             <div class="field" id="expectedSalary">
               <label>ເງິນເດືອນທີ່ຕ້ອງການ</label>
-              <CurrencyInput v-model="expectedSalary"/>
-<!--              <input v-model="expectedSalary" type="text" class="input" placeholder="3.000.000" />-->
+              <CurrencyInput v-model="expectedSalary" />
+              <!--              <input v-model="expectedSalary" type="text" class="input" placeholder="3.000.000" />-->
               <p class="error-text">
                 {{ errors.expectedSalary }}
               </p>
             </div>
             <div class="field" id="provinceId">
               <label>ຢາກເຮັດວຽກຢູ່ແຂວງໃດ</label>
-
 
               <div class="control">
                 <div class="select">
@@ -181,8 +186,6 @@
                   {{ errors.provinceId }}
                 </p>
               </div>
-
-
             </div>
             <div class="field" id="industryId">
               <label>ຢາກເຮັດວຽກກັບທຸລະກິດປະເພດໃດ</label>
@@ -205,6 +208,18 @@
 
           <!-- Eudcation -->
           <div class="card" v-for="(i, idx) in educations as any" :key="i.key">
+
+            <div v-if="idx !== 0">
+              <br>
+              <hr>
+              <br>
+
+              <a style="color: red; text-align: right" class="delete-button" @click="educationsRemove(idx)">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+
+            </div>
+
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
             </div>
@@ -322,7 +337,15 @@
                 :name="`educations[${idx}].endDate`"
               />
             </div>
+            <button
+                type="button"
+                class="button add-button small orange"
+                @click="educationsPush({ major: '', university: '', degree: '', startDate: '', endDate: '', isCurrentlyStudying: false })" >
+              ເພີ່ມ
+            </button>
           </div>
+
+
 
           <!-- CV file start -->
           <div class="card">
@@ -411,6 +434,16 @@
               </p>
             </div>
             <div v-for="(i, idx) in workHistories as any" :key="i.key">
+            <div v-if="idx !== 0">
+              <br>
+              <hr>
+              <br>
+
+              <a style="color: red; text-align: right" class="delete-button" @click="workHistoriesRemove(idx)">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+
+            </div>
               <div class="field" id="workHistories[0].company">
                 <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
                 <Field
@@ -520,6 +553,14 @@
                 </div>
               </div>
             </div>
+
+            <button
+                type="button"
+                class="button add-button small orange"
+                @click="workHistoriesPush({ company: '', position: '', startDate: '', endDate: '', isCurrentlyWorking: false, detail: '' })" >
+              ເພີ່ມ
+            </button>
+
           </div>
           <div class="card">
             <div class="card-header">
@@ -571,7 +612,7 @@
 
               <button
                 type="button"
-                class="button add-button small light-orange"
+                class="button add-button small orange"
                 @click="languagesPush({ language: '', level: '' })"
               >
                 ເພີ່ມ
@@ -618,7 +659,7 @@
               <button
                 type="button"
                 @click="otherSkillsPush({ skill: '', level: '' })"
-                class="button add-button small light-orange"
+                class="button add-button small orange"
               >
                 ເພີ່ມ
               </button>
@@ -655,7 +696,7 @@ import dayjs from "dayjs";
 import SkillInput from "@/components/SkillInput.vue";
 import Loading from "@/components/Loading.vue";
 
-import CurrencyInput from '@/components/CurrencyInput.vue'
+import CurrencyInput from "@/components/CurrencyInput.vue";
 
 // Default to top is instant
 const { scrollToAnchor } = useAnchorScroll();
@@ -744,7 +785,6 @@ const { errors, defineField, setFieldValue, handleSubmit, resetForm } = useForm(
       expectedSalary: yup.string().required("This field is required"),
       industryId: yup.string().required("This field is required"),
       provinceId: yup.string().required("This field is required"),
-
     }),
   }
 );
@@ -801,7 +841,7 @@ const languagesList = ref([]);
 
 const languageLevelsList = ref([]);
 
-const industryList = ref<any>([])
+const industryList = ref<any>([]);
 
 const skills = ref([]);
 const skillLevels = ref([]);
@@ -826,7 +866,6 @@ const onSubmitBeforeValidate = async () => {
 
   await onSubmit();
 };
-
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values;
@@ -879,7 +918,7 @@ const onSubmit = handleSubmit(async (values) => {
       expectedSalary: object.expectedSalary,
       industryId: object.industryId,
       provinceId: object.provinceId,
-    }
+    },
   };
 
   if (profileImgObject.value) {
@@ -1049,6 +1088,10 @@ const getKeySkills = async () => {
 
 const isLoading = ref(true);
 
+const addArray = () => {
+
+}
+
 //Type not matching in model: Country,State,SkillLevel,KeySkills,CurrentResidence,Nationality,BannerType,BlogType,Degree,CompanySize,Gender,Industry,JobEducationLevel,JobExperience,JobFunction,JobZone,Language,LanguageLevel,MaritalStatus,Province,Tag,SalaryRange,District,JobTag,SkillTag,AdditionalTag,JobLevel
 
 await getProvinces();
@@ -1137,12 +1180,12 @@ onMounted(async () => {
         });
       }
 
-     if(user.value.workPreferences) {
-       currentJobTitle.value = user.value.workPreferences.currentJobTitle
-       expectedSalary.value = user.value.workPreferences.salary
-       provinceId.value = user.value.workPreferences.workLocation[0]._id
-       industryId.value = user.value.workPreferences.industryId[0]._id
-     }
+      if (user.value.workPreferences) {
+        currentJobTitle.value = user.value.workPreferences.currentJobTitle;
+        expectedSalary.value = user.value.workPreferences.salary;
+        provinceId.value = user.value.workPreferences.workLocation[0]._id;
+        industryId.value = user.value.workPreferences.industryId[0]._id;
+      }
 
       // workPreference: {
       //   currentJobTitle: object.currentJobTitle,
@@ -1153,17 +1196,31 @@ onMounted(async () => {
       // }
 
       if (user.value.education && user.value.education.length) {
-        const i = user.value.education[user.value.education.length - 1];
+        // const i = user.value.education[user.value.education.length - 1];
+        // educationsRemove(0);
+        // educationsPush({
+        //   _id: i._id,
+        //   major: i.subject,
+        //   university: i.school,
+        //   degree: i.qualifications ? i.qualifications._id : "",
+        //   startDate: i.startYear,
+        //   endDate: i.endYear,
+        //   isCurrentlyStudying: i.currentlyStudying,
+        // });
+
+
         educationsRemove(0);
-        educationsPush({
-          _id: i._id,
-          major: i.subject,
-          university: i.school,
-          degree: i.qualifications ? i.qualifications._id : "",
-          startDate: i.startYear,
-          endDate: i.endYear,
-          isCurrentlyStudying: i.currentlyStudying,
-        });
+        for(let i = 0; i < user.value.education.length; i++){
+          educationsPush({
+            _id: user.value.education[i]._id,
+            major: user.value.education[i].subject,
+            university: user.value.education[i].school,
+            degree: user.value.education[i].qualifications ? user.value.education[i].qualifications._id : "",
+            startDate: user.value.education[i].startYear,
+            endDate: user.value.education[i].endYear,
+            isCurrentlyStudying: user.value.education[i].currentlyStudying,
+          });
+        }
       }
 
       if (user.value.noExperience) {

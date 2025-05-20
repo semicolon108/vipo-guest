@@ -208,6 +208,18 @@
 
           <!-- Eudcation -->
           <div class="card" v-for="(i, idx) in educations as any" :key="i.key">
+
+            <div v-if="idx !== 0">
+              <br>
+              <hr>
+              <br>
+
+              <a style="color: red; text-align: right" class="delete-button" @click="educationsRemove(idx)">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+
+            </div>
+
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
             </div>
@@ -325,7 +337,15 @@
                 :name="`educations[${idx}].endDate`"
               />
             </div>
+            <button
+                type="button"
+                class="button add-button small orange"
+                @click="educationsPush({ major: '', university: '', degree: '', startDate: '', endDate: '', isCurrentlyStudying: false })" >
+              ເພີ່ມ
+            </button>
           </div>
+
+
 
           <!-- CV file start -->
           <div class="card">
@@ -414,6 +434,16 @@
               </p>
             </div>
             <div v-for="(i, idx) in workHistories as any" :key="i.key">
+            <div v-if="idx !== 0">
+              <br>
+              <hr>
+              <br>
+
+              <a style="color: red; text-align: right" class="delete-button" @click="workHistoriesRemove(idx)">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+
+            </div>
               <div class="field" id="workHistories[0].company">
                 <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
                 <Field
@@ -523,6 +553,14 @@
                 </div>
               </div>
             </div>
+
+            <button
+                type="button"
+                class="button add-button small orange"
+                @click="workHistoriesPush({ company: '', position: '', startDate: '', endDate: '', isCurrentlyWorking: false, detail: '' })" >
+              ເພີ່ມ
+            </button>
+
           </div>
           <div class="card">
             <div class="card-header">
@@ -1050,6 +1088,10 @@ const getKeySkills = async () => {
 
 const isLoading = ref(true);
 
+const addArray = () => {
+
+}
+
 //Type not matching in model: Country,State,SkillLevel,KeySkills,CurrentResidence,Nationality,BannerType,BlogType,Degree,CompanySize,Gender,Industry,JobEducationLevel,JobExperience,JobFunction,JobZone,Language,LanguageLevel,MaritalStatus,Province,Tag,SalaryRange,District,JobTag,SkillTag,AdditionalTag,JobLevel
 
 await getProvinces();
@@ -1154,34 +1196,63 @@ onMounted(async () => {
       // }
 
       if (user.value.education && user.value.education.length) {
-        const i = user.value.education[user.value.education.length - 1];
+        // const i = user.value.education[user.value.education.length - 1];
+        // educationsRemove(0);
+        // educationsPush({
+        //   _id: i._id,
+        //   major: i.subject,
+        //   university: i.school,
+        //   degree: i.qualifications ? i.qualifications._id : "",
+        //   startDate: i.startYear,
+        //   endDate: i.endYear,
+        //   isCurrentlyStudying: i.currentlyStudying,
+        // });
+
+
         educationsRemove(0);
-        educationsPush({
-          _id: i._id,
-          major: i.subject,
-          university: i.school,
-          degree: i.qualifications ? i.qualifications._id : "",
-          startDate: i.startYear,
-          endDate: i.endYear,
-          isCurrentlyStudying: i.currentlyStudying,
-        });
+        for(let i = 0; i < user.value.education.length; i++){
+          educationsPush({
+            _id: user.value.education[i]._id,
+            major: user.value.education[i].subject,
+            university: user.value.education[i].school,
+            degree: user.value.education[i].qualifications ? user.value.education[i].qualifications._id : "",
+            startDate: user.value.education[i].startYear,
+            endDate: user.value.education[i].endYear,
+            isCurrentlyStudying: user.value.education[i].currentlyStudying,
+          });
+        }
       }
 
       if (user.value.noExperience) {
         isHaveNoExp.value = true;
         workHistoriesRemove(0);
       } else if (user.value.workHistory && user.value.workHistory.length) {
-        const i = user.value.workHistory[user.value.workHistory.length - 1];
+        // const i = user.value.workHistory[user.value.workHistory.length - 1];
+        // workHistoriesRemove(0);
+        // workHistoriesPush({
+        //   _id: i._id,
+        //   company: i.company,
+        //   position: i.position,
+        //   startDate: i.startYear,
+        //   endDate: i.endYear,
+        //   isCurrentlyWorking: i.isCurrentJob,
+        //   detail: i.responsibility,
+        // });
+
+
         workHistoriesRemove(0);
-        workHistoriesPush({
-          _id: i._id,
-          company: i.company,
-          position: i.position,
-          startDate: i.startYear,
-          endDate: i.endYear,
-          isCurrentlyWorking: i.isCurrentJob,
-          detail: i.responsibility,
-        });
+
+        for(let i = 0; i < user.value.workHistory.length; i++){
+          workHistoriesPush({
+            _id: user.value.workHistory[i]._id,
+            company: user.value.workHistory[i].company,
+            position: user.value.workHistory[i].position,
+            startDate: user.value.workHistory[i].startYear,
+            endDate: user.value.workHistory[i].endYear,
+            isCurrentlyWorking: user.value.workHistory[i].isCurrentJob,
+            detail: user.value.workHistory[i].responsibility,
+          });
+        }
       }
 
       if (user.value.languageSkill && user.value.languageSkill.length) {
