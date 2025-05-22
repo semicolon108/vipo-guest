@@ -13,30 +13,32 @@
       <p><i class="fa-solid fa-building"></i>{{ detail.companyName }}</p>
       <h3>{{ detail.title }}</h3>
       <ul>
-        <li v-for="i in detail.workTime || []">
-          <span
+        <li>
+          <span v-for="i in detail.workTime || []"
             >{{ minutesToTimeString(i.startTime) }} -
             {{ minutesToTimeString(i.endTime) }}</span
           >
         </li>
       </ul>
-      <h6>{{ formatCurrency(detail.salary) }} ກີບ</h6>
+      <div class="salary">
+        ເງິນເດືອນເລີ່ມຕົ້ນ:
+        <p class="salary">{{ formatCurrency(detail.salary) }} ກີບ</p>
+      </div>
     </div>
     <div class="jobcard-footer">
       <div class="footer-start">
         <i class="fa-solid fa-location-dot"></i>
 
-        <p style="
-
-
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-
-
-">{{ detail.isWorkingLocation.join(', ') }}</p>
+        <p
+          style="
+            max-width: 200px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          "
+        >
+          {{ detail.isWorkingLocation.join(", ") }}
+        </p>
       </div>
       <div class="footer-end">
         <button class="button small">ສະໝັກ</button>
@@ -52,8 +54,7 @@ import {
   minutesToTimeString,
 } from "~/utils/formatter";
 
-const { detail }: any = defineProps(["detail"])
-
+const { detail }: any = defineProps(["detail"]);
 </script>
 
 <style lang="scss" scoped>
@@ -64,6 +65,8 @@ const { detail }: any = defineProps(["detail"])
   box-shadow: 0 0 0 1px var(--black-300), 0 0 8px 3px rgba(#000, 0.03);
   cursor: pointer;
   transition: all ease-in-out 0.25s;
+  display: flex;
+  flex-direction: column;
   &:hover {
     box-shadow: 0 0 0 3px var(--orange-900), 0 0 0 rgba(#000, 0.05);
   }
@@ -99,6 +102,7 @@ const { detail }: any = defineProps(["detail"])
   } //jobcard-header
   .jobcard-body {
     padding: 1rem;
+    flex-grow: 1;
     p {
       font-size: var(--xsm-font);
       color: var(--black-600);
@@ -122,20 +126,31 @@ const { detail }: any = defineProps(["detail"])
       margin-bottom: 0.75rem;
       li {
         display: flex;
-        align-items: center;
-        height: 1.8rem;
-        border-radius: 3px;
-        padding: 0 0.5rem;
-        background-color: var(--black-200);
-        font-size: var(--xsm-font);
+        flex-wrap: wrap;
+        gap: 0.25rem;
         span {
+          background-color: var(--black-200);
+          font-size: var(--xxsm-font);
           line-height: 1;
+          height: 1.8rem;
+          border-radius: 3px;
+          padding: 0 0.5rem;
+          display: flex;
+          align-items: center;
         }
       }
     }
-    h6 {
-      font-weight: 600;
-      display: inline-block;
+    .salary {
+      font-size: var(--xsm-font);
+      p {
+        font-weight: 700;
+        display: inline-block;
+        background-color: var(--yellow-900);
+        padding: 0.15rem 0.75rem;
+        border-radius: 6px;
+        font-size: var(--sm-font);
+        color: #000;
+      }
     }
   } // jobcard-body
   .jobcard-footer {
