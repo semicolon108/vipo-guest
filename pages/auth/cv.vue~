@@ -82,9 +82,7 @@
             </div>
             <div class="field" id="dateOfBirth">
               <label>ວັນເດືອນປີເກີດ</label>
-
               <DateInput v-model="dateOfBirth" />
-
               <p v-if="errors.dateOfBirth" class="error-text">
                 {{ errors.dateOfBirth }}
               </p>
@@ -207,145 +205,215 @@
           </div>
 
           <!-- Eudcation -->
-          <div class="card" v-for="(i, idx) in educations as any" :key="i.key">
-
-            <div v-if="idx !== 0">
-              <br>
-              <hr>
-              <br>
-
-              <a style="color: red; text-align: right" class="delete-button" @click="educationsRemove(idx)">
-                <i class="fa-solid fa-trash"></i>
-              </a>
-
-            </div>
-
+          <div class="card" >
+<!--            <div v-if="idx !== 0">-->
+<!--              <br />-->
+<!--              <hr />-->
+<!--              <br />-->
+<!--              <a-->
+<!--                style="color: red; text-align: right"-->
+<!--                class="delete-button"-->
+<!--                @click="educationsRemove(idx)"-->
+<!--              >-->
+<!--                <i class="fa-solid fa-trash"></i>-->
+<!--              </a>-->
+<!--            </div>-->
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
             </div>
-            <div class="field" id="educations[0].major">
-              <label>ວິຊາທີ່ຮຽນ</label>
-              <Field
-                :name="`educations[${idx}].major`"
-                as="input"
-                type="text"
-                placeholder="ການເງິນ ການບັນຊີ"
-              />
-              <ErrorMessage
-                class="error-text"
-                :name="`educations[${idx}].major`"
-              />
-            </div>
+           <div v-for="(i, idx) in educations as any" :key="i.key">
+             <div class="list">
+               <ul>
 
-            <div class="field" id="educations[0].university">
-              <label>ສະຖາບັນການສຶກສາ</label>
-              <Field
-                :name="`educations[${idx}].university`"
-                as="input"
-                type="text"
-                placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
-              />
-              <ErrorMessage
-                class="error-text"
-                :name="`educations[${idx}].university`"
-              />
-            </div>
-            <div class="field" id="educations[0].degree">
-              <label>ລະດັບການສຶກສາ</label>
-              <div class="control">
-                <div class="select">
-                  <select v-model="i.value.degree">
-                    <option v-for="o in educationLevelList" :value="o._id">
-                      {{ o.name }}
-                    </option>
-                  </select>
-                </div>
+                 <li v-if="educationLevelList.length && i.value.degree">{{educationLevelList.find((j: any) => j._id === i.value.degree)?.name}} - {{i.value.major}}</li>
+                 <li>{{i.value.university}}</li>
+                 <li><span>{{ formatMonthAndYear(i.value.startDate) }}</span> - <span>{{ formatMonthAndYear(i.value.endDate) }}</span></li>
+               </ul>
+               <div class="actions">
+                 <a  @click="selectedEduIdx = idx" class="edit"><i class="fa-solid fa-pen"></i></a>
+               </div>
 
-                <div v-show="false">
-                  <Field
-                    :name="`educations[${idx}].degree`"
-                    as="input"
-                    type="text"
-                    placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
-                  />
-                </div>
-                <ErrorMessage
-                  class="error-text"
-                  :name="`educations[${idx}].degree`"
-                />
-              </div>
-            </div>
-            <div class="field" v-if="!isLoading" id="educations[0].startDate">
-              <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
-              <div class="selects">
-                <DateInput
-                  v-model="i.value.startDate"
-                  style="width: 100%"
-                  :is-only-month-and-year="true"
-                />
-              </div>
+               <ErrorMessage
+                   class="error-text"
+                   :name="`educations[${idx}]`"
+               />
+             </div>
+             <button
+                 v-if="idx === educations.length - 1"
+                 class="button add-button small orange"
+                 @click="() => {
+                   educationsPush({
+                     major: '',
+                     university: '',
+                     degree: '',
+                     startDate: '',
+                     endDate: '',
+                     isCurrentlyStudying: false,
+                   });
+                   selectedEduIdx = educations.length - 1
+                 }"
+             >
+               ເພີ່ມການສຶກສາ
+             </button>
 
-              <div v-show="false">
-                <Field
-                  :name="`educations[${idx}].startDate`"
-                  as="input"
-                  type="text"
-                />
-              </div>
-              <ErrorMessage
-                class="error-text"
-                :name="`educations[${idx}].startDate`"
-              />
-            </div>
-            <div
-              class="field"
-              :class="{ disabledzzz: i.value.isCurrentlyStudying }"
-            >
-              <label class="has-checkbox">
-                ຈົນເຖິງ
-                <!-- if true add class checked -->
-                <p
-                  class="checkbox"
-                  @click="
-                    i.value.isCurrentlyStudying = !i.value.isCurrentlyStudying
-                  "
-                  :class="{ checked: i.value.isCurrentlyStudying }"
-                >
-                  ກຳລັງເປັນນັກສຶກຢູ່
-                </p>
-              </label>
-              <div
-                class="selects"
-                v-show="!i.value.isCurrentlyStudying"
-                id="educations[0].endDate"
-              >
-                <DateInput
-                  v-model="i.value.endDate"
-                  style="width: 100%"
-                  :is-only-month-and-year="true"
-                />
-              </div>
-              <div v-show="false">
-                <Field
-                  :name="`educations[${idx}].endDate`"
-                  as="input"
-                  type="text"
-                />
-              </div>
-              <ErrorMessage
-                class="error-text"
-                :name="`educations[${idx}].endDate`"
-              />
-            </div>
-            <button
-                type="button"
-                class="button add-button small orange"
-                @click="educationsPush({ major: '', university: '', degree: '', startDate: '', endDate: '', isCurrentlyStudying: false })" >
-              ເພີ່ມ
-            </button>
+             <div class="modal-form" v-show="selectedEduIdx === idx">
+               <div class="modal-form-area">
+                 <div class="form-content">
+                   <div class="field" :id="`educations[${idx}].major`">
+                     <label>ວິຊາທີ່ຮຽນ</label>
+                     <Field
+                         :name="`educations[${idx}].major`"
+                         as="input"
+                         type="text"
+                         placeholder="ການເງິນ ການບັນຊີ"
+                     />
+                     <ErrorMessage
+                         class="error-text"
+                         :name="`educations[${idx}].major`"
+                     />
+                   </div>
+                   <div class="field" :id="`educations[${idx}].university`">
+                     <label>ສະຖາບັນການສຶກສາ</label>
+                     <Field
+                         :name="`educations[${idx}].university`"
+                         as="input"
+                         type="text"
+                         placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
+                     />
+                     <ErrorMessage
+                         class="error-text"
+                         :name="`educations[${idx}].university`"
+                     />
+                   </div>
+                   <div class="field"  :id="`educations[${idx}].degree`">
+                     <label>ລະດັບການສຶກສາ</label>
+                     <div class="control">
+                       <div class="select">
+                         <select v-model="i.value.degree">
+                           <option
+                               v-for="o in educationLevelList"
+                               :value="o._id"
+                           >
+                             {{ o.name }}
+                           </option>
+                         </select>
+                       </div>
+
+                       <div v-show="false">
+                         <Field
+                             :name="`educations[${idx}].degree`"
+                             as="input"
+                             type="text"
+                             placeholder="ໂຮງຮຽນ / ວິທະຍາໄລ"
+                         />
+                       </div>
+                       <ErrorMessage
+                           class="error-text"
+                           :name="`educations[${idx}].degree`"
+                       />
+                     </div>
+                   </div>
+                   <div
+                       class="field"
+                       v-if="!isLoading"
+                       :id="`educations[${idx}].startDate`"
+
+                   >
+                     <label>ເລີ່ມສຶກສາຕັ້ງແຕ່</label>
+                     <div class="selects">
+                       <DateInput
+                           v-model="i.value.startDate"
+                           style="width: 100%"
+                           :is-only-month-and-year="true"
+                       />
+                     </div>
+
+                     <div v-show="false">
+                       <Field
+                           :name="`educations[${idx}].startDate`"
+                           as="input"
+                           type="text"
+                       />
+                     </div>
+                     <ErrorMessage
+                         class="error-text"
+                         :name="`educations[${idx}].startDate`"
+                     />
+                   </div>
+                   <div
+                       class="field"
+                       :class="{ disabledzzz: i.value.isCurrentlyStudying }"
+                   >
+                     <label class="has-checkbox">
+                       ຈົນເຖິງ
+                       <!-- if true add class checked -->
+                       <p
+                           class="checkbox"
+                           @click="
+                          i.value.isCurrentlyStudying =
+                            !i.value.isCurrentlyStudying
+                        "
+                           :class="{ checked: i.value.isCurrentlyStudying }"
+                       >
+                         ກຳລັງເປັນນັກສຶກຢູ່
+                       </p>
+                     </label>
+                     <div
+                         class="selects"
+                         v-show="!i.value.isCurrentlyStudying"
+                         :name="`educations[${idx}].endDate`"
+                     >
+                       <DateInput
+                           v-model="i.value.endDate"
+                           style="width: 100%"
+                           :is-only-month-and-year="true"
+                       />
+                     </div>
+                     <div v-show="false">
+                       <Field
+                           :name="`educations[${idx}].endDate`"
+                           as="input"
+                           type="text"
+                       />
+                     </div>
+                     <ErrorMessage
+                         class="error-text"
+                         :name="`educations[${idx}].endDate`"
+                     />
+                   </div>
+                   <div class="buttons">
+                     <button
+                         class="button add-button light-grey small"
+                         @click="() => {
+
+                           if(!i.value.major) {
+                             educationsRemove(idx);
+                             selectedEduIdx = null;
+                           }else {
+                             selectedEduIdx = null;
+                           }
+                         }"
+                     >
+                       ຍົກເລີກ
+                     </button>
+                     <button
+                         type="button"
+                         class="button add-button small orange"
+                         @click="
+                         validateSingle('educations', idx)
+                      "
+                     >
+                       ເພີ່ມ
+                     </button>
+                   </div>
+                   <a
+                       v-if="educations.length > 1"
+                       @click="educationsRemove(idx); selectedEduIdx = null" class="delete">ລົບປະຫວັດນີ້</a>
+                 </div>
+               </div>
+             </div>
+           </div>
           </div>
-
-
 
           <!-- CV file start -->
           <div class="card">
@@ -422,6 +490,7 @@
           </div>
           <!-- CV file end -->
 
+          <!-- Work Exp start -->
           <div class="card" :class="{ disabled: isHaveNoExp }">
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
@@ -434,16 +503,15 @@
               </p>
             </div>
             <div v-for="(i, idx) in workHistories as any" :key="i.key">
-            <div v-if="idx !== 0">
-              <br>
-              <hr>
-              <br>
-
-              <a style="color: red; text-align: right" class="delete-button" @click="workHistoriesRemove(idx)">
-                <i class="fa-solid fa-trash"></i>
-              </a>
-
-            </div>
+              <div v-if="idx !== 0">
+                <a
+                  style="color: red; text-align: right"
+                  class="delete-button"
+                  @click="workHistoriesRemove(idx)"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </div>
               <div class="field" id="workHistories[0].company">
                 <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
                 <Field
@@ -555,13 +623,24 @@
             </div>
 
             <button
-                type="button"
-                class="button add-button small orange"
-                @click="workHistoriesPush({ company: '', position: '', startDate: '', endDate: '', isCurrentlyWorking: false, detail: '' })" >
+              type="button"
+              class="button add-button small orange"
+              @click="
+                workHistoriesPush({
+                  company: '',
+                  position: '',
+                  startDate: '',
+                  endDate: '',
+                  isCurrentlyWorking: false,
+                  detail: '',
+                })
+              "
+            >
               ເພີ່ມ
             </button>
-
           </div>
+          <!-- Work Exp End -->
+
           <div class="card">
             <div class="card-header">
               <h1>ທັກສະດ້ານ ພາສາ</h1>
@@ -683,6 +762,8 @@
 </template>
 
 <script setup lang="ts">
+import {formatDefaultDate, formatMonthAndYear} from "../../utils/formatter";
+
 definePageMeta({
   ssr: false,
 });
@@ -706,6 +787,10 @@ const cvFileUse = ref<any>(["ຂ້ອຍມີຊີວີ້", "ໃຫ້ VIPO
 
 const { showToast } = useToast();
 
+// Tonh Edit Education and Work Exp
+const showEducationForm = ref(false);
+const selectedEduIdx = ref<any>(null);
+
 const { isAuth, user } = useAuth();
 const { $apiFetch } = useNuxtApp();
 
@@ -723,7 +808,7 @@ const cvFileObject = ref<any>(null);
 
 const backupWorkingHistories = ref<any>({});
 
-const { errors, defineField, setFieldValue, handleSubmit, resetForm } = useForm(
+const { errors, defineField, setFieldValue, handleSubmit, resetForm , validate} = useForm(
   {
     validationSchema: yup.object({
       profileImg: yup.string().required("This field is required"),
@@ -799,9 +884,7 @@ const [province] = defineField("province");
 const [district] = defineField("district");
 
 const [cvFile] = defineField("cvFile");
-
 const [currentJobTitle] = defineField("currentJobTitle");
-
 const [expectedSalary] = defineField("expectedSalary");
 const [industryId] = defineField("industryId");
 const [provinceId] = defineField("provinceId");
@@ -835,12 +918,8 @@ const genderList = ref<any>([]);
 const maritalStatusList = ref<any>([]);
 const educationLevelList = ref<any>([]);
 
-const degreesList = ref([]);
-
 const languagesList = ref([]);
-
 const languageLevelsList = ref([]);
-
 const industryList = ref<any>([]);
 
 const skills = ref([]);
@@ -848,6 +927,23 @@ const skillLevels = ref([]);
 
 const isSubmitting = ref(false);
 const hasSubmitted = ref(false);
+
+
+
+const validateSingle = async (fieldName: string, index: number) => {
+  const singlePath = `fieldName[${index}]`;
+  const vld: any = validate
+  const { valid, errors: fieldErrors } = await vld({ mode: 'field', field: singlePath });
+  if (valid) {
+    if(fieldName === 'educations') {
+      selectedEduIdx.value = null
+    }
+
+    //console.log(`✅ Address ${index} is valid:`, values.educations[index]);
+  } else {
+   // console.warn(`❌ Address ${index} has errors:`, fieldErrors);
+  }
+};
 
 const onSubmitBeforeValidate = async () => {
   hasSubmitted.value = true;
@@ -866,6 +962,8 @@ const onSubmitBeforeValidate = async () => {
 
   await onSubmit();
 };
+
+
 
 const onSubmit = handleSubmit(async (values) => {
   const object = values;
@@ -1088,9 +1186,7 @@ const getKeySkills = async () => {
 
 const isLoading = ref(true);
 
-const addArray = () => {
-
-}
+const addArray = () => {};
 
 //Type not matching in model: Country,State,SkillLevel,KeySkills,CurrentResidence,Nationality,BannerType,BlogType,Degree,CompanySize,Gender,Industry,JobEducationLevel,JobExperience,JobFunction,JobZone,Language,LanguageLevel,MaritalStatus,Province,Tag,SalaryRange,District,JobTag,SkillTag,AdditionalTag,JobLevel
 
@@ -1208,14 +1304,15 @@ onMounted(async () => {
         //   isCurrentlyStudying: i.currentlyStudying,
         // });
 
-
         educationsRemove(0);
-        for(let i = 0; i < user.value.education.length; i++){
+        for (let i = 0; i < user.value.education.length; i++) {
           educationsPush({
             _id: user.value.education[i]._id,
             major: user.value.education[i].subject,
             university: user.value.education[i].school,
-            degree: user.value.education[i].qualifications ? user.value.education[i].qualifications._id : "",
+            degree: user.value.education[i].qualifications
+              ? user.value.education[i].qualifications._id
+              : "",
             startDate: user.value.education[i].startYear,
             endDate: user.value.education[i].endYear,
             isCurrentlyStudying: user.value.education[i].currentlyStudying,
@@ -1227,17 +1324,31 @@ onMounted(async () => {
         isHaveNoExp.value = true;
         workHistoriesRemove(0);
       } else if (user.value.workHistory && user.value.workHistory.length) {
-        const i = user.value.workHistory[user.value.workHistory.length - 1];
+        // const i = user.value.workHistory[user.value.workHistory.length - 1];
+        // workHistoriesRemove(0);
+        // workHistoriesPush({
+        //   _id: i._id,
+        //   company: i.company,
+        //   position: i.position,
+        //   startDate: i.startYear,
+        //   endDate: i.endYear,
+        //   isCurrentlyWorking: i.isCurrentJob,
+        //   detail: i.responsibility,
+        // });
+
         workHistoriesRemove(0);
-        workHistoriesPush({
-          _id: i._id,
-          company: i.company,
-          position: i.position,
-          startDate: i.startYear,
-          endDate: i.endYear,
-          isCurrentlyWorking: i.isCurrentJob,
-          detail: i.responsibility,
-        });
+
+        for (let i = 0; i < user.value.workHistory.length; i++) {
+          workHistoriesPush({
+            _id: user.value.workHistory[i]._id,
+            company: user.value.workHistory[i].company,
+            position: user.value.workHistory[i].position,
+            startDate: user.value.workHistory[i].startYear,
+            endDate: user.value.workHistory[i].endYear,
+            isCurrentlyWorking: user.value.workHistory[i].isCurrentJob,
+            detail: user.value.workHistory[i].responsibility,
+          });
+        }
       }
 
       if (user.value.languageSkill && user.value.languageSkill.length) {
@@ -1272,7 +1383,7 @@ onMounted(async () => {
     }, 2000);
   }
 });
-// expelled
+
 </script>
 
 <style scoped lang="scss">
@@ -1332,6 +1443,93 @@ section {
           background-color: var(--black-200);
         }
       }
+    }
+  }
+}
+.list {
+  border: 1px solid var(--black-300);
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+  ul {
+    li {
+      font-size: var(--sm-font);
+    }
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--sm-font);
+      max-width: 35px;
+      max-height: 35px;
+      min-width: 35px;
+      min-height: 35px;
+      background-color: var(--black-200);
+      color: var(--orange-900);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all ease-in-out 0.15s;
+      &:hover {
+        background-color: var(--orange-900);
+        color: #fff;
+      }
+    }
+  }
+}
+.modal-form {
+  background-color: rgba(#000, 0.8);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  @media screen and (max-width: 768px) {
+    padding: 1rem;
+  }
+  .modal-form-area {
+    width: 100%;
+    .form-content {
+      background-color: #fff;
+      padding: 2.5rem 1.5rem;
+      width: 500px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-radius: 6px;
+      margin-left: auto;
+      margin-right: auto;
+      flex-grow: 1;
+      @media screen and (max-width: 768px) {
+        width: 100%;
+      }
+    }
+    .buttons {
+      justify-content: space-between;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .delete {
+      margin-top: 2rem;
+      display: block;
+      text-align: center;
+      width: 100%;
+      color: var(--black-800);
+      cursor: pointer;
+      font-size: var(--sm-font);
+      user-select: none;
     }
   }
 }
