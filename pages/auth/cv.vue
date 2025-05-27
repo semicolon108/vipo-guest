@@ -209,8 +209,8 @@
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
             </div>
-           <div v-for="(i, idx) in educations as any" :key="i.key">
-             <div class="list">
+           <div v-for="(i, idx) in educations as any" :key="i.key" >
+             <div class="list" v-show="educations.length > 1">
                <ul>
 
                  <li v-if="educationLevelList.length && i.value.degree">{{educationLevelList.find((j: any) => j._id === i.value.degree)?.name}} - {{i.value.major}}</li>
@@ -226,25 +226,9 @@
                    :name="`educations[${idx}]`"
                />
              </div>
-             <button
-                 v-if="idx === educations.length - 1"
-                 class="button add-button small orange"
-                 @click="() => {
-                   educationsPush({
-                     major: '',
-                     university: '',
-                     degree: '',
-                     startDate: '',
-                     endDate: '',
-                     isCurrentlyStudying: false,
-                   });
-                   selectedEduIdx = educations.length - 1
-                 }"
-             >
-               ເພີ່ມການສຶກສາ
-             </button>
 
-             <div class="modal-form" v-show="selectedEduIdx === idx">
+
+             <div :class="{'modal-form': educations.length>1}" v-show="selectedEduIdx === idx || educations.length === 1">
                <div class="modal-form-area">
                  <div class="form-content">
                    <div class="field" :id="`educations[${idx}].major`">
@@ -369,17 +353,16 @@
                          :name="`educations[${idx}].endDate`"
                      />
                    </div>
-                   <div class="buttons">
+                   <div v-if="educations.length > 1" class="buttons">
                      <button
                          class="button add-button light-grey small"
                          @click="() => {
-
-                           if(!i.value.major) {
+                           if(!i.value.major || !i.value.university || !i.value.degree ){
                              educationsRemove(idx);
                              selectedEduIdx = null;
                            }else {
                              selectedEduIdx = null;
-                           }
+                          }
                          }"
                      >
                        ຍົກເລີກ
@@ -401,6 +384,23 @@
                </div>
              </div>
            </div>
+            <button
+                style="margin-top: 20px"
+                class="button add-button small orange"
+                @click="() => {
+                   educationsPush({
+                     major: '',
+                     university: '',
+                     degree: '',
+                     startDate: '',
+                     endDate: '',
+                     isCurrentlyStudying: false,
+                   });
+                   selectedEduIdx = educations.length - 1
+                 }"
+            >
+              ເພີ່ມການສຶກສາ
+            </button>
           </div>
 
           <!-- CV file start -->
@@ -512,6 +512,7 @@
               <button
                   v-if="idx === workHistories.length - 1"
                   class="button add-button small orange"
+                  type="button"
                   @click="() => {
         workHistoriesPush({
           company: '',
@@ -595,12 +596,12 @@
                       <button
                           class="button add-button light-grey small"
                           @click="() => {
-                if (!item.value.company) {
-                  workHistoriesRemove(idx);
+                // if (!item.value.company) {
+                //   workHistoriesRemove(idx);
+                //   selectedWorkIdx = null;
+                // } else {
                   selectedWorkIdx = null;
-                } else {
-                  selectedWorkIdx = null;
-                }
+               // }
               }"
                       >
                         ຍົກເລີກ
@@ -858,8 +859,8 @@ const { errors, defineField, setFieldValue, handleSubmit, resetForm , validate} 
 
       currentJobTitle: yup.string().required("This field is required"),
       expectedSalary: yup.string().required("This field is required"),
-      industryId: yup.string().required("This field is required"),
-      provinceId: yup.string().required("This field is required"),
+      // industryId: yup.string().required("This field is required"),
+      // provinceId: yup.string().required("This field is required"),
     }),
   }
 );
