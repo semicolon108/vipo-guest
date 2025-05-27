@@ -479,6 +479,7 @@
           <!-- CV file end -->
 
           <!-- Work Exp start -->
+          <!-- Work Exp start -->
           <div class="card" :class="{ disabled: isHaveNoExp }">
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
@@ -492,7 +493,7 @@
             </div>
 
             <div v-for="(item, idx) in workHistories as any" :key="item.key">
-              <div class="list">
+              <div class="list" v-show="workHistories.length > 1">
                 <ul>
                   <li><strong>ບໍລິສັດ:</strong> {{ item.value.company }}</li>
                   <li><strong>ຕຳແໜ່ງ:</strong> {{ item.value.position }}</li>
@@ -509,26 +510,7 @@
                 <ErrorMessage class="error-text" :name="`workHistories[${idx}]`" />
               </div>
 
-              <button
-                  v-if="idx === workHistories.length - 1"
-                  class="button add-button small orange"
-                  type="button"
-                  @click="() => {
-        workHistoriesPush({
-          company: '',
-          position: '',
-          startDate: '',
-          endDate: '',
-          isCurrentlyWorking: false,
-          detail: '',
-        });
-        selectedWorkIdx = workHistories.length - 1;
-      }"
-              >
-                ເພີ່ມປະຫວັດການເຮັດວຽກ
-              </button>
-
-              <div class="modal-form" v-show="selectedWorkIdx === idx">
+              <div :class="{ 'modal-form': workHistories.length > 1 }" v-show="selectedWorkIdx === idx || workHistories.length === 1">
                 <div class="modal-form-area">
                   <div class="form-content">
                     <div class="field" :id="`workHistories[${idx}].company`">
@@ -592,16 +574,16 @@
                       <ErrorMessage class="error-text" :name="`workHistories[${idx}].detail`" />
                     </div>
 
-                    <div class="buttons">
+                    <div v-if="workHistories.length > 1" class="buttons">
                       <button
                           class="button add-button light-grey small"
                           @click="() => {
-                // if (!item.value.company) {
-                //   workHistoriesRemove(idx);
-                //   selectedWorkIdx = null;
-                // } else {
+                if (!item.value.company || !item.value.position || !item.value.detail) {
+                  workHistoriesRemove(idx);
                   selectedWorkIdx = null;
-               // }
+                } else {
+                  selectedWorkIdx = null;
+                }
               }"
                       >
                         ຍົກເລີກ
@@ -627,6 +609,24 @@
                 </div>
               </div>
             </div>
+
+            <button
+                style="margin-top: 20px"
+                class="button add-button small orange"
+                @click="() => {
+      workHistoriesPush({
+        company: '',
+        position: '',
+        startDate: '',
+        endDate: '',
+        isCurrentlyWorking: false,
+        detail: '',
+      });
+      selectedWorkIdx = workHistories.length - 1;
+    }"
+            >
+              ເພີ່ມປະຫວັດການເຮັດວຽກ
+            </button>
           </div>
 
           <!-- Work Exp End -->
