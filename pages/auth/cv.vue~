@@ -206,18 +206,6 @@
 
           <!-- Eudcation -->
           <div class="card" >
-<!--            <div v-if="idx !== 0">-->
-<!--              <br />-->
-<!--              <hr />-->
-<!--              <br />-->
-<!--              <a-->
-<!--                style="color: red; text-align: right"-->
-<!--                class="delete-button"-->
-<!--                @click="educationsRemove(idx)"-->
-<!--              >-->
-<!--                <i class="fa-solid fa-trash"></i>-->
-<!--              </a>-->
-<!--            </div>-->
             <div class="card-header">
               <h1>ການສຶກສາ</h1>
             </div>
@@ -495,150 +483,151 @@
             <div class="card-header">
               <h1>ປະຫວັດການເຮັດວຽກ</h1>
               <p
-                class="checkbox"
-                @click="isHaveNoExp = !isHaveNoExp"
-                :class="{ checked: isHaveNoExp }"
+                  class="checkbox"
+                  @click="isHaveNoExp = !isHaveNoExp"
+                  :class="{ checked: isHaveNoExp }"
               >
                 ຂ້ອຍຍັງບໍ່ເຄີຍເຮັດວຽກ
               </p>
             </div>
-            <div v-for="(i, idx) in workHistories as any" :key="i.key">
-              <div v-if="idx !== 0">
-                <a
-                  style="color: red; text-align: right"
-                  class="delete-button"
-                  @click="workHistoriesRemove(idx)"
-                >
-                  <i class="fa-solid fa-trash"></i>
-                </a>
-              </div>
-              <div class="field" id="workHistories[0].company">
-                <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
-                <Field
-                  :name="`workHistories[${idx}].company`"
-                  as="input"
-                  type="text"
-                  placeholder="ຊື່ບໍລິສັດ"
-                />
-                <ErrorMessage
-                  class="error-text"
-                  :name="`workHistories[${idx}].company`"
-                />
-              </div>
-              <div class="field" id="workHistories[0].position">
-                <label>ຕຳແໜ່ງງານ</label>
-                <Field
-                  :name="`workHistories[${idx}].position`"
-                  as="input"
-                  type="text"
-                  placeholder="ຕຳແໜ່ງງານ"
-                />
-                <ErrorMessage
-                  class="error-text"
-                  :name="`workHistories[${idx}].position`"
-                />
-              </div>
-              <div class="field" id="workHistories[0].startDate">
-                <label>ເລີ່ມເຮັດວຽກ</label>
-                <div class="selects">
-                  <DateInput
-                    v-model="i.value.startDate"
-                    style="width: 100%"
-                    :is-only-month-and-year="true"
-                  />
+
+            <div v-for="(item, idx) in workHistories as any" :key="item.key">
+              <div class="list">
+                <ul>
+                  <li><strong>ບໍລິສັດ:</strong> {{ item.value.company }}</li>
+                  <li><strong>ຕຳແໜ່ງ:</strong> {{ item.value.position }}</li>
+                  <li>
+                    <strong>ເລີ່ມງານ:</strong> {{ formatMonthAndYear(item.value.startDate) }}
+                    -
+                    <span v-if="item.value.isCurrentlyWorking">ປັດຈຸບັນ</span>
+                    <span v-else>{{ formatMonthAndYear(item.value.endDate) }}</span>
+                  </li>
+                </ul>
+                <div class="actions">
+                  <a @click="selectedWorkIdx = idx" class="edit"><i class="fa-solid fa-pen"></i></a>
                 </div>
-                <div v-show="false">
-                  <Field
-                    :name="`workHistories[${idx}].startDate`"
-                    as="input"
-                    type="text"
-                  />
-                </div>
-                <ErrorMessage
-                  class="error-text"
-                  :name="`workHistories[${idx}].startDate`"
-                />
+                <ErrorMessage class="error-text" :name="`workHistories[${idx}]`" />
               </div>
 
-              <div
-                class="field"
-                :class="{ disabledzzz: i.value.isCurrentlyWorking }"
+              <button
+                  v-if="idx === workHistories.length - 1"
+                  class="button add-button small orange"
+                  @click="() => {
+        workHistoriesPush({
+          company: '',
+          position: '',
+          startDate: '',
+          endDate: '',
+          isCurrentlyWorking: false,
+          detail: '',
+        });
+        selectedWorkIdx = workHistories.length - 1;
+      }"
               >
-                <label class="has-checkbox">
-                  ຈົນເຖິງ
-                  <!-- if true add class checked -->
-                  <p
-                    class="checkbox"
-                    @click="
-                      i.value.isCurrentlyWorking = !i.value.isCurrentlyWorking
-                    "
-                    :class="{ checked: i.value.isCurrentlyWorking }"
-                  >
-                    ນີ້ແມ່ນວຽກປັດຈຸບັນ
-                  </p>
-                </label>
-                <div class="selects" v-show="!i.value.isCurrentlyWorking">
-                  <DateInput
-                    v-model="i.value.endDate"
-                    style="width: 100%"
-                    :is-only-month-and-year="true"
-                  />
-                </div>
-                <div v-show="false">
-                  <Field
-                    :name="`workHistories[${idx}].endDate`"
-                    as="input"
-                    type="text"
-                  />
-                </div>
-                <ErrorMessage
-                  class="error-text"
-                  :name="`workHistories[${idx}].endDate`"
-                />
-              </div>
-              <div class="field" id="workHistories[0].detail">
-                <label for="">ໜ້າທີ່ຮັບຜິດຊອບ</label>
-                <div class="control">
-                  <ClientOnly>
-                    <TextEditor
-                      v-model="i.value.detail"
-                      @keydown.enter.prevent
-                    />
-                  </ClientOnly>
+                ເພີ່ມປະຫວັດການເຮັດວຽກ
+              </button>
 
-                  <div v-show="false">
-                    <Field
-                      :name="`workHistories[${idx}].detail`"
-                      as="input"
-                      type="text"
-                      placeholder="ໜ້າທີ່ຮັບຜິດຊອບ"
-                    />
+              <div class="modal-form" v-show="selectedWorkIdx === idx">
+                <div class="modal-form-area">
+                  <div class="form-content">
+                    <div class="field" :id="`workHistories[${idx}].company`">
+                      <label>ນາຍຈ້າງ / ບໍລິສັດ / ອົງກອນ</label>
+                      <Field
+                          :name="`workHistories[${idx}].company`"
+                          as="input"
+                          type="text"
+                          placeholder="ຊື່ບໍລິສັດ"
+                      />
+                      <ErrorMessage class="error-text" :name="`workHistories[${idx}].company`" />
+                    </div>
+
+                    <div class="field" :id="`workHistories[${idx}].position`">
+                      <label>ຕຳແໜ່ງງານ</label>
+                      <Field
+                          :name="`workHistories[${idx}].position`"
+                          as="input"
+                          type="text"
+                          placeholder="ຕຳແໜ່ງງານ"
+                      />
+                      <ErrorMessage class="error-text" :name="`workHistories[${idx}].position`" />
+                    </div>
+
+                    <div class="field" :id="`workHistories[${idx}].startDate`">
+                      <label>ເລີ່ມເຮັດວຽກ</label>
+                      <DateInput
+                          v-model="item.value.startDate"
+                          style="width: 100%"
+                          :is-only-month-and-year="true"
+                      />
+                      <ErrorMessage class="error-text" :name="`workHistories[${idx}].startDate`" />
+                    </div>
+
+                    <div class="field" :class="{ disabledzzz: item.value.isCurrentlyWorking }">
+                      <label class="has-checkbox">
+                        ຈົນເຖິງ
+                        <p
+                            class="checkbox"
+                            @click="item.value.isCurrentlyWorking = !item.value.isCurrentlyWorking"
+                            :class="{ checked: item.value.isCurrentlyWorking }"
+                        >
+                          ນີ້ແມ່ນວຽກປັດຈຸບັນ
+                        </p>
+                      </label>
+                      <div class="selects" v-show="!item.value.isCurrentlyWorking">
+                        <DateInput
+                            v-model="item.value.endDate"
+                            style="width: 100%"
+                            :is-only-month-and-year="true"
+                        />
+                      </div>
+                      <ErrorMessage class="error-text" :name="`workHistories[${idx}].endDate`" />
+                    </div>
+
+                    <div class="field" :id="`workHistories[${idx}].detail`">
+                      <label>ໜ້າທີ່ຮັບຜິດຊອບ</label>
+                      <ClientOnly>
+                        <TextEditor v-model="item.value.detail" @keydown.enter.prevent />
+                      </ClientOnly>
+                      <ErrorMessage class="error-text" :name="`workHistories[${idx}].detail`" />
+                    </div>
+
+                    <div class="buttons">
+                      <button
+                          class="button add-button light-grey small"
+                          @click="() => {
+                if (!item.value.company) {
+                  workHistoriesRemove(idx);
+                  selectedWorkIdx = null;
+                } else {
+                  selectedWorkIdx = null;
+                }
+              }"
+                      >
+                        ຍົກເລີກ
+                      </button>
+
+                      <button
+                          type="button"
+                          class="button add-button small orange"
+                          @click="validateSingle('workHistories', idx)"
+                      >
+                        ເພີ່ມ
+                      </button>
+                    </div>
+
+                    <a
+                        v-if="workHistories.length > 1"
+                        @click="workHistoriesRemove(idx); selectedWorkIdx = null"
+                        class="delete"
+                    >
+                      ລົບປະຫວັດນີ້
+                    </a>
                   </div>
-                  <ErrorMessage
-                    class="error-text"
-                    :name="`workHistories[${idx}].detail`"
-                  />
                 </div>
               </div>
             </div>
-
-            <button
-              type="button"
-              class="button add-button small orange"
-              @click="
-                workHistoriesPush({
-                  company: '',
-                  position: '',
-                  startDate: '',
-                  endDate: '',
-                  isCurrentlyWorking: false,
-                  detail: '',
-                })
-              "
-            >
-              ເພີ່ມ
-            </button>
           </div>
+
           <!-- Work Exp End -->
 
           <div class="card">
@@ -790,6 +779,7 @@ const { showToast } = useToast();
 // Tonh Edit Education and Work Exp
 const showEducationForm = ref(false);
 const selectedEduIdx = ref<any>(null);
+const selectedWorkIdx = ref<any>(null);
 
 const { isAuth, user } = useAuth();
 const { $apiFetch } = useNuxtApp();
@@ -938,10 +928,6 @@ const validateSingle = async (fieldName: string, index: number) => {
     if(fieldName === 'educations') {
       selectedEduIdx.value = null
     }
-
-    //console.log(`✅ Address ${index} is valid:`, values.educations[index]);
-  } else {
-   // console.warn(`❌ Address ${index} has errors:`, fieldErrors);
   }
 };
 
@@ -1487,6 +1473,7 @@ section {
   }
 }
 .modal-form {
+  overflow: auto;
   background-color: rgba(#000, 0.8);
   position: fixed;
   left: 0;
