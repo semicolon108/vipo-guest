@@ -597,7 +597,6 @@
                         ເພີ່ມ
                       </button>
                     </div>
-
                     <a
                         v-if="workHistories.length > 1"
                         @click="workHistoriesRemove(idx); selectedWorkIdx = null"
@@ -678,7 +677,6 @@
                   />
                 </div>
               </div>
-
               <button
                 type="button"
                 class="button add-button small orange"
