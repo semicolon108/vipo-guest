@@ -7,13 +7,13 @@
           <hr />
           <div class="field">
             <div>
-              <label>ເບີໂທລະສັບ</label>
+              <label>ເບີໂທລະສັບ (ບໍ່ພິມ 020)</label>
               <div class="control">
                 <input
                   type="text"
                   v-model="mobile"
                   v-bind="mobileProps"
-                  placeholder=""
+                  placeholder="12345678"
                 />
                 <p class="error-text">{{ errors.mobile }}</p>
               </div>
@@ -49,9 +49,10 @@ const {
   setErrors,
 } = useForm({
   validationSchema: yup.object({
-    mobile: yup.string()
-        .required("This field is required")
-        .matches(/^\d{8}$/, "Mobile number must be exactly 8 digits"),
+    mobile: yup
+      .string()
+      .required("This field is required")
+      .matches(/^\d{8}$/, "Mobile number must be exactly 8 digits"),
   }),
 });
 
