@@ -238,7 +238,7 @@
               ເພີ່ມການສຶກສາ
             </button>
 
-            <div class="modal-form" v-if="showEducationForm">
+            <div class="modal-form">
               <div class="modal-form-area">
                 <div class="form-content">
                   <div class="field" id="educations[0].major">

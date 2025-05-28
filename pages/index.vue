@@ -1,10 +1,20 @@
 <template>
   <section class="banner-section">
     <div class="container">
-      <Swiper :modules="[Navigation, Pagination, Autoplay]" :slides-per-view="1" :navigation="true" :pagination="true"
-        class="mySwiper swiper" :autoplay="{ delay: 4000, disableOnInteraction: false }">
+      <Swiper
+        :modules="[Navigation, Pagination, Autoplay]"
+        :slides-per-view="1"
+        :navigation="true"
+        :pagination="true"
+        class="mySwiper swiper"
+        :autoplay="{ delay: 4000, disableOnInteraction: false }"
+      >
         <SwiperSlide v-for="(slide, index) in slides" :key="index">
-          <img :src="slide.image" alt="Slide" @click="clickBanner(slide._id, slide.url)" />
+          <img
+            :src="slide.image"
+            alt="Slide"
+            @click="clickBanner(slide._id, slide.url)"
+          />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -14,22 +24,59 @@
       <h1 class="section-title">ຄົ້ນຫາວຽກ</h1>
       <div class="search-container">
         <div class="field">
-          <input v-model="searchText" type="text" class="input" placeholder="ຊອກຕຳແໜ່ງ" required />
+          <label>ຕຳແໜ່ງງານ</label>
+          <div class="control">
+            <input
+              v-model="searchText"
+              type="text"
+              class="input"
+              placeholder="ພະນັກງານເສີບ"
+              required
+            />
+          </div>
         </div>
         <div class="field">
-          <MultiSelect v-model="provinces" :hasChild="true" :list="provincesList" />
+          <label>ຄົນຫາຕຳແໜ່ງງານ</label>
+          <div class="control">
+            <MultiSelect
+              v-model="provinces"
+              :hasChild="true"
+              :list="provincesList"
+            />
+          </div>
         </div>
 
-        <div class="field time-range">
-          <div class="control">
-            <input v-model="workingTimeStart" type="time" placeholder="HH:MM" required />
+        <div class="time-range">
+          <div class="field">
+            <label>ໂມງເລີ່ມວຽກ</label>
+            <div class="control">
+              <input
+                v-model="workingTimeStart"
+                type="time"
+                placeholder="HH:MM"
+                required
+              />
+            </div>
           </div>
-          <div class="control">
-            <input v-model="workingTimeEnd" type="time" placeholder="HH:MM" required />
+          <div class="field">
+            <label>ໂມງເລີກວຽກ</label>
+            <div class="control">
+              <input
+                v-model="workingTimeEnd"
+                type="time"
+                placeholder="HH:MM"
+                required
+              />
+            </div>
           </div>
-          <div v-if="workingTimeStart || workingTimeEnd">
-            <a class="clear-button" @click="clearTime">ລົບເວລາ</a>
-          </div>
+
+          <a
+            v-if="workingTimeStart || workingTimeEnd"
+            class="clear-button"
+            @click="clearTime"
+          >
+            <i class="fa-solid fa-circle-xmark"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -65,7 +112,7 @@ import "swiper/css/pagination";
 import MultiSelect from "@/components/MultiSelect.vue";
 
 // Swiper
-const slides = ref<any>([])
+const slides = ref<any>([]);
 //  [
 //   "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
 //   "https://calculateaspectratio.com/img/16-9-aspect-ratio.png",
@@ -193,27 +240,26 @@ const clearTime = () => {
 const getTopBanner = async () => {
   try {
     const { data }: any = await useFetch(
-      config.public.apiBase + "/get-top-banner-vipo")
-      slides.value = data.value.info
+      config.public.apiBase + "/get-top-banner-vipo"
+    );
+    slides.value = data.value.info;
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 const clickBanner = async (id: any, url: any) => {
   try {
-    await $fetch(config.public.apiBase + "/record-banner-vipo",
-      {
-        method: "POST",
-        body: { _id: id }
-      })
+    await $fetch(config.public.apiBase + "/record-banner-vipo", {
+      method: "POST",
+      body: { _id: id },
+    });
 
-    window.open(url, '_blank')
-
+    window.open(url, "_blank");
   } catch (e) {
     console.log(e);
   }
-}
+};
 
 const debouncedSearchText = ref("");
 let timeout: ReturnType<typeof setTimeout> | null = null;
@@ -267,7 +313,6 @@ if (route.query.provinces) {
 await getTopBanner();
 await getProvinces();
 await getJobs();
-
 </script>
 
 <style lang="scss" scoped>
@@ -354,24 +399,40 @@ await getJobs();
   }
 
   .field {
-    flex-grow: 1;
+    label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: var(--md-font);
+    }
   }
 }
 
 .time-range {
   display: flex;
   gap: 0.5rem;
-  align-items: center;
 
-  .control {
-    flex-grow: 1;
+  @media screen and (max-width: 768px) {
+    flex-wrap: wrap;
   }
-
+  .field {
+    flex-grow: 1;
+    @media screen and (max-width: 768px) {
+      flex-grow: 0;
+    }
+  }
   .clear-button {
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
     white-space: pre;
     cursor: pointer;
     user-select: none;
-    font-size: var(--xsm-font);
+    font-size: var(--md-font);
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    background-color: var(--orange-900);
+    border-radius: 6px;
+    color: #fff;
   }
 }
 </style>
