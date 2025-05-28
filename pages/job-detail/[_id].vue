@@ -24,9 +24,6 @@
                     <span style="margin-left: 4px">{{
                       detail.isWorkingLocation.join(", ")
                     }}</span>
-                    <!--                    <span v-for="i in detail.workingLocation"-->
-                    <!--                      >{{ i.province }}-->
-                    <!--                    </span>-->
                   </li>
                   <li>
                     <div class="tags">
@@ -273,7 +270,9 @@ useSeoMeta({
   padding: 1.5rem;
   border-radius: 8px;
   font-size: var(--md-font);
-
+  @media screen and (max-width: 764px) {
+    padding: 0.75rem;
+  }
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
@@ -314,6 +313,7 @@ useSeoMeta({
           .tags {
             margin-top: 0.25rem;
             display: flex;
+            flex-wrap: wrap;
             gap: 0.25rem;
 
             span {
@@ -392,6 +392,7 @@ useSeoMeta({
       box-shadow: inset 0 0 0 1px var(--orange-900);
       background-color: var(--orange-900);
       color: #fff;
+      min-width: 150px;
     }
   }
 }

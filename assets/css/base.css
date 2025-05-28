@@ -175,6 +175,7 @@ textarea {
   border: none;
   background-color: #fff;
   box-shadow: 0 0 0 1px var(--black-300);
+  height: 2.8rem;
 }
 input:focus,
 select:focus,
@@ -219,7 +220,7 @@ textarea[type=time]:invalid {
 
 input,
 select {
-  height: 2.5rem;
+  height: 2.8rem;
 }
 
 .select {

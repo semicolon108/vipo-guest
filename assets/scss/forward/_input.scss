@@ -13,6 +13,7 @@ textarea {
   border: none;
   background-color: #fff;
   box-shadow: 0 0 0 1px var(--black-300);
+  height: 2.8rem;
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px var(--orange-900);
@@ -43,7 +44,7 @@ textarea {
 
 input,
 select {
-  height: 2.5rem;
+  height: 2.8rem;
 }
 .select {
   width: 100%;

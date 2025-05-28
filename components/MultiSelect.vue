@@ -6,9 +6,9 @@
         <p>
           {{
             fullList
-                .filter((i: any) => selectedList.includes(i._id))
-                .map((i: any) => i.name)
-                .join(", ")
+              .filter((i: any) => selectedList.includes(i._id))
+              .map((i: any) => i.name)
+              .join(", ")
           }}
         </p>
       </li>
@@ -25,7 +25,10 @@
           </p>
           <div v-if="hasChild" style="margin-left: 20px">
             <div class="options" v-for="o in i.item" :key="o._id">
-              <p class="option-item" @click="selectParentClick(o._id, 'child', i._id)">
+              <p
+                class="option-item"
+                @click="selectParentClick(o._id, 'child', i._id)"
+              >
                 <span :class="{ checked: selectedList.includes(o._id) }"></span>
                 {{ o.name }}
               </p>
@@ -35,7 +38,9 @@
       </div>
       <div class="buttons" v-if="!isSingle">
         <button class="button small orange" @click="save()">Apply</button>
-        <button class="button small light-grey" @click="showOptions = false">Cancel</button>
+        <button class="button small light-grey" @click="showOptions = false">
+          Cancel
+        </button>
       </div>
     </div>
   </div>
@@ -86,7 +91,9 @@ const autoSelect = (id: string, type: string, parentId?: string) => {
     if (selectedList.value.includes(id)) {
       selectedList.value = [...new Set([...selectedList.value, ...childs])];
     } else {
-      selectedList.value = selectedList.value.filter((i) => !childs.includes(i));
+      selectedList.value = selectedList.value.filter(
+        (i) => !childs.includes(i)
+      );
     }
   }
 
@@ -94,7 +101,9 @@ const autoSelect = (id: string, type: string, parentId?: string) => {
     const parent = list.find((i: any) => i._id === parentId);
     if (!parent) return;
     const childs = parent.item.map((c: any) => c._id);
-    const anyChildSelected = childs.some((id) => selectedList.value.includes(id));
+    const anyChildSelected = childs.some((id) =>
+      selectedList.value.includes(id)
+    );
 
     if (anyChildSelected && !selectedList.value.includes(parentId)) {
       selectedList.value.push(parentId);
@@ -123,7 +132,9 @@ const filteredList = computed(() => {
   if (hasChild) {
     return list.filter((i: any) => {
       const parentMatch = i.name.toLowerCase().includes(search);
-      const childMatch = i.item.some((o: any) => o.name.toLowerCase().includes(search));
+      const childMatch = i.item.some((o: any) =>
+        o.name.toLowerCase().includes(search)
+      );
       return parentMatch || childMatch;
     });
   } else {
@@ -137,22 +148,22 @@ const save = () => {
 };
 
 watch(
-    () => showOptions.value,
-    (val) => {
-      if (!val && !isLoading.value) {
-        modelValue.value = [...selectedList.value];
-      }
+  () => showOptions.value,
+  (val) => {
+    if (!val && !isLoading.value) {
+      modelValue.value = [...selectedList.value];
     }
+  }
 );
 
 watch(
-    () => modelValue.value,
-    (val) => {
-      if (val) {
-        selectedList.value = [...val];
-      }
-    },
-    { immediate: true }
+  () => modelValue.value,
+  (val) => {
+    if (val) {
+      selectedList.value = [...val];
+    }
+  },
+  { immediate: true }
 );
 
 onMounted(() => {
@@ -173,7 +184,7 @@ onMounted(() => {
 
   ul.selected-list-container {
     li {
-      height: 2.5rem;
+      height: 2.8rem;
       border-radius: 6px;
       display: flex;
       align-items: center;
@@ -290,7 +301,7 @@ onMounted(() => {
               width: 2px;
               height: 2px;
               box-shadow: 2px 0 0 #fff, 4px 0 0 #fff, 4px -2px 0 #fff,
-              4px -4px 0 #fff, 4px -6px 0 #fff, 4px -8px 0 #fff;
+                4px -4px 0 #fff, 4px -6px 0 #fff, 4px -8px 0 #fff;
               transform: rotate(45deg);
             }
           }

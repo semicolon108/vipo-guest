@@ -403,6 +403,7 @@ await getJobs();
       display: block;
       margin-bottom: 0.25rem;
       font-size: var(--md-font);
+      font-weight: 600;
     }
   }
 }
@@ -416,8 +417,12 @@ await getJobs();
   }
   .field {
     flex-grow: 1;
-    @media screen and (max-width: 768px) {
-      flex-grow: 0;
+    .control {
+      display: flex;
+      input {
+        flex-grow: 1;
+        border: 1px solid var(--orange-900);
+      }
     }
   }
   .clear-button {
@@ -428,7 +433,7 @@ await getJobs();
     cursor: pointer;
     user-select: none;
     font-size: var(--md-font);
-    height: 2.5rem;
+    height: 2.8rem;
     padding: 0 0.75rem;
     background-color: var(--orange-900);
     border-radius: 6px;
