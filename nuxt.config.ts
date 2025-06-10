@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase,
-     fileTmp,
+      fileTmp,
 
       //     apiBase: "https://db-dev.108.jobs/client-vipo-api",
       //     fileTmp: "https://db-dev.108.jobs",
@@ -48,5 +48,11 @@ export default defineNuxtConfig({
     "@/assets/css/all.css",
   ],
 
-  modules: ["nuxt-tiptap-editor", "nuxt-anchorscroll"],
+  modules: ["nuxt-tiptap-editor", "nuxt-anchorscroll", "nuxt-gtag"],
+  gtag: {
+    id: "G-4KTH72TPWC",
+    config: {
+      send_page_view: true,
+    },
+  },
 });

@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@vueuse/core": "^13.0.0",
+    "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
     "dayjs": "^1.11.13",
     "nuxt": "^3.15.2",
     "nuxt-anchorscroll": "1.0.5",
+    "nuxt-gtag": "^3.0.3",
     "nuxt-tiptap-editor": "2.1.4",
     "swiper": "^11.2.6",
     "vee-validate": "^4.15.0",
