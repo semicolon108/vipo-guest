@@ -89,14 +89,18 @@
           <span>{{ total }}</span>
         </div>
         <div class="end">
-          <Paginate :total="total" :lastPage="lastPage" />
+          <Paginate :total="total"
+                    :currentPage="page"
+                    :lastPage="Math.ceil(total / perPage)" @change-page="(value) => page = value" />
         </div>
       </div>
       <div class="job-card-list">
         <Jobcard v-for="i in jobs" :detail="i" />
       </div>
       <div class="pages">
-        <Paginate :total="total" :lastPage="lastPage" />
+        <Paginate :total="total"
+                  :currentPage="page"
+                  :lastPage="Math.ceil(total / perPage)" @change-page="(value) => page = value" />
       </div>
     </div>
   </section>
@@ -275,6 +279,12 @@ watch(searchText, (newVal) => {
     // Fetch data after debounce
     getJobs();
   }, 500);
+});
+
+watch(() => page.value, () => {
+  jobs.value = [];
+  window.scrollTo(0, 500);
+  getJobs();
 });
 
 watch(

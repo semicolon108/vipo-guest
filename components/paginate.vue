@@ -2,7 +2,7 @@
   <div class="paginate">
     <label for="">ໜ້າ</label>
     <div class="select">
-      <select name="" id="" class="small">
+      <select v-model="page" name="" id="" class="small">
         <option v-for="i in lastPage" :value="i">{{ i }}</option>
       </select>
     </div>
@@ -13,7 +13,19 @@
 
 <script setup lang="ts">
 
-const {lastPage} = defineProps(['lastPage'])
+const {lastPage, currentPage} = defineProps(['lastPage', 'currentPage'])
+
+const emits = defineEmits(['changePage'])
+
+const page = ref(1)
+
+watch(() => page.value, () => {
+  emits('changePage', page.value)
+})
+
+watch(() => currentPage, () => {
+  if(page.value !== currentPage) page.value = currentPage
+})
 
 </script>
 
