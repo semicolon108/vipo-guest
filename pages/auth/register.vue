@@ -9,12 +9,7 @@
             <div>
               <label>ເບີໂທລະສັບ (ບໍ່ພິມ 020)</label>
               <div class="control">
-                <input
-                  type="text"
-                  v-model="mobile"
-                  v-bind="mobileProps"
-                  placeholder="12345678"
-                />
+                <input type="text" v-model="mobile" v-bind="mobileProps" placeholder="12345678" />
                 <p class="error-text">{{ errors.mobile }}</p>
               </div>
               <p class="error-text">{{ apiError }}</p>
@@ -36,7 +31,7 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 
 const config = useRuntimeConfig();
-
+const route = useRoute()
 const apiError = ref("");
 
 const {
@@ -57,7 +52,7 @@ const {
 });
 
 const [mobile, mobileProps] = defineField("mobile");
-
+const source = ref<any>("")
 const verifyMobile = async (form: any) => {
   try {
     const { data, error }: any = await useFetch(
@@ -82,10 +77,9 @@ const verifyMobile = async (form: any) => {
     }
 
     const token = data.value.token;
-
     navigateTo(
-      "/auth/verify-otp?type=register&mobile=" + form.mobile + "&token=" + token
-    );
+      `/auth/verify-otp?type=register&mobile=${form.mobile}&source=${source.value}&token=${token}`
+    )
   } catch (e) {
     console.log(e);
   }
@@ -95,6 +89,9 @@ const onSubmit = handleSubmit((values) => {
   verifyMobile(values);
 });
 
+watch(() => route.query.source, (value) => {
+  source.value = value ?? "vipo"
+}, { immediate: true })
 // onMounted(() => {
 //   mobile.value = "58593344";
 // });
@@ -106,11 +103,13 @@ const onSubmit = handleSubmit((values) => {
   display: flex;
   align-items: center;
 }
+
 .login-form {
   max-width: 350px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
+
   hr {
     background-color: var(--orange-900);
     height: 3px;
@@ -119,39 +118,49 @@ const onSubmit = handleSubmit((values) => {
     width: 2.5rem;
     margin: 1rem 0;
   }
+
   h1 {
     font-weight: 700;
     font-size: var(--xlg-font);
   }
+
   .field {
     margin-bottom: 1rem;
     width: 100%;
+
     label {
       margin-bottom: 0.25rem;
       display: block;
       font-size: var(--sm-font);
+
       &:has(span) {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
+
         span {
           font-size: var(--xsm-font);
           color: var(--orange-900);
           transition: all ease-in-out 0.15s;
           cursor: pointer;
+
           &:hover {
             text-decoration: underline;
           }
         }
       }
-    } // label
+    }
+
+    // label
     input {
       background-color: var(--black-200);
     }
   }
+
   .regsiter-link {
     margin-top: 1rem;
     font-size: var(--sm-font);
+
     a {
       margin-left: 0.25rem;
       color: var(--orange-900);

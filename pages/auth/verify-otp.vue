@@ -9,12 +9,10 @@
 
 
           <div>
-           <p style="font-size: 11px"> ຖ້າທ່ານຍັງບໍ່ໄດ້ຮັບລະຫັດ ກະລຸນາກວດສອບໝາຍເລກໂທລະສັບຂອງທ່ານຄືນ ຫຼື ສົ່ງລະຫັດອີກຄັ້ງ</p>
-            <b style="font-size: 22px">{{route.query.mobile}}</b>
-            <a
-                v-if="!(isSending || cooldown > 0)"
-                @click="handleResend"
-                style="  background-color: #ff6d00;
+            <p style="font-size: 11px"> ຖ້າທ່ານຍັງບໍ່ໄດ້ຮັບລະຫັດ ກະລຸນາກວດສອບໝາຍເລກໂທລະສັບຂອງທ່ານຄືນ ຫຼື
+              ສົ່ງລະຫັດອີກຄັ້ງ</p>
+            <b style="font-size: 22px">{{ route.query.mobile }}</b>
+            <a v-if="!(isSending || cooldown > 0)" @click="handleResend" style="  background-color: #ff6d00;
   border-radius: 5px;
   color: white;
   padding: .2em;
@@ -40,21 +38,14 @@ cursor: pointer;
           <div class="field">
             <label>ລະຫັດຢືນຢັນ OTP</label>
             <div class="control">
-              <input
-                  type="text"
-                     v-model="verifyCode"
-                  v-bind="verifyCodeProps"
-                     placeholder="000000" />
-              <p class="error-text">{{errors.verifyCode}}</p>
-              <p class="error-text">{{apiError}}</p>
+              <input type="text" v-model="verifyCode" v-bind="verifyCodeProps" placeholder="000000" />
+              <p class="error-text">{{ errors.verifyCode }}</p>
+              <p class="error-text">{{ apiError }}</p>
             </div>
 
           </div>
 
-          <button
-              type="submit"
-            class="button light-blue"
-          >
+          <button type="submit" class="button light-blue">
             ຢືນຢັນລະຫັດ
           </button>
         </div>
@@ -64,7 +55,7 @@ cursor: pointer;
 </template>
 
 <script setup lang="ts">
-import {useForm} from "vee-validate";
+import { useForm } from "vee-validate";
 import * as yup from "yup";
 
 const route = useRoute()
@@ -75,8 +66,8 @@ const isSending = ref(false)
 const successMessage = ref('')
 const errorMessage = ref('')
 const cooldown = ref(0)
-let cooldownTimer: NodeJS.Timeout | null = null
-
+let cooldownTimer: ReturnType<typeof setTimeout> | null = null;
+const source = ref<any>("")
 const handleResend = async () => {
   if (isSending.value || cooldown.value > 0) return
 
@@ -87,7 +78,7 @@ const handleResend = async () => {
   try {
 
     const form = {
-      verifyToken:  route.query.token
+      verifyToken: route.query.token
     }
 
     const { data, error }: any = await useFetch(`${config.public.apiBase}/resend-verify-mobile-email-vipo`, {
@@ -95,8 +86,8 @@ const handleResend = async () => {
       body: form,
     });
 
-    if(error.value) {
-      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+    if (error.value) {
+      apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
       setTimeout(() => {
         apiError.value = ''
       }, 2000)
@@ -141,11 +132,11 @@ const [verifyCode, verifyCodeProps] = defineField("verifyCode");
 
 
 const verifyOtp = async () => {
-  if(route.query.type === 'register' && route.query.mobile && route.query.token) {
+  if (route.query.type === 'register' && route.query.mobile && route.query.token) {
     const form = {
       mobile: route.query.mobile,
       verifyCode: verifyCode.value,
-      verifyToken:  route.query.token
+      verifyToken: route.query.token
     }
 
     const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-verification-code-vipo`, {
@@ -153,8 +144,8 @@ const verifyOtp = async () => {
       body: form,
     });
 
-    if(error.value) {
-      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+    if (error.value) {
+      apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
       setTimeout(() => {
         apiError.value = ''
       }, 2000)
@@ -162,15 +153,15 @@ const verifyOtp = async () => {
     }
 
     const token = data.value.token
-    navigateTo('/auth/set-password?type=register&mobile=' + form.mobile + '&token=' + token)
+    navigateTo(`/auth/set-password?type=register&mobile=${form.mobile}&source=${source.value}&token=${token}`)
 
   }
-  else if(route.query.type === 'forgotPassword' && route.query.mobile && route.query.token) {
+  else if (route.query.type === 'forgotPassword' && route.query.mobile && route.query.token) {
 
     const form = {
       mobile: route.query.mobile,
       verifyCode: verifyCode.value,
-      verifyToken:  route.query.token
+      verifyToken: route.query.token
     }
 
     const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-verification-forgetpassword-vipo`, {
@@ -178,8 +169,8 @@ const verifyOtp = async () => {
       body: form,
     });
 
-    if(error.value) {
-      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+    if (error.value) {
+      apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
       setTimeout(() => {
         apiError.value = ''
       }, 2000)
@@ -197,7 +188,9 @@ const onSubmit = handleSubmit((values) => {
 })
 
 startCooldown(30)
-
+watch(() => route.query.source, (value) => {
+  source.value = value ?? "vipo"
+}, { immediate: true })
 </script>
 
 <style scoped lang="scss">
@@ -206,6 +199,7 @@ startCooldown(30)
   display: flex;
   align-items: center;
 }
+
 hr {
   background-color: var(--deep-blue-900);
   height: 3px;
@@ -214,6 +208,7 @@ hr {
   width: 2.5rem;
   margin: 1rem 0;
 }
+
 .forgot-password-form {
   max-width: 350px;
   width: 100%;
@@ -225,31 +220,39 @@ hr {
     font-size: var(--xlg-font);
     margin-bottom: 0.25rem;
   }
+
   p {
     font-size: var(--md-font);
   }
+
   .field {
     margin-bottom: 1rem;
     width: 100%;
+
     label {
       margin-bottom: 0.25rem;
       display: block;
       font-size: var(--sm-font);
+
       &:has(span) {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
+
         span {
           font-size: var(--xsm-font);
           color: var(--orange-900);
           transition: all ease-in-out 0.15s;
           cursor: pointer;
+
           &:hover {
             text-decoration: underline;
           }
         }
       }
-    } // label
+    }
+
+    // label
     input {
       background-color: var(--black-200);
     }
