@@ -1,5 +1,6 @@
 <template>
   <section>
+    <Loading v-if="isRegister" />
     <div class="container">
       <form @submit.prevent="onSubmit" class="forgot-password-page">
         <div class="forgot-password-form">
@@ -23,7 +24,7 @@
               <span class="error-text">{{ errors.confirmPassword }}</span>
             </div>
           </div>
-          <button class="button" type="submit">
+          <button class="button" type="submit" v-if="!isRegister">
             {{ route.query.type === 'register' ? 'ສະໝັກສະມາຊິກ' : 'ບັນທຶກລະຫັດ' }}
 
           </button>
@@ -41,12 +42,13 @@
 </template>
 
 <script setup lang="ts">
-
+import Loading from "~/components/Loading.vue";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 const config = useRuntimeConfig();
 const apiError = ref('')
 
+const isRegister = ref<any>(false)
 const route = useRoute()
 
 // Validation schema with password confirmation
@@ -67,6 +69,7 @@ const [confirmPassword, confirmPasswordAttrs] = defineField('confirmPassword');
 
 const register = async () => {
   if (route.query.type === 'register' && route.query.mobile && route.query.token) {
+    isRegister.value = true
     const form = {
       mobile: route.query.mobile,
       password: password.value,
@@ -76,7 +79,7 @@ const register = async () => {
       method: 'POST',
       body: form,
     });
-
+    isRegister.value = false
     if (error.value) {
       apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
       setTimeout(() => {
