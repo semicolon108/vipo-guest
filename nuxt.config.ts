@@ -48,7 +48,7 @@ export default defineNuxtConfig({
     "@/assets/css/all.css",
   ],
 
-  modules: ["nuxt-tiptap-editor", "nuxt-anchorscroll", "nuxt-gtag"],
+  modules: ["nuxt-tiptap-editor",'@pinia/nuxt', "nuxt-anchorscroll", "nuxt-gtag"],
   gtag: {
     id: "G-4KTH72TPWC",
     config: {

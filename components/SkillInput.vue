@@ -2,28 +2,14 @@
   <div class="input-group">
     <div class="multi-selector-container">
       <div class="input-box" @click="toggleSelectOption">
-        <input
-          v-model="selectedSkill"
-          type="text"
-          placeholder="Enter or select skill"
-          style="width: 100%"
-          @keydown.enter.prevent="toggleSelectOption"
-        />
+        <input v-model="selectedSkill" type="text" placeholder="Enter or select skill" style="width: 100%"
+          @keydown.enter.prevent="toggleSelectOption" />
       </div>
 
-      <div
-        ref="target"
-        class="option-container"
-        v-if="showSelectOption"
-        style="overflow: auto; height: 400px"
-      >
+      <div ref="target" class="option-container" v-if="showSelectOption" style="overflow: auto; height: 400px">
         <ul>
-          <li
-            v-for="skill in skills"
-            :key="skill._id"
-            @click="selectSkill(skill.name)"
-            :class="{ selected: selectedSkill === skill.name }"
-          >
+          <li v-for="skill in skills" :key="skill._id" @click="selectSkill(skill.name)"
+            :class="{ selected: selectedSkill === skill.name }">
             <span></span>{{ skill.name }}
           </li>
         </ul>
@@ -33,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+
 import { onClickOutside } from "@vueuse/core";
 
 const target = ref<any>();
@@ -67,22 +53,20 @@ const getSkills = async () => {
       query: { lang: "LA", page: 1, perPage: 100, search: selectedSkill.value },
     })
   );
-  skills.value = data.value.getKeySkill || [];
+  skills.value = data.value?.getKeySkill || [];
 };
 
 // Sync input to v-model
-watch(
-  () => selectedSkill.value,
-  (newVal) => {
-    modelValue.value = newVal;
-    getSkills();
-  }
+watch(() => selectedSkill.value, (newVal: any) => {
+  modelValue.value = newVal;
+  getSkills();
+}
 );
 
 // Sync v-model to input
 watch(
   () => modelValue.value,
-  (newVal) => {
+  (newVal: any) => {
     if (newVal !== selectedSkill.value) {
       selectedSkill.value = newVal || "";
     }
@@ -99,8 +83,10 @@ await getSkills();
   flex-grow: 1;
   width: 100%;
 }
+
 .multi-selector-container {
   position: relative;
+
   .input-box {
     display: flex;
     align-items: center;

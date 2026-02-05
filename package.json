@@ -11,22 +11,27 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@vee-validate/nuxt": "^4.12.4",
     "@vueuse/core": "^13.0.0",
     "@zadigetvoltaire/nuxt-gtm": "^0.0.13",
-    "dayjs": "^1.11.13",
-    "nuxt": "^3.15.2",
+    "dayjs": "^1.11.19",
     "nuxt-anchorscroll": "1.0.5",
     "nuxt-gtag": "^3.0.3",
+    "nuxt": "^3.15.2",
     "nuxt-tiptap-editor": "2.1.4",
+    "pinia": "^2.1.7",
     "swiper": "^11.2.6",
-    "vee-validate": "^4.15.0",
+    "vee-validate": "^4.15.1",
     "vue": "latest",
     "vue-currency-input": "^3.2.1",
+    "vue-i18n": "^9.4.0",
     "vue-router": "latest",
-    "yup": "^1.6.1"
+    "yup": "^1.7.1"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
   "devDependencies": {
+    "@pinia/nuxt": "^0.5.1",
+    "@vueuse/nuxt": "^9.1.1",
     "sass": "^1.83.4"
   }
 }

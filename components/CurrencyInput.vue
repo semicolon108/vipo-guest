@@ -17,7 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-const options = {
+const options :any= {
   locale: 'en-US',
   currency: 'USD',
   currencyDisplay: 'hidden',
