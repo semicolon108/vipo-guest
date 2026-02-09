@@ -40,6 +40,29 @@ $orange-300: color.adjust($orange-900, $lightness: 35%);
 $orange-200: color.adjust($orange-900, $lightness: 40%);
 $orange-100: color.adjust($orange-900, $lightness: 45%);
 
+$primary-50: #FFFBF2; // Nearly white with an orange tint
+$primary-100: #FFF3E0;
+$primary-200: #FFE0B2;
+$primary-300: #FFCC80;
+$primary-400: #FF9D40;
+$primary-500: #FF6D00; // Base
+$primary-600: #E66200;
+$primary-700: #BF5200;
+$primary-800: #994100;
+$primary-900: #662C00;
+
+$red-50: #FFF2F2;
+$red-100: #FFE6E6;
+$red-200: #FFBFBF;
+$red-300: #FF8080;
+$red-400: #FF4040;
+$red-500: #FF0000;
+$red-600: #CC0000;
+$red-700: #990000;
+$red-800: #660000;
+$red-900: #330000;
+
+
 $black-900: #000;
 $black-800: color.adjust($black-900, $lightness: 50%);
 $black-700: color.adjust($black-900, $lightness: 60%);
@@ -49,6 +72,18 @@ $black-400: color.adjust($black-900, $lightness: 85%);
 $black-300: color.adjust($black-900, $lightness: 91%);
 $black-200: color.adjust($black-900, $lightness: 95%);
 $black-100: color.adjust($black-900, $lightness: 99%);
+
+$green-50: #F0FDF4;
+$green-100: #DCFCE7;
+$green-200: #BBF7D0;
+$green-300: #86EFAC;
+$green-400: #4ADE80;
+$green-500: #16A34A; // Base
+$green-600: #168A3E;
+$green-700: #15803D;
+$green-800: #166534;
+$green-900: #14532D;
+
 
 :root {
   --orange-900: #{$orange-900};
@@ -100,4 +135,35 @@ $black-100: color.adjust($black-900, $lightness: 99%);
   --black-300: #{$black-300};
   --black-200: #{$black-200};
   --black-100: #{$black-100};
+
+  --primary-900: #{$primary-900};
+  --primary-800: #{$primary-800};
+  --primary-700: #{$primary-700};
+  --primary-600: #{$primary-600};
+  --primary-500: #{$primary-500};
+  --primary-400: #{$primary-400};
+  --primary-300: #{$primary-300};
+  --primary-200: #{$primary-200};
+  --primary-100: #{$primary-100};
+
+  --green-900: #{$green-900};
+  --green-800: #{$green-800};
+  --green-700: #{$green-700};
+  --green-600: #{$green-600};
+  --green-500: #{$green-500};
+  --green-400: #{$green-400};
+  --green-300: #{$green-300};
+  --green-200: #{$green-200};
+  --green-100: #{$green-100};
+
+  --red-900: #{$red-900};
+  --red-800: #{$red-800};
+  --red-700: #{$red-700};
+  --red-600: #{$red-600};
+  --red-500: #{$red-500};
+  --red-400: #{$red-400};
+  --red-300: #{$red-300};
+  --red-200: #{$red-200};
+  --red-100: #{$red-100};
+  --red-50: #{$red-50};
 }

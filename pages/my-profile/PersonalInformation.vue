@@ -33,7 +33,6 @@
           </div>
           <p class="error-text">{{ formStore.errors.file }}</p>
         </div>
-
         <div class="field">
           <label for="">{{ $t('cvGender') }} <span>*</span></label>
           <div class="control">
@@ -126,7 +125,7 @@
       </form>
       <div class="button-group">
         <a @click="router.push({ ...route, query: { ...route.query, step: 2 } })">{{ $t('Skip for now') }}</a>
-        <button class="button primary" @click="submitForm()">{{ $t('Save and Next') }}</button>
+        <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>
     </div>
   </div>

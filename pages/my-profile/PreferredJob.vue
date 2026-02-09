@@ -73,7 +73,7 @@
       </form>
       <div class="button-group">
         <a @click="router.push({ ...route, query: { ...route.query, step: 3 } })">{{ $t('Skip for now') }}</a>
-        <button class="button primary" @click="submitForm()">{{ $t('Save and Next') }}</button>
+        <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>
     </div>
   </div>
@@ -130,14 +130,14 @@ getReuse('Province')
 getReuse('Industry')
 
 
-watch(() => locale.value, async (value:any) => {
+watch(() => locale.value, async (value: any) => {
   isLang.value = value ? value.toUpperCase() : 'LA'
   getReuse('Province')
   getReuse('Industry')
 }, { immediate: true, deep: true })
 
 
-watch(() => userStore?.seekerInfo, async (value:any) => {
+watch(() => userStore?.seekerInfo, async (value: any) => {
 
   if (value) {
     const i = userStore?.seekerInfo?.workPreferences
@@ -182,12 +182,12 @@ const submitForm = async () => {
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: var(--black-100);
+      background-color: var(--black-200);
       border-radius: 6px;
       cursor: pointer;
 
       &.selected {
-        background-color: var(--primary-900);
+        background-color: var(--primary-500);
         color: #fff;
       }
     }

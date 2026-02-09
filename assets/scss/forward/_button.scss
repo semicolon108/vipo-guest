@@ -19,14 +19,17 @@
   white-space: nowrap;
   position: relative;
   transition: all ease-in-out 0.15s;
+
   &:has(i) {
     display: flex;
     gap: 0.25rem;
     align-items: center;
+
     i {
       font-size: var(--xsm-font);
     }
   }
+
   // click effect start
   &:hover::after {
     content: "";
@@ -39,51 +42,69 @@
     bottom: 0;
     z-index: 0;
   }
+
   &:active {
     animation: press 0.1s ease-in-out;
+
     @keyframes press {
       0% {
         transform: scale(1);
       }
+
       50% {
         transform: scale(0.93);
       }
+
       to {
         transform: scale(1);
       }
     }
   }
+
   &.small {
     height: 2.35rem;
     font-size: var(--sm-font);
     padding-left: calc(1.25em + 0.25em);
     padding-right: calc(1.25em + 0.25em);
   }
+
   &.orange {
     background-color: var(--orange-900);
     color: #fff;
   }
+
   &.light-orange {
     background-color: var(--orange-100);
     box-shadow: 0 0 0 1px var(--orange-900);
     color: var(--orange-900);
+
     &:hover {
       background-color: var(--orange-900);
       color: #fff;
     }
   }
+
+  &.black {
+    background-color: var(--black-900);
+    color: #fff;
+  }
+
   &.blue {
     background-color: var(--deep-blue-900);
     color: #fff;
   }
+
   &.light-blue {
     background-color: var(--light-blue-100);
     box-shadow: 0 0 0 1px var(--deep-blue-900);
     color: var(--deep-blue-900);
   }
+
   &.light-grey {
     background-color: var(--black-200);
     box-shadow: 0 0 0 1px var(--black-300);
     color: var(--black-900);
   }
-} //button
+}
+
+//button

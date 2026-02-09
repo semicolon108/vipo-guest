@@ -54,7 +54,7 @@
       <div class="button-group">
         <a @click="router.push({ ...route, query: { ...route.query, step: 6 } })">{{ $t('Skip for now') }}</a>
         <p v-if="errorMsg" class="error-text">{{ $t('validLanguage') }}</p>
-        <button class="button primary" @click="submitForm()">{{ $t('Save and Next') }}</button>
+        <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>
     </div>
   </div>

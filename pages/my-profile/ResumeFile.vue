@@ -59,7 +59,7 @@
           <div class="control">
             <a class="file-name" :href="resumeStore?.cv?.src" target="_blank" style="cursor: pointer"
               v-if="resumeStore?.cv?.src">
-              <button class="button gen-cv-button primary" target="_blank">
+              <button class="button gen-cv-button black" target="_blank">
                 {{ $t('cvDownloadCvFile') }}
               </button></a>
           </div>
@@ -77,10 +77,10 @@
 
       <div class="button-group">
         <a></a>
-        <button class="button primary" @click="submitForm()" v-if="!resumeStore.vipoCVStatus">
+        <button class="button orange" @click="submitForm()" v-if="!resumeStore.vipoCVStatus">
           {{ $t('Save') }}
         </button>
-        <button class="button primary" @click="submitForm()" v-else
+        <button class="button orange" @click="submitForm()" v-else
           :disabled="!checkValidateGenerateCV && resumeStore.vipoCVStatus">
           {{ $t('Create CV') }}
         </button>
@@ -261,7 +261,7 @@ watch(() => userStore?.userData?.validProfileStatus, (value: any) => {
 <style scoped lang="scss">
 .uploader {
   background-color: var(--primary-100);
-  box-shadow: 0 0 0 2px var(--primary-900);
+  box-shadow: 0 0 0 2px var(--primary-500);
   border-radius: 12px;
   cursor: pointer;
   display: inline-flex;
@@ -278,7 +278,7 @@ watch(() => userStore?.userData?.validProfileStatus, (value: any) => {
     width: 40px;
     height: 40px;
     border-radius: 999px;
-    background-color: var(--primary-900);
+    background-color: var(--primary-500);
     color: #fff;
     display: flex;
     align-items: center;
@@ -334,7 +334,7 @@ watch(() => userStore?.userData?.validProfileStatus, (value: any) => {
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid var(--primary-900);
+        border: 2px solid var(--primary-500);
 
         &::before {
           content: '';
@@ -342,7 +342,7 @@ watch(() => userStore?.userData?.validProfileStatus, (value: any) => {
           width: 13px;
           height: 13px;
           border-radius: 999px;
-          background-color: var(--primary-900);
+          background-color: var(--primary-500);
           z-index: 9;
         }
       }
@@ -351,10 +351,9 @@ watch(() => userStore?.userData?.validProfileStatus, (value: any) => {
 }
 
 .checklist {
-  border: 1px solid var(--black-300);
+  border: 1px solid var(--red-500);
   padding: 1em;
   border-radius: 12px;
-  background-color: var(--red-100);
   margin-bottom: 1em;
 
   p {
@@ -362,6 +361,7 @@ watch(() => userStore?.userData?.validProfileStatus, (value: any) => {
     display: flex;
     align-items: flex-start;
     gap: 0.25em;
+    color: var(--red-500);
 
     i {
       position: relative;
@@ -389,7 +389,7 @@ button {
   border-radius: 8px;
   cursor: pointer;
   height: 3rem;
-  color: var(--primary-900);
+  color: var(--primary-500);
 
   a {
     display: -webkit-box;

@@ -162,12 +162,12 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
     }
 
     &.orange {
-      color: var(--orange-900);
+      color: var(--orange-500);
       background-color: var(--orange-100);
     }
 
     &.green {
-      color: var(--green-900);
+      color: var(--green-500);
       background-color: var(--green-100);
     }
   }
@@ -215,7 +215,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
         font-size: .9em;
 
         &:hover {
-          color: var(--primary-900);
+          color: var(--primary-500);
         }
 
         i {
@@ -250,13 +250,13 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
         }
 
         &.orange {
-          color: var(--orange-900);
+          color: var(--orange-500);
           background-color: var(--orange-100);
 
         }
 
         &.green {
-          color: var(--green-900);
+          color: var(--green-500);
           background-color: var(--green-100);
 
         }
@@ -269,44 +269,34 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
   .card {
     overflow: hidden;
     border-radius: 12px;
-    border: 2px dashed var(--black-300);
+    border: 1px solid var(--black-300);
     scroll-margin-top: 120px;
+    box-shadow: 2px 1px 0 0 var(--black-300);
+
+    &:not(:last-child) {
+      margin-bottom: .5em;
+    }
 
     &.selected {
-      border: 2px solid var(--primary-900);
-      box-shadow: 0 0 3px 3px var(--primary-300);
+      border: 2px solid var(--primary-500);
+      box-shadow: 0 0 5px 5px var(--primary-100);
 
-      .card-header {
-        cursor: pointer;
-        background-color: var(--primary-100);
-
-        &:hover {
-          background-color: var(--primary-100);
-        }
-
-        .start {
-          span {
-            background-color: var(--primary-900);
-            color: #fff;
-          }
-        }
-      }
-
-      // card-header
       .card-body {
-        padding: 1em;
+        padding: 1.25em;
         max-height: 3000px;
       }
     }
 
     .card-header {
+      cursor: pointer;
+      border-bottom: 1px solid var(--black-300);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 0.5em;
       height: 4em;
       background-color: #fff;
-      padding: 0 1em;
+      padding: 0 1.25em;
       position: relative;
       transition: all ease-in-out 0.15s;
       cursor: pointer;
@@ -330,7 +320,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: var(--black-900);
+          background-color: var(--black-500);
           border-radius: 999px;
           color: #fff;
         }
@@ -341,17 +331,35 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
           padding: 0.25em 0.5em;
           font-size: 0.8em;
           border-radius: 6px;
-          background-color: var(--black-300);
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          color: var(--black-700);
+
+          &::before {
+            content: '';
+            display: block;
+            position: relative;
+            top: 1px;
+            width: 8px;
+            height: 8px;
+            border-radius: 8px;
+            margin-right: .25em;
+            background-color: var(--black-700);
+
+          }
 
           &.completed {
-            background-color: var(--primary-200);
-            color: var(--primary-900);
+            color: var(--green-500);
+
+            &::before {
+              background-color: var(--green-500);
+            }
           }
         }
       }
     }
 
-    //card-header
     .card-body {
       max-height: 0;
       overflow: hidden;
@@ -394,12 +402,12 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
 
             &.blue {
               background-color: var(--primary-100);
-              color: var(--primary-900);
+              color: var(--primary-500);
             }
 
             &.delete {
               background-color: var(--red-100);
-              color: var(--red-900);
+              color: var(--red-500);
             }
 
             cursor: pointer;
@@ -471,7 +479,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
 
                 .tag {
                   background-color: var(--primary-100);
-                  color: var(--primary-900);
+                  color: var(--primary-500);
                   padding: 0.25em 0.75em;
                   border-radius: 6px;
                   font-size: 0.9em;
@@ -510,8 +518,8 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
               justify-content: center;
 
               &.checked {
-                background-color: var(--primary-900);
-                border: 2px solid var(--primary-900);
+                background-color: var(--primary-500);
+                border: 2px solid var(--primary-500);
 
                 &::before {
                   content: '\f00c';
@@ -537,7 +545,6 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
             height: 3.3em;
             border-radius: 8px;
             background-color: #fff;
-            color: var(--black-900);
           }
 
           .control {
@@ -575,7 +582,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    border: 2px solid var(--primary-900);
+                    border: 2px solid var(--primary-500);
 
                     &::before {
                       content: '';
@@ -583,7 +590,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
                       width: 13px;
                       height: 13px;
                       border-radius: 999px;
-                      background-color: var(--primary-900);
+                      background-color: var(--primary-500);
                       z-index: 9;
                     }
                   }
@@ -596,7 +603,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
             &.has-addon-left {
               i {
                 position: absolute;
-                color: var(--black-900);
+                color: var(--black-500);
                 width: 30px;
                 text-align: right;
                 z-index: 9;
@@ -613,7 +620,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
 
               &:focus {
                 outline: none;
-                box-shadow: inset 0 0 0 2px var(--primary-900),
+                box-shadow: inset 0 0 0 2px var(--primary-500),
                   0 0 6px 0 var(--primary-500);
               }
             }
@@ -625,7 +632,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
 
             &:focus {
               outline: none;
-              box-shadow: inset 0 0 0 2px var(--primary-900),
+              box-shadow: inset 0 0 0 2px var(--primary-500),
                 0 0 6px 0 var(--primary-500) !important;
             }
           }
@@ -642,7 +649,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
           a {
             display: block;
             cursor: pointer;
-            color: var(--primary-900);
+            color: var(--primary-500);
           }
         }
 
