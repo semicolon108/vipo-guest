@@ -320,7 +320,7 @@ watch(() => userStore?.userData?.profileStatus, (value: any) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: var(--black-500);
+          background-color: var(--black-900);
           border-radius: 999px;
           color: #fff;
         }
