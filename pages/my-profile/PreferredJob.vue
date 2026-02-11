@@ -71,8 +71,8 @@
           <p class="error-text">{{ preferreStore.errors.industryId }}</p>
         </div>
       </form>
-      <div class="button-group">
-        <a @click="router.push({ ...route, query: { ...route.query, step: 3 } })">{{ $t('Skip for now') }}</a>
+      <div class="button-group"><p></p>
+        <!-- <a @click="router.push({ ...route, query: { ...route.query, step: 3 } })">{{ $t('Skip for now') }}</a> -->
         <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>
     </div>

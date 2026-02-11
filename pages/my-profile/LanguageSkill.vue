@@ -36,7 +36,7 @@
               <p class="error-text">{{ errors.LanguageLevelId }}</p>
             </div>
           </div>
-          <button class="button primary" @click="addLanguage()"> {{ $t('cvAddLanguage') }}</button>
+          <button class="button orange" @click="addLanguage()"> {{ $t('cvAddLanguage') }}</button>
         </div>
         <div class="list-group">
           <h3>{{ $t('Existing Language') }}</h3>
@@ -51,8 +51,8 @@
           </ul>
         </div>
       </div>
-      <div class="button-group">
-        <a @click="router.push({ ...route, query: { ...route.query, step: 6 } })">{{ $t('Skip for now') }}</a>
+      <div class="button-group"><p></p>
+        <!-- <a @click="router.push({ ...route, query: { ...route.query, step: 6 } })">{{ $t('Skip for now') }}</a> -->
         <p v-if="errorMsg" class="error-text">{{ $t('validLanguage') }}</p>
         <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>

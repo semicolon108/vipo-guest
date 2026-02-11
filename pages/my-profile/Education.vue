@@ -111,8 +111,8 @@
           </div>
         </div>
       </form>
-      <div class="button-group" v-if="!showForm">
-        <a @click="router.push({ ...route, query: { ...route.query, step: 4 } })">{{ $t('Skip for now') }}</a>
+      <div class="button-group" v-if="!showForm"><p></p>
+        <!-- <a @click="router.push({ ...route, query: { ...route.query, step: 4 } })">{{ $t('Skip for now') }}</a> -->
         <p v-if="errorMsg" class="error-text">{{ $t('validEducation') }}</p>
         <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>

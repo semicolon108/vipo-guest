@@ -55,7 +55,8 @@
         </div>
       </div>
       <div class="button-group">
-        <a @click="router.push({ ...route, query: { ...route.query, step: 7 } })">{{ $t('Skip for now') }}</a>
+        <p></p>
+        <!-- <a @click="router.push({ ...route, query: { ...route.query, step: 7 } })">{{ $t('Skip for now') }}</a> -->
         <p v-if="errorMsg" class="error-text">{{ $t('validOtherSkill') }}</p>
         <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>

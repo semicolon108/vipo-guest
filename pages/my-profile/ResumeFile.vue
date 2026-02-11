@@ -41,7 +41,7 @@
             <br />
           </div>
           <p v-if="resumeStore?.cv?.name && !resumeStore?.cv?.src">{{ resumeStore?.cv?.name }}</p>
-          <a :href="resumeStore?.cv?.src" target="_blank" class="button gen-cv-button primary"
+          <a :href="resumeStore?.cv?.src" target="_blank" class="button gen-cv-button orange"
             v-if="resumeStore?.cv?.src">
             <i class="fa-regular fa-file-pdf"></i>
             {{ $t('cvDownloadCvFile') }}
