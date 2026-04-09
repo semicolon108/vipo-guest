@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
@@ -35,12 +35,9 @@ const route = useRoute()
 const apiError = ref("");
 
 const {
-  values,
   errors,
   defineField,
-  setFieldValue,
   handleSubmit,
-  resetForm,
   setErrors,
 } = useForm({
   validationSchema: yup.object({
@@ -89,7 +86,7 @@ const onSubmit = handleSubmit((values) => {
   verifyMobile(values);
 });
 
-watch(() => route.query.source, (value) => {
+watch(() => route.query.source, (value: any) => {
   source.value = value ?? "vipo"
 }, { immediate: true })
 // onMounted(() => {

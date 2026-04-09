@@ -2,9 +2,7 @@
   <section class="job-detail-page">
     <Share ref="shareRef" />
     <div class="container">
-      <a class="back-button" @click="$router.back()"
-        ><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a
-      >
+      <a class="back-button" @click="$router.back()"><i class="fa-regular fa-arrow-left"></i> ກັບໄປໜ້າຫຼັກ</a>
 
       <div class="page-content">
         <div class="start">
@@ -27,10 +25,8 @@
                   </li>
                   <li>
                     <div class="tags">
-                      <span v-for="i in detail.workTime || []"
-                        >{{ minutesToTimeString(i.startTime) }} -
-                        {{ minutesToTimeString(i.endTime) }}</span
-                      >
+                      <span v-for="i in detail.workTime || []">{{ minutesToTimeString(i.startTime) }} -
+                        {{ minutesToTimeString(i.endTime) }}</span>
                     </div>
                   </li>
                 </ul>
@@ -40,18 +36,12 @@
               </div>
             </div>
             <div class="buttons">
-              <button
-                @click="shareRef.isPopupVisible = true"
-                class="button small share-button"
-              >
+              <button @click="shareRef.isPopupVisible = true" class="button small share-button">
                 <i class="fa-solid fa-link"></i> ແຊປະກາດວຽກ
               </button>
 
-              <div
-                v-if="detail.isApply"
-                class="button small apply-button"
-                style="background: gray; pointer-events: none"
-              >
+              <div v-if="detail.isApply" class="button small apply-button"
+                style="background: gray; pointer-events: none">
                 ສະໝັກແລ້ວ
               </div>
               <div v-else @click="applyJob" class="button small apply-button">
@@ -72,11 +62,7 @@
 
         <div class="end">
           <div class="box ads">
-            <img
-              v-for="i in adsBanner"
-              :src="i.image"
-              @click="clickBanner(i._id, i.url)"
-            />
+            <img v-for="i in adsBanner" :src="i.image" @click="clickBanner(i._id, i.url)" />
           </div>
         </div>
       </div>
@@ -92,7 +78,7 @@ import { baseURL } from "~/utils/global-variables";
 
 const { $apiFetch } = useNuxtApp();
 
-const { isAuth, user, token } = useAuth();
+const { isAuth, user, token }: any = useAuth();
 
 const config = useRuntimeConfig();
 
@@ -270,9 +256,11 @@ useSeoMeta({
   padding: 1.5rem;
   border-radius: 8px;
   font-size: var(--md-font);
+
   @media screen and (max-width: 764px) {
     padding: 0.75rem;
   }
+
   &:not(:last-child) {
     margin-bottom: 1rem;
   }

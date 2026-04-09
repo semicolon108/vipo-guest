@@ -2,18 +2,18 @@ import { defineStore } from 'pinia'
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import useFetchCustom from '@/utils/global-useFetch'
-
+import { toTypedSchema } from '@vee-validate/yup'
 export const usepreferreJobStore = defineStore('preferreJob', () => {
     const isLoading = ref<any>(false)
     const currency = ref<any>("₭")
     const route = useRoute()
     // Step 2
-    const schema = yup.object({
+    const schema = toTypedSchema(yup.object({
         currentJobTitle: yup.string().required("current Job Title field is required"),
-        expectedSalary: yup.string().required("expected Salary field is required"),
+        expectedSalary: yup.number().required("expected Salary field is required"),
         provinceId: yup.string().required("provinceId field is required"),
         industryId: yup.string().required("industryId field is required")
-    })
+    }))
     const {
         handleSubmit,
         setFieldValue,

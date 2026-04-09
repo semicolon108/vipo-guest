@@ -3,7 +3,7 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 import useFetchCustom from '@/utils/global-useFetch'
 import { useUserStore } from '@/store/user'
-
+import { toTypedSchema } from '@vee-validate/yup'
 export const useResumeStore = defineStore('resume', () => {
     const userStore = useUserStore() // ✅ Access user store instance
     const route = useRoute()
@@ -11,7 +11,7 @@ export const useResumeStore = defineStore('resume', () => {
     const error = ref<any>()
     const cvError = ref<any>()
     const checkUploadResume = ref<any>(false)
-    const schema = yup.object({
+    const schema = toTypedSchema(yup.object({
         cv: yup
             .mixed()
             .required("CV file is required")
@@ -19,7 +19,7 @@ export const useResumeStore = defineStore('resume', () => {
         vipoCVStatus: yup
             .boolean()
             .required()
-    })
+    }))
 
     // ✅ vee-validate form setup
     const {

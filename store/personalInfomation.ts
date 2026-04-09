@@ -2,13 +2,13 @@ import { defineStore } from 'pinia'
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import useFetchCustom from '@/utils/global-useFetch'
-
+import { toTypedSchema } from '@vee-validate/yup'
 export const usePersonalInformationStore = defineStore('personalInformation', () => {
     const isLoading = ref<any>(false)
     const checkUploadProfile = ref<any>(false)
     const route = useRoute()
     // Step 1
-    const schema = yup.object({
+    const schema = toTypedSchema(yup.object({
         file: yup
             .mixed()
             .required('Profile field is required')
@@ -23,7 +23,7 @@ export const usePersonalInformationStore = defineStore('personalInformation', ()
         provinceId: yup.string().required("Province field is required"),
         districtId: yup.string().required("District field is required"),
         professionalSummary: yup.string().transform(value => value || null).nullable()
-    })
+    }))
     const {
         handleSubmit,
         setFieldValue,

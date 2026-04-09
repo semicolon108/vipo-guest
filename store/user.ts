@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from '~/store/auth'
 import useFetchCustom from '@/utils/global-useFetch'
-import { seekerInformation } from '~/utils/global-variables'
+import { seekerInformations } from '~/utils/global-variables'
 
 // Define the User interface
 interface User {
@@ -17,7 +17,7 @@ interface User {
 }
 
 export const useUserStore = defineStore('user', () => {
-  const seekerProfile: string = seekerInformation // Assuming this is a URL or API endpoint string
+  const seekerProfile: string = seekerInformations // Assuming this is a URL or API endpoint string
   const Auth = useAuthStore()
 
   // State store

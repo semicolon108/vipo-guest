@@ -30,6 +30,4 @@ const useFetchCustom = createFetch({
   combination: 'overwrite'
 })
 
-
-
 export default useFetchCustom

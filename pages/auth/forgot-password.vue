@@ -9,18 +9,12 @@
           <div class="field">
             <label>ເບີໂທລະສັບ</label>
             <div class="control">
-              <input type="text"
-                     v-model="mobile"
-                     v-bind="mobileProps"
-                     placeholder="" />
+              <input type="text" v-model="mobile" v-bind="mobileProps" placeholder="" />
             </div>
             <p class="error-text">{{ errors.mobile }}</p>
-            <p class="error-text">{{apiError}}</p>
+            <p class="error-text">{{ apiError }}</p>
           </div>
-          <button
-              type="submit"
-            class="button light-blue"
-          >
+          <button type="submit" class="button light-blue">
             ຂໍລະຫັດຢືນຢັນ
           </button>
         </div>
@@ -31,8 +25,7 @@
 
 <script setup lang="ts">
 
-import {ref} from "vue";
-import {useForm} from "vee-validate";
+import { useForm } from "vee-validate";
 import * as yup from "yup";
 
 const config = useRuntimeConfig();
@@ -50,8 +43,8 @@ const {
 } = useForm({
   validationSchema: yup.object({
     mobile: yup.string()
-        .required("This field is required")
-        .matches(/^\d{8}$/, "Mobile number must be exactly 8 digits"),
+      .required("This field is required")
+      .matches(/^\d{8}$/, "Mobile number must be exactly 8 digits"),
   }),
 });
 
@@ -68,8 +61,8 @@ const verifyMobile = async (form: any) => {
       },
     });
 
-    if(error.value) {
-      apiError.value =  error.value.data?.message || error.value.message || 'Something went wrong'
+    if (error.value) {
+      apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
       setTimeout(() => {
         apiError.value = ''
       }, 2000)
@@ -104,6 +97,7 @@ const onSubmit = handleSubmit((values) => {
   display: flex;
   align-items: center;
 }
+
 hr {
   background-color: var(--deep-blue-900);
   height: 3px;
@@ -112,6 +106,7 @@ hr {
   width: 2.5rem;
   margin: 1rem 0;
 }
+
 .forgot-password-form {
   max-width: 350px;
   width: 100%;
@@ -123,38 +118,48 @@ hr {
     font-size: var(--xlg-font);
     margin-bottom: 0.25rem;
   }
+
   p {
     font-size: var(--md-font);
   }
+
   .field {
     margin-bottom: 1rem;
     width: 100%;
+
     label {
       margin-bottom: 0.25rem;
       display: block;
       font-size: var(--sm-font);
+
       &:has(span) {
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
+
         span {
           font-size: var(--xsm-font);
           color: var(--orange-900);
           transition: all ease-in-out 0.15s;
           cursor: pointer;
+
           &:hover {
             text-decoration: underline;
           }
         }
       }
-    } // label
+    }
+
+    // label
     input {
       background-color: var(--black-200);
     }
   }
+
   .regsiter-link {
     margin-top: 1rem;
     font-size: var(--sm-font);
+
     a {
       margin-left: 0.25rem;
       color: var(--orange-900);

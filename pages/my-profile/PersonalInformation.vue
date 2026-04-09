@@ -124,7 +124,8 @@
           </div>
         </div>
       </form>
-      <div class="button-group"><p></p>
+      <div class="button-group">
+        <p></p>
         <!-- <a @click="router.push({ ...route, query: { ...route.query, step: 2 } })">{{ $t('Skip for now') }}</a> -->
         <button class="button orange" @click="submitForm()">{{ $t('Save and Next') }}</button>
       </div>
@@ -139,7 +140,7 @@ const formStore = usePersonalInformationStore()
 const { submitStep1Form } = formStore
 import { useUserStore } from '@/store/user'
 const userStore = useUserStore()
-import { fileTmp } from '@/utils/global-variables'
+import { fileTmp } from '@/utils/global-variable-108'
 import { useI18n } from 'vue-i18n'
 import DateInput from '@/components/DateInput.vue'
 
