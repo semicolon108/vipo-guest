@@ -1,11 +1,7 @@
 <template>
   <div class="select-date-container">
-    <div
-      class="select"
-      v-show="!isOnlyMonthAndYear"
-      :class="{ disabled: isDisabled }"
-    >
-      <select v-model="dateFieldDay" :disabled="isDisabled" >
+    <div class="select" v-show="!isOnlyMonthAndYear" :class="{ disabled: isDisabled }">
+      <select v-model="dateFieldDay" :disabled="isDisabled">
         <option disabled value="">DD</option>
         <option v-for="i in dayOptionsComputed" :key="i" :value="i">
           {{ i }}
@@ -14,20 +10,16 @@
     </div>
 
     <div class="select" :class="{ disabled: isDisabled }">
-      <select v-model="dateFieldMonth" :disabled="isDisabled" >
+      <select v-model="dateFieldMonth" :disabled="isDisabled">
         <option disabled value="">MM</option>
-        <option
-          v-for="(month, idx) in monthOptions"
-          :key="month"
-          :value="month"
-        >
+        <option v-for="(month, idx) in monthOptions" :key="month" :value="month">
           {{ monthNames[idx] }}
         </option>
       </select>
     </div>
 
     <div class="select" :class="{ disabled: isDisabled }">
-      <select v-model="dateFieldYear" :disabled="isDisabled" >
+      <select v-model="dateFieldYear" :disabled="isDisabled">
         <option disabled value="">YYYY</option>
         <option v-for="year in yearOptions" :key="year" :value="year">
           {{ year }}
@@ -38,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
 import { formatStringToDate } from "@/utils/formatter";
 import dayjs from "dayjs";
 
@@ -47,6 +38,8 @@ const modelValue = defineModel<string | null>();
 const props = defineProps<{
   isOnlyMonthAndYear?: boolean;
   isDisabled?: boolean;
+  onChange?: (value: string | null) => void;
+  onBlur?: () => void;
 }>();
 
 const isModelValueSet = ref(false);
@@ -97,19 +90,15 @@ const maxDays = ref(31);
 const dayOptionsComputed = computed(() => dayOptions.slice(0, maxDays.value));
 
 // Handle modelValue from parent (for initial load)
-watch(
-  () => modelValue.value,
-  (newVal) => {
-    if (newVal && !isModelValueSet.value) {
-      isModelValueSet.value = true;
-      const date = dayjs(newVal);
-      dateFieldDay.value = date.format("DD");
-      dateFieldMonth.value = date.format("MM");
-      dateFieldYear.value = date.format("YYYY");
-    }
-  },
-  { immediate: true }
-);
+watch(() => modelValue.value, (newVal: any) => {
+  if (newVal && !isModelValueSet.value) {
+    isModelValueSet.value = true;
+    const date = dayjs(newVal);
+    dateFieldDay.value = date.format("DD");
+    dateFieldMonth.value = date.format("MM");
+    dateFieldYear.value = date.format("YYYY");
+  }
+}, { immediate: true });
 
 // Watch for field changes and update modelValue
 watch([dateFieldDay, dateFieldMonth, dateFieldYear], () => {
@@ -138,9 +127,12 @@ watch([dateFieldDay, dateFieldMonth, dateFieldYear], () => {
     (props.isOnlyMonthAndYear || dateFieldDay.value)
   ) {
     const fullDate = `${dateFieldYear.value}-${dateFieldMonth.value}-${dateFieldDay.value}`;
-    modelValue.value = formatStringToDate(fullDate); // or just `fullDate` if formatting isn't needed
+    const formatted = formatStringToDate(fullDate);
+    modelValue.value = formatted;
+    props.onChange?.(formatted); // notify vee-validate so it clears the error
   } else {
     modelValue.value = null;
+    props.onChange?.(null); // notify vee-validate of empty value
   }
 });
 </script>

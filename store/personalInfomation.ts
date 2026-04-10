@@ -19,7 +19,7 @@ export const usePersonalInformationStore = defineStore('personalInformation', ()
         lastName: yup.string().required("LastName field is required"),
         genderId: yup.string().required("Gender field is required"),
         maritalStatusId: yup.string().required("MaritalStatus field is required"),
-        dateOfBirth: yup.string().required("Date of birth field is required"),
+        dateOfBirth: yup.string().nullable().required("Date of birth field is required"),
         provinceId: yup.string().required("Province field is required"),
         districtId: yup.string().required("District field is required"),
         professionalSummary: yup.string().transform(value => value || null).nullable()
@@ -40,7 +40,7 @@ export const usePersonalInformationStore = defineStore('personalInformation', ()
             lastName: "",
             genderId: "",
             maritalStatusId: "",
-            dateOfBirth: "",
+            dateOfBirth: null,
             provinceId: "",
             districtId: "",
             professionalSummary: ""
