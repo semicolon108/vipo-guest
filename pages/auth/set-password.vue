@@ -68,72 +68,83 @@ const [confirmPassword, confirmPasswordAttrs] = defineField('confirmPassword');
 
 
 const register = async () => {
-  if (route.query.type === 'register' && route.query.mobile && route.query.token) {
+  try {
     isRegister.value = true
-    const form = {
-      mobile: route.query.mobile,
-      password: password.value,
-      source: route.query?.source as string ?? "vipo"
+    if (route.query.type === 'register' && route.query.mobile && route.query.token) {
+      
+      const form = {
+        mobile: route.query.mobile,
+        password: password.value,
+        source: route.query?.source as string ?? "vipo"
+      }
+      const { data, error }: any = await useFetch(`${config.public.apiBase}/register-vipo-seeker`, {
+        method: 'POST',
+        body: form,
+      });
+      isRegister.value = false
+      if (error.value) {
+        apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
+        setTimeout(() => {
+          apiError.value = ''
+        }, 2000)
+        return
+      }
+
+      const token = data.value.token
+
+      // Save the token in a secure cookie
+      const tokenCookie: any = useCookie('auth-token', {
+        maxAge: 60 * 60 * 24 * 365, // 7 days
+        httpOnly: false,          // Set to true if managed from server-side
+        secure: false,            // set to true if using HTTPS
+        sameSite: 'lax',
+      });
+
+      tokenCookie.value = token;
+
+      navigateTo('/')
+
     }
-    const { data, error }: any = await useFetch(`${config.public.apiBase}/register-vipo-seeker`, {
-      method: 'POST',
-      body: form,
-    });
-    isRegister.value = false
-    if (error.value) {
-      apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
-      setTimeout(() => {
-        apiError.value = ''
-      }, 2000)
-      return
+    else if (route.query.type === 'forgotPassword' && route.query.mobile && route.query.token) {
+
+      const form = {
+        changePassToken: route.query.token,
+        newPassword: password.value,
+        confirmPassword: confirmPassword.value
+      }
+
+      const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-reset-password-vipo`, {
+        method: 'POST',
+        body: form,
+      });
+
+      if (error.value) {
+        apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
+        setTimeout(() => {
+          apiError.value = ''
+        }, 2000)
+        return
+      }
+
+      const token = data.value.token
+
+      navigateTo('/auth/login')
+
     }
-
-    const token = data.value.token
-
-    // Save the token in a secure cookie
-    const tokenCookie = useCookie('auth-token', {
-      maxAge: 60 * 60 * 24 * 365, // 7 days
-      httpOnly: false,          // Set to true if managed from server-side
-      secure: false,            // set to true if using HTTPS
-      sameSite: 'lax',
-    });
-
-    tokenCookie.value = token;
-
-    navigateTo('/')
-
+  } catch (error) {
+    console.error('Registration failed:', error)
+    apiError.value = 'Registration failed. Please try again.'
+    setTimeout(() => {
+      apiError.value = ''
+    }, 2000)
   }
-  else if (route.query.type === 'forgotPassword' && route.query.mobile && route.query.token) {
-
-    const form = {
-      changePassToken: route.query.token,
-      newPassword: password.value,
-      confirmPassword: confirmPassword.value
-    }
-
-    const { data, error }: any = await useFetch(`${config.public.apiBase}/seeker-reset-password-vipo`, {
-      method: 'POST',
-      body: form,
-    });
-
-    if (error.value) {
-      apiError.value = error.value.data?.message || error.value.message || 'Something went wrong'
-      setTimeout(() => {
-        apiError.value = ''
-      }, 2000)
-      return
-    }
-
-    const token = data.value.token
-
-    navigateTo('/auth/login')
-
-  }
-
-
-
-
 }
+
+
+
+
+
+
 
 // Submit handler
 const onSubmit = handleSubmit((values) => {

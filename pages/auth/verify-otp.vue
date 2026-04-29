@@ -188,7 +188,7 @@ const onSubmit = handleSubmit((values) => {
 })
 
 startCooldown(30)
-watch(() => route.query.source, (value) => {
+watch(() => route.query.source, (value:any) => {
   source.value = value ?? "vipo"
 }, { immediate: true })
 </script>
