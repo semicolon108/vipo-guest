@@ -43,8 +43,12 @@ export const useEducationStore = defineStore('education', () => {
     const [_id, _idProps] = defineField('_id')
     const [subject, subjectProps] = defineField('subject')
     const [school, schoolProps] = defineField('school')
-    const [startYear, startYearProps] = defineField('startYear')
-    const [endYear, endYearProps] = defineField('endYear')
+    const [startYear, startYearProps] = defineField('startYear', {
+        validateOnModelUpdate: true
+    })
+    const [endYear, endYearProps] = defineField('endYear', {
+        validateOnModelUpdate: true
+    })
     const [qualifications, qualificationsProps] = defineField('qualifications')
     const [currentlyStudying, currentlyStudyingProps] = defineField('currentlyStudying')
 

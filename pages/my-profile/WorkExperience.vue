@@ -82,18 +82,17 @@
           <div class="field">
             <label>{{ $t('cvStartWorking') }}</label>
             <div class="control grids is-24 gap-10">
-              <DateInput v-model="workExperienceStore.startYear" v-bind="workExperienceStore.startYearProps"
+              <DateInput v-model="workExperienceStore.startYear"
                 style="width: 100%" :is-only-month-and-year="true" />
               <p class="error-text">
-                {{ workExperienceStore.errors.startDate }}
+                {{ workExperienceStore.errors.startYear }}
               </p>
             </div>
           </div>
           <div class="field">
             <label>{{ $t('cvEndDate') }}</label>
             <div class="control grids is-24 gap-10" v-if="!workExperienceStore.isCurrentJob">
-              <DateInput v-model="workExperienceStore.endYear" style="width: 100%" :is-only-month-and-year="true"
-                v-bind="workExperienceStore.endYearProps" />
+              <DateInput v-model="workExperienceStore.endYear" style="width: 100%" :is-only-month-and-year="true" />
             </div>
             <div class="checkbox m-t-10">
               <span :class="{ checked: workExperienceStore.isCurrentJob }" @click="

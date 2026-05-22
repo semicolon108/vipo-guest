@@ -41,8 +41,12 @@ export const useWorkExperienceStore = defineStore('workExperience', () => {
     const [_id, _idProps] = defineField('_id')
     const [company, companyProps] = defineField('company')
     const [position, positionProps] = defineField('position')
-    const [startYear, startYearProps] = defineField('startYear')
-    const [endYear, endYearProps] = defineField('endYear')
+    const [startYear, startYearProps] = defineField('startYear', {
+        validateOnModelUpdate: true
+    })
+    const [endYear, endYearProps] = defineField('endYear', {
+        validateOnModelUpdate: true
+    })
     const [responsibility, responsibilityProps] = defineField('responsibility')
     const [isCurrentJob, isCurrentJobProps] = defineField('isCurrentJob')
     const onSubmit = async () => {

@@ -696,7 +696,9 @@ const [profileImg] = defineField("profileImg");
 const [gender] = defineField("gender");
 const [firstName] = defineField("firstName");
 const [lastName] = defineField("lastName");
-const [dateOfBirth] = defineField("dateOfBirth");
+const [dateOfBirth] = defineField("dateOfBirth", {
+  validateOnModelUpdate: true,
+});
 const [maritalStatus] = defineField("maritalStatus");
 const [province] = defineField("province");
 const [district] = defineField("district");

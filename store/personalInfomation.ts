@@ -52,7 +52,9 @@ export const usePersonalInformationStore = defineStore('personalInformation', ()
     const [lastName, lastNameProps] = defineField('lastName')
     const [genderId, genderIdProps] = defineField('genderId')
     const [maritalStatusId, maritalStatusIdProps] = defineField('maritalStatusId')
-    const [dateOfBirth, dateOfBirthProps] = defineField('dateOfBirth')
+    const [dateOfBirth, dateOfBirthProps] = defineField('dateOfBirth', {
+        validateOnModelUpdate: true
+    })
     const [provinceId, provinceIdProps] = defineField('provinceId')
     const [districtId, districtIdProps] = defineField('districtId')
     const [professionalSummary, professionalSummaryProps] = defineField('professionalSummary')

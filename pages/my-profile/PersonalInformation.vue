@@ -81,7 +81,7 @@
         <div class="field">
           <label for="">{{ $t('cvDateOfBirth') }} <span>*</span></label>
           <div class="control">
-            <DateInput v-model="formStore.dateOfBirth" v-bind="formStore.dateOfBirthProps" />
+            <DateInput v-model="formStore.dateOfBirth" />
             <p class="error-text">{{ formStore.errors.dateOfBirth }}</p>
           </div>
         </div>

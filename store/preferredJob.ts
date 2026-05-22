@@ -10,7 +10,15 @@ export const usepreferreJobStore = defineStore('preferreJob', () => {
     // Step 2
     const schema = toTypedSchema(yup.object({
         currentJobTitle: yup.string().required("current Job Title field is required"),
-        expectedSalary: yup.number().required("expected Salary field is required"),
+        expectedSalary: yup
+            .number()
+            .transform((value, originalValue) => {
+                if (originalValue === "" || originalValue === null || originalValue === undefined) {
+                    return undefined;
+                }
+                return value;
+            })
+            .required("expected Salary field is required"),
         provinceId: yup.string().required("provinceId field is required"),
         industryId: yup.string().required("industryId field is required")
     }))
@@ -33,9 +41,15 @@ export const usepreferreJobStore = defineStore('preferreJob', () => {
     })
 
     const [currentJobTitle, currentJobTitleProps] = defineField('currentJobTitle')
-    const [expectedSalary, expectedSalaryProps] = defineField('expectedSalary')
-    const [provinceId, provinceIdProps] = defineField('provinceId')
-    const [industryId, industryIdProps] = defineField('industryId')
+    const [expectedSalary, expectedSalaryProps] = defineField('expectedSalary', {
+        validateOnModelUpdate: true
+    })
+    const [provinceId, provinceIdProps] = defineField('provinceId', {
+        validateOnModelUpdate: true
+    })
+    const [industryId, industryIdProps] = defineField('industryId', {
+        validateOnModelUpdate: true
+    })
 
     const submitStep2Form = () => {
         return new Promise(async (resolve, reject) => {

@@ -30,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-import { formatStringToDate } from "@/utils/formatter";
 import dayjs from "dayjs";
 
 // Define v-model and props
@@ -41,8 +40,6 @@ const props = defineProps<{
   onChange?: (value: string | null) => void;
   onBlur?: () => void;
 }>();
-
-const isModelValueSet = ref(false);
 
 // Dropdown field refs
 const dateFieldDay = ref("");
@@ -89,16 +86,40 @@ if (props.isOnlyMonthAndYear) {
 const maxDays = ref(31);
 const dayOptionsComputed = computed(() => dayOptions.slice(0, maxDays.value));
 
-// Handle modelValue from parent (for initial load)
-watch(() => modelValue.value, (newVal: any) => {
-  if (newVal && !isModelValueSet.value) {
-    isModelValueSet.value = true;
-    const date = dayjs(newVal);
-    dateFieldDay.value = date.format("DD");
-    dateFieldMonth.value = date.format("MM");
-    dateFieldYear.value = date.format("YYYY");
-  }
-}, { immediate: true });
+// Handle modelValue from parent (for initial load, dynamic updates, and form resets)
+watch(
+  () => modelValue.value,
+  (newVal: any) => {
+    if (newVal) {
+      const date = dayjs(newVal);
+      if (date.isValid()) {
+        const formattedDay = date.format("DD");
+        const formattedMonth = date.format("MM");
+        const formattedYear = date.format("YYYY");
+
+        // Only update field values if they actually differ to avoid recursive loops
+        if (dateFieldDay.value !== formattedDay) {
+          dateFieldDay.value = formattedDay;
+        }
+        if (dateFieldMonth.value !== formattedMonth) {
+          dateFieldMonth.value = formattedMonth;
+        }
+        if (dateFieldYear.value !== formattedYear) {
+          dateFieldYear.value = formattedYear;
+        }
+      }
+    } else {
+      // Clear dropdown fields only if they were previously fully populated (indicating an external form reset)
+      const hasFullDate = dateFieldYear.value && dateFieldMonth.value && (props.isOnlyMonthAndYear || dateFieldDay.value);
+      if (hasFullDate) {
+        dateFieldDay.value = props.isOnlyMonthAndYear ? "01" : "";
+        dateFieldMonth.value = "";
+        dateFieldYear.value = "";
+      }
+    }
+  },
+  { immediate: true }
+);
 
 // Watch for field changes and update modelValue
 watch([dateFieldDay, dateFieldMonth, dateFieldYear], () => {
@@ -127,12 +148,11 @@ watch([dateFieldDay, dateFieldMonth, dateFieldYear], () => {
     (props.isOnlyMonthAndYear || dateFieldDay.value)
   ) {
     const fullDate = `${dateFieldYear.value}-${dateFieldMonth.value}-${dateFieldDay.value}`;
-    const formatted = formatStringToDate(fullDate);
-    modelValue.value = formatted;
-    props.onChange?.(formatted); // notify vee-validate so it clears the error
+    modelValue.value = fullDate;
+    props.onChange?.(fullDate); // notify vee-validate so it clears the error if prop exists
   } else {
     modelValue.value = null;
-    props.onChange?.(null); // notify vee-validate of empty value
+    props.onChange?.(null); // notify vee-validate of empty value if prop exists
   }
 });
 </script>
