@@ -29,13 +29,6 @@
 
           </button>
         </div>
-        <!--        <div class="completed">-->
-        <!--          <h1>ຕັ້ງລະຫັດໃຫມ່ສຳເລັດແລ້ວ</h1>-->
-        <!--          <div class="buttons">-->
-        <!--            <button class="button light-orange">ຊອກວຽກ</button>-->
-        <!--            <button class="button orange">ເຂົ້າສູ່ລະບົບ</button>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </form>
     </div>
   </section>
@@ -72,7 +65,7 @@ const register = async () => {
   try {
     isRegister.value = true
     if (route.query.type === 'register' && route.query.mobile && route.query.token) {
-      
+
       const form = {
         mobile: route.query.mobile,
         password: password.value,
@@ -145,11 +138,6 @@ const register = async () => {
     }, 2000)
   }
 }
-
-
-
-
-
 
 
 // Submit handler
