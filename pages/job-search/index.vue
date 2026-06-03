@@ -3,7 +3,10 @@
     <section class="filter-header">
         <div class="container">
             <div class="filter-header-inner">
-                <input type="text" v-model="search" class="filter-input" placeholder="ຄົ້ນຫາຕາມຊື່ບໍລິສັດ" />
+                <div class="search-input-wrapper">
+                    <i class="fa-regular fa-magnifying-glass search-icon"></i>
+                    <input type="text" v-model="search" class="filter-input" placeholder="ຄົ້ນຫາຕາມຊື່ບໍລິສັດ" />
+                </div>
             </div>
         </div>
     </section>
@@ -130,6 +133,17 @@ onMounted(() => {
     background-color: var(--orange-900);
     padding: 1.5rem 0;
 
+    @media (max-width: 768px) {
+        padding: 0.75rem 0;
+    }
+
+    .container {
+        @media (max-width: 768px) {
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+        }
+    }
+
     .filter-header-inner {
         display: flex;
         align-items: center;
@@ -164,8 +178,8 @@ onMounted(() => {
 
 .filter-input {
     height: 50px;
-    width: 500px;
-    padding: 0 1rem;
+    width: 100%;
+    padding: 0 1rem 0 2.75rem;
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 8px;
     font-size: var(--sm-font);
@@ -181,7 +195,33 @@ onMounted(() => {
     }
 
     @media (max-width: 768px) {
+        height: 40px;
+        font-size: var(--xsm-font);
+        padding: 0 0.75rem 0 2.25rem;
+    }
+}
+
+.search-input-wrapper {
+    position: relative;
+    width: 500px;
+
+    @media (max-width: 768px) {
         width: 100%;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--black-600);
+        font-size: var(--sm-font);
+        pointer-events: none;
+
+        @media (max-width: 768px) {
+            left: 0.75rem;
+            font-size: var(--xsm-font);
+        }
     }
 }
 

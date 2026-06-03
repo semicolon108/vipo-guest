@@ -173,6 +173,7 @@ const formatArray = (arr: any[]) => {
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
+  margin-left: 5px;
 
   &:hover {
     background-color: var(--black-200);
