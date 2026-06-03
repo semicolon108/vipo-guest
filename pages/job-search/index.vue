@@ -12,12 +12,27 @@
         <div class="container">
             <div class="masonry-grid">
                 <div class="masonry-item" v-for="(item, index) in items" :key="index"
-                    @click="router.push('/job-search/' + item._id)">
-                    <div class="card-image">
-                        <img :src="item.photoLinks?.[0] || item.employer?.logo || '/logo-circle.png'"
-                            :alt="item?.employer?.companyName || 'Company'" />
+                    @click="router.push('/job-search/' + item._id)"
+                    :style="{ '--photo-count': item.photoLinks?.length || 1 }">
+
+                    <div class="card-image-slider">
+                        <div class="slider-track" :class="{ 'has-multiple': item.photoLinks?.length > 1 }">
+                            <img v-for="(photo, pIndex) in item.photoLinks" :key="pIndex"
+                                :class="pIndex === 0 ? 'primary-img' : 'absolute-img'"
+                                :style="pIndex > 0 ? { top: (pIndex * 100) + '%' } : {}" :src="photo"
+                                :alt="item?.employer?.companyName || 'Company'" />
+                            <img v-if="!item.photoLinks || item.photoLinks.length === 0" class="primary-img"
+                                :src="item.employer?.logo || '/logo-circle.png'"
+                                :alt="item?.employer?.companyName || 'Company'" />
+                        </div>
+                        <div class="dark-overlay"></div>
                     </div>
-                    <div class="card-body">
+
+                    <div class="company-logo-btn" v-if="item.employer?.logo">
+                        <img :src="item.employer.logo" alt="Logo" />
+                    </div>
+
+                    <div class="card-footer-glass">
                         <h3 class="company-name">{{ item?.employer?.companyName || 'Unknown Company' }}</h3>
                         <p class="start-date">
                             <i class="fa-regular fa-calendar"></i>
@@ -192,45 +207,123 @@ onMounted(() => {
 .masonry-item {
     break-inside: avoid;
     margin-bottom: 1.25rem;
-    background-color: #fff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
     border: 1px solid var(--black-200);
     cursor: pointer;
-    transition: box-shadow 0.2s ease, transform 0.2s ease;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    position: relative;
 
     &:hover {
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        transform: translateY(-10px);
+
+        .slider-track.has-multiple {
+            transform: translateY(calc(-100% * (var(--photo-count) - 1)));
+            transition: transform calc(4.5s * (var(--photo-count) - 1)) linear;
+        }
+
+        .slider-track img {
+            transform: scale(1.05) translateY(-15px);
+        }
+
+        .company-logo-btn,
+        .card-footer-glass,
+        .dark-overlay {
+            opacity: 0;
+            visibility: hidden;
+        }
     }
 
-    .card-image {
+    .card-image-slider {
+        position: relative;
         width: 100%;
         overflow: hidden;
-        background-color: var(--black-100);
+        min-height: 250px;
+        background-color: var(--black-800);
+
+        .slider-track {
+            position: relative;
+            width: 100%;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+
+            img {
+                width: 100%;
+                display: block;
+                object-fit: cover;
+                transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            }
+
+            .primary-img {
+                height: auto;
+                min-height: 250px;
+            }
+
+            .absolute-img {
+                position: absolute;
+                left: 0;
+                height: 100%;
+            }
+        }
+
+        .dark-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 45%, rgba(0, 0, 0, 0.1) 100%);
+            pointer-events: none;
+            z-index: 1;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+    }
+
+    .company-logo-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 48px;
+        height: 48px;
+        background: var(--orange-900);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        padding: 2px;
+        z-index: 2;
+        border: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
 
         img {
             width: 100%;
-            height: auto;
-            display: block;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-        }
-
-        &:hover img {
-            transform: scale(1.05);
+            height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            background-color: #fff;
         }
     }
 
-    .card-body {
-        padding: 0.875rem 1rem;
+    .card-footer-glass {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: none;
+        padding: 12px 16px;
+        z-index: 2;
+        color: var(--black-900);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: opacity 0.3s ease, visibility 0.3s ease;
 
         .company-name {
-            font-size: var(--md-font);
+            font-size: 1rem;
             font-weight: 700;
             color: var(--black-900);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.25rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -242,10 +335,7 @@ onMounted(() => {
             display: flex;
             align-items: center;
             gap: 0.4rem;
-
-            i {
-                color: var(--black-500);
-            }
+            font-weight: 500
         }
     }
 }
