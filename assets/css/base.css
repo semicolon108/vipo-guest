@@ -75,7 +75,7 @@
 }
 
 :root {
-  --font-family: Noto Sans Lao Looped, Satoshi sans-serif;
+  --font-family: Noto Sans Lao Looped, Satoshi, sans-serif;
   --xxsm-font: 0.7rem;
   --xsm-font: 0.8rem;
   --sm-font: 0.9rem;

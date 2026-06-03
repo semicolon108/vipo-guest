@@ -61,7 +61,7 @@ const route = useRoute()
 const router = useRouter()
 const preferreStore = usepreferreJobStore()
 const { submitStep2Form } = preferreStore
-const { isAuth } = useAuthStore()
+const authStore = useAuthStore()
 const userStore = useUserStore()
 
 //Personal Information Store
@@ -89,8 +89,8 @@ const currentStep = ref<any>(1)
 const currentStatus = ref<any>(false)
 
 onMounted(async () => {
-  if (!isAuth) {
-    navigateTo('/auth/login?redirect=/my-account')
+  if (!authStore.isAuth) {
+    navigateTo('/auth/login?redirect=/my-profile')
   }
 })
 

@@ -1,20 +1,10 @@
 <template>
   <section class="banner-section">
     <div class="container">
-      <Swiper
-        :modules="[Navigation, Pagination, Autoplay]"
-        :slides-per-view="1"
-        :navigation="true"
-        :pagination="true"
-        class="mySwiper swiper"
-        :autoplay="{ delay: 4000, disableOnInteraction: false }"
-      >
+      <Swiper :modules="[Navigation, Pagination, Autoplay]" :slides-per-view="1" :navigation="true" :pagination="true"
+        class="mySwiper swiper" :autoplay="{ delay: 4000, disableOnInteraction: false }">
         <SwiperSlide v-for="(slide, index) in slides" :key="index">
-          <img
-            :src="slide.image"
-            alt="Slide"
-            @click="clickBanner(slide._id, slide.url)"
-          />
+          <img :src="slide.image" alt="Slide" @click="clickBanner(slide._id, slide.url)" />
         </SwiperSlide>
       </Swiper>
     </div>
@@ -26,23 +16,13 @@
         <div class="field">
           <label>ຕຳແໜ່ງງານ</label>
           <div class="control">
-            <input
-              v-model="searchText"
-              type="text"
-              class="input"
-              placeholder="ພະນັກງານເສີບ"
-              required
-            />
+            <input v-model="searchText" type="text" class="input" placeholder="ພະນັກງານເສີບ" required />
           </div>
         </div>
         <div class="field">
           <label>ຄົນຫາຕຳແໜ່ງງານ</label>
           <div class="control">
-            <MultiSelect
-              v-model="provinces"
-              :hasChild="true"
-              :list="provincesList"
-            />
+            <MultiSelect v-model="provinces" :hasChild="true" :list="provincesList" />
           </div>
         </div>
 
@@ -50,31 +30,17 @@
           <div class="field">
             <label>ໂມງເລີ່ມວຽກ</label>
             <div class="control">
-              <input
-                v-model="workingTimeStart"
-                type="time"
-                placeholder="HH:MM"
-                required
-              />
+              <input v-model="workingTimeStart" type="time" placeholder="HH:MM" required />
             </div>
           </div>
           <div class="field">
             <label>ໂມງເລີກວຽກ</label>
             <div class="control">
-              <input
-                v-model="workingTimeEnd"
-                type="time"
-                placeholder="HH:MM"
-                required
-              />
+              <input v-model="workingTimeEnd" type="time" placeholder="HH:MM" required />
             </div>
           </div>
 
-          <a
-            v-if="workingTimeStart || workingTimeEnd"
-            class="clear-button"
-            @click="clearTime"
-          >
+          <a v-if="workingTimeStart || workingTimeEnd" class="clear-button" @click="clearTime">
             <i class="fa-solid fa-circle-xmark"></i>
           </a>
         </div>
@@ -89,18 +55,16 @@
           <span>{{ total }}</span>
         </div>
         <div class="end">
-          <Paginate :total="total"
-                    :currentPage="page"
-                    :lastPage="Math.ceil(total / perPage)" @change-page="(value) => page = value" />
+          <Paginate :total="total" :currentPage="page" :lastPage="Math.ceil(total / perPage)"
+            @change-page="(value) => page = value" />
         </div>
       </div>
       <div class="job-card-list">
         <Jobcard v-for="i in jobs" :detail="i" />
       </div>
       <div class="pages">
-        <Paginate :total="total"
-                  :currentPage="page"
-                  :lastPage="Math.ceil(total / perPage)" @change-page="(value) => page = value" />
+        <Paginate :total="total" :currentPage="page" :lastPage="Math.ceil(total / perPage)"
+          @change-page="(value) => page = value" />
       </div>
     </div>
   </section>
@@ -425,16 +389,20 @@ await getJobs();
   @media screen and (max-width: 768px) {
     flex-wrap: wrap;
   }
+
   .field {
     flex-grow: 1;
+
     .control {
       display: flex;
+
       input {
         flex-grow: 1;
         border: 1px solid var(--orange-900);
       }
     }
   }
+
   .clear-button {
     align-self: flex-end;
     display: flex;

@@ -111,7 +111,7 @@ const getJobById = async () => {
 
 const applyJob = async () => {
   if (!isAuth.value) {
-    return navigateTo("/auth/login");
+    return navigateTo(`/auth/login?redirect=${route.fullPath}`);
   }
   if (user.value.profile && !user.value.profile.firstName) {
     return navigateTo("/auth/cv");

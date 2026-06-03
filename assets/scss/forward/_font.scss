@@ -1,6 +1,6 @@
 @use "screen.scss" as *;
 
-$font-family: "Noto Sans Lao Looped", "Satoshi" sans-serif;
+$font-family: "Noto Sans Lao Looped", "Satoshi", sans-serif;
 
 :root {
   --font-family: #{$font-family};

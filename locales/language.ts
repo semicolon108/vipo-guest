@@ -1872,5 +1872,45 @@ export const language = [
     key: 'Create CV and apply event',
     en: 'Create CV And Apply Event',
     la: 'ສ້າງຊີວີ ແລະ ສະໝັກເຂົ້າຮ່ວມງານ'
+  },
+  {
+    key: "show more",
+    en: "Show more",
+    la: "ສະແດງເພີ່ມເຕີມ"
+  },
+  {
+    key: "show less",
+    en: "Show less",
+    la: "ສະແດງໜ້ອຍລົງ"
+  },
+  {
+    key: "Description",
+    en: "Description",
+    la: "ລາຍລະອຽດ"
+  },
+  {
+    key: "allJobPositionsPostedOnFacebook",
+    en: "All Job Positions Posted on Facebook",
+    la: "ທຸກຕຳແໜ່ງງານທີ່ປະກາດຜ່ານທາງ Facebook"
+  },
+  {
+    key: "Search by company name",
+    en: "Search by company name",
+    la: "ຄົ້ນຫາຕາມຊື່ບໍລິສັດ"
+  },
+  {
+    key: "jobdetail",
+    en: "Job Detail",
+    la: "ລາຍລະອຽດວຽກ"
+  },
+  {
+    key: "Position",
+    en: "Position",
+    la: "ຕຳແໜ່ງ"
+  },
+  {
+    key: "Positions",
+    en: "Positions",
+    la: "ຕຳແໜ່ງ"
   }
 ]

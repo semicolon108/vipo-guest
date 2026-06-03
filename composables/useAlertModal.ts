@@ -55,6 +55,7 @@ export function useAlertModal() {
 
 
   const openDefaultLoginModal = (opts?: any) => {
+    const route = useRoute()
     openModal({
       title: t('login_require_title'),
       description: t('login_require_text'),
@@ -62,7 +63,7 @@ export function useAlertModal() {
       cancelText: t('cancel'),
       confirmText: t('login'),
       onConfirm: () => {
-        router.push('/auth/login')
+        router.push(`/auth/login?redirect=${route.fullPath}`)
         closeModal()
       },
       ...opts

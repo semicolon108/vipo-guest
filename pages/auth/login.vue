@@ -41,7 +41,9 @@
 <script setup lang="ts">
 import { useForm } from "vee-validate";
 import * as yup from "yup";
+import { useAuthStore } from "~/store/auth";
 const config = useRuntimeConfig();
+const route = useRoute();
 
 const apiError = ref("");
 
@@ -99,7 +101,12 @@ const login = async (form: any) => {
 
     tokenCookie.value = token;
 
-    navigateTo("/");
+    // Set the token in Pinia store for immediate reactivity
+    const authStore = useAuthStore();
+    authStore.token = token;
+
+    const redirectPath = (route.query.redirect as string) || "/my-profile";
+    navigateTo(redirectPath);
   } catch (e) {
     console.log(e);
   }
@@ -108,10 +115,6 @@ const login = async (form: any) => {
 const onSubmit = handleSubmit((values) => {
   login(values);
 });
-
-// onMounted(() => {
-//   mobile.value = "58593344";
-// });
 </script>
 
 <style scoped lang="scss">

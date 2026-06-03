@@ -3,14 +3,14 @@ import { defineStore } from 'pinia'
 import { useRouter, useCookie } from '#app'
 
 export const useAuthStore = defineStore('auth', () => {
-  const tokenCookie: any = useCookie<string | null>('auth-token', {
+  const token: any = useCookie<string | null>('auth-token', {
     sameSite: 'lax',
-    secure: true, // set false if not HTTPS in dev
+    secure: false,
     path: '/',
+    maxAge: 60 * 60 * 24 * 365,
   })
 
   const isRegister = ref(false)
-  const token = ref<string | null>(tokenCookie.value || null)
   const isAuth = computed(() => !!token.value)
   const isLoginModal = ref(false)
   const loginType = ref('')

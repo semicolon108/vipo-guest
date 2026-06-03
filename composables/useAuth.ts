@@ -30,20 +30,29 @@
 // };
 
 
+import { useAuthStore } from '~/store/auth'
+
 export const useAuth = () => {
-    const tokenCookie = useCookie('auth-token');
-    const user = useState<any>('currentUser', () => null);
+    const authStore = useAuthStore()
+    const user = useState<any>('currentUser', () => null)
 
     const setUser = (userData: any) => {
-        user.value = userData;
-    };
+        user.value = userData
+    }
 
-    const isAuth = computed(() => !!tokenCookie.value);
+    const isAuth = computed(() => !!authStore.token)
+
+    const token = computed({
+        get: () => authStore.token,
+        set: (val) => {
+            authStore.token = val
+        }
+    })
 
     const logout = () => {
-        tokenCookie.value = null; // Clear the cookie
-        navigateTo('/auth/login');     // Redirect user to login
-    };
+        authStore.token = null // Clear the cookie
+        navigateTo('/auth/login')     // Redirect user to login
+    }
 
-    return { isAuth, token: tokenCookie, logout, user, setUser };
-};
+    return { isAuth, token, logout, user, setUser }
+}

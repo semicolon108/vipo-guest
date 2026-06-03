@@ -45,6 +45,7 @@
 import Loading from "~/components/Loading.vue";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
+import { useAuthStore } from "~/store/auth";
 const config = useRuntimeConfig();
 const apiError = ref('')
 
@@ -102,7 +103,12 @@ const register = async () => {
 
       tokenCookie.value = token;
 
-      navigateTo('/')
+      // Set the token in Pinia store for immediate reactivity
+      const authStore = useAuthStore();
+      authStore.token = token;
+
+      const redirectPath = (route.query.redirect as string) || "/my-profile";
+      navigateTo(redirectPath);
 
     }
     else if (route.query.type === 'forgotPassword' && route.query.mobile && route.query.token) {

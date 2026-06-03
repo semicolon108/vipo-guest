@@ -585,6 +585,8 @@ definePageMeta({
   ssr: false,
 });
 
+const route = useRoute();
+
 import { useForm, useFieldArray, Field, ErrorMessage } from "vee-validate";
 import * as yup from "yup";
 import DateInput from "@/components/DateInput.vue";
@@ -1049,7 +1051,7 @@ onMounted(async () => {
 
   if (!isAuth.value) {
     alert("Please login first");
-    navigateTo("/auth/login");
+    navigateTo(`/auth/login?redirect=${route.fullPath}`);
   } else {
     setTimeout(() => {
       //   console.log(user.value)
