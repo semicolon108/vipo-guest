@@ -21,9 +21,8 @@
                     <div class="card-image-slider">
                         <div class="slider-track" :class="{ 'has-multiple': item.photoLinks?.length > 1 }">
                             <img v-for="(photo, pIndex) in item.photoLinks" :key="pIndex"
-                                :class="pIndex === 0 ? 'primary-img' : 'absolute-img'"
-                                :style="pIndex > 0 ? { top: (pIndex * 100) + '%' } : {}" :src="photo"
-                                :alt="item?.employer?.companyName || 'Company'" />
+                                :class="pIndex === 0 ? 'primary-img' : 'absolute-img'" :style="getPhotoStyle(pIndex)"
+                                :src="photo" :alt="item?.employer?.companyName || 'Company'" />
                             <img v-if="!item.photoLinks || item.photoLinks.length === 0" class="primary-img"
                                 :src="item.employer?.logo || '/logo-circle.png'"
                                 :alt="item?.employer?.companyName || 'Company'" />
@@ -58,6 +57,13 @@ import { formatDefaultDate } from '~/utils/formatter'
 import useFetchCustom from '~/utils/global-useFetch'
 import { useInfiniteScroll } from '@vueuse/core'
 const router = useRouter()
+const getPhotoStyle = (pIndex: string | number) => {
+    const idx = Number(pIndex);
+    if (idx > 0) {
+        return { top: `${idx * 100}%` };
+    }
+    return {};
+}
 const search = ref<any>('')
 const page = ref<any>(0)
 const items = ref<any[]>([])
@@ -321,26 +327,25 @@ onMounted(() => {
     .company-logo-btn {
         position: absolute;
         top: 16px;
-        right: 16px;
+        right: 9px;
         width: 48px;
         height: 48px;
-        background: var(--orange-900);
-        border-radius: 50%;
+        background: #fff;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        padding: 2px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 6px;
         z-index: 2;
-        border: none;
         transition: opacity 0.3s ease, visibility 0.3s ease;
 
         img {
             width: 100%;
             height: 100%;
             object-fit: contain;
-            border-radius: 50%;
-            background-color: #fff;
+            border-radius: 8px;
         }
     }
 
