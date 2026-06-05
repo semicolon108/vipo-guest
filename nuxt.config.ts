@@ -1,15 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-import { apiBase, fileTmp } from "./utils/global-variables";
+import { apiBase } from "./utils/global-variables";
 
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase,
-      fileTmp,
-
-      //     apiBase: "https://db-dev.108.jobs/client-vipo-api",
-      //     fileTmp: "https://db-dev.108.jobs",
     },
   },
 
@@ -48,7 +44,7 @@ export default defineNuxtConfig({
     "@/assets/css/all.css",
   ],
 
-  modules: ["nuxt-tiptap-editor",'@pinia/nuxt', "nuxt-anchorscroll", "nuxt-gtag"],
+  modules: ["nuxt-tiptap-editor", '@pinia/nuxt', "nuxt-anchorscroll", "nuxt-gtag"],
   gtag: {
     id: "G-4KTH72TPWC",
     config: {

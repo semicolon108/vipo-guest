@@ -54,7 +54,6 @@
 
 <script setup lang="ts">
 import { formatDefaultDate } from '~/utils/formatter'
-import useFetchCustom from '~/utils/global-useFetch'
 import { useInfiniteScroll } from '@vueuse/core'
 const router = useRouter()
 const getPhotoStyle = (pIndex: string | number) => {
@@ -86,20 +85,16 @@ const fetchVipoJobList = async () => {
             page: page.value || 1,
             perPage: 10
         }
-        const { data, error } = await useFetchCustom('/get-job-vipo-list')
-            .post(form)
-            .json();
+        const { $apiFetch } = useNuxtApp()
+        const data = await $apiFetch<any>('/get-job-vipo-list', {
+            method: 'POST',
+            body: form
+        })
 
-        // Check if error exists before accessing data.value
-        if (error.value) {
-            console.error('API Error:', error.value);
-            return;
-        }
-
-        const jobs = data?.value?.jobVipos
+        const jobs = data?.jobVipos
         if (Array.isArray(jobs) && jobs.length > 0) {
             items.value.push(...jobs)
-            totals.value = data?.value?.totals || 0
+            totals.value = data?.totals || 0
 
             if (items.value.length >= totals.value) {
                 isMore.value = false

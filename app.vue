@@ -4,11 +4,15 @@
       <NuxtPage />
     </NuxtLayout>
     <Toast />
+    <ConfirmModal />
+    <ErrorModal />
   </div>
 </template>
 
 <script setup lang="ts">
 import Toast from "@/components/Toast.vue";
+import ConfirmModal from "@/components/ConfirmModal.vue";
+import ErrorModal from "@/components/ErrorModal.vue";
 import { useAuthStore } from "~/store/auth";
 
 useAuthStore();

@@ -51,6 +51,17 @@
               <span class="position-title">{{ pos.position }}</span>
               <span class="position-total">{{ pos.employeeCount }} {{ pos.employeeCount === 1 ?
                 $t('Position') : $t('Positions') }}</span>
+              <button class="btn-apply-pos" :class="{ 'applied': pos.appliedStatus }"
+                :disabled="pos.appliedStatus || isSubmitting" @click.stop="!pos.appliedStatus && handleApplyClick(pos)">
+                <template v-if="submittingPositionName === pos.position">
+                  <i class="fa-regular fa-spinner fa-spin"></i>
+                  ກຳລັງສົ່ງ...
+                </template>
+                <template v-else>
+                  <i v-if="pos.appliedStatus" class="fa-regular fa-check"></i>
+                  {{ pos.appliedStatus ? 'ສະໝັກແລ້ວ' : 'ສະໝັກ' }}
+                </template>
+              </button>
             </div>
             <button v-if="positions.length > 4" class="btn-show-more" @click="showAll = !showAll">
               <template v-if="!showAll">
@@ -83,18 +94,23 @@
       <img :src="selectedPhoto" class="modal-image" />
     </div>
   </Teleport>
+
+
 </template>
 
 <script setup lang="ts">
-import useFetchCustom from '~/utils/global-useFetch'
+
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation as SwiperNavigation, Pagination as SwiperPagination, Autoplay as SwiperAutoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import Loading from '~/components/Loading.vue'
+import { useI18n } from 'vue-i18n'
+
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 
 const id = route.params._id
 if (!id || id === '?' || id === '') {
@@ -116,12 +132,17 @@ const closeModal = () => { selectedPhoto.value = null }
 const fetchData = async () => {
   try {
     isLoading.value = true
-    const { data, error } = await useFetchCustom('/get-job-vipo-detail/' + id).json()
-    if (data.value) {
-      company.value = data.value?.jobVipoDetail?.employer || {}
-      positions.value = data.value?.jobVipoDetail?.positions || []
-      photos.value = data.value?.jobVipoDetail?.photoLinks || []
-      facebookMessage.value = data.value?.jobVipoDetail?.caption || ""
+    const { $apiFetch } = useNuxtApp()
+    const data = await $apiFetch<any>('/get-job-vipo-detail/' + id)
+    if (data) {
+      company.value = data.jobVipoDetail?.employer || {}
+      const appliedPositions = data.jobVipoDetail?.appliedPositions || data.appliedPositions || []
+      positions.value = (data.jobVipoDetail?.positions || []).map((pos: any) => ({
+        ...pos,
+        appliedStatus: pos.appliedStatus || appliedPositions.includes(pos.position) || false
+      }))
+      photos.value = data.jobVipoDetail?.photoLinks || []
+      facebookMessage.value = data.jobVipoDetail?.caption || ""
     }
   } catch (e) {
     console.error(e)
@@ -131,6 +152,69 @@ const fetchData = async () => {
 }
 
 fetchData()
+
+const { isAuth, user } = useAuth()
+const { showToast } = useToast()
+const { openConfirm } = useConfirmModal()
+const { openError } = useErrorModal()
+
+const isSubmitting = ref(false)
+const submittingPositionName = ref<string | null>(null)
+
+const handleApplyClick = async (pos: any) => {
+  if (!isAuth.value) {
+    router.push(`/auth/login?redirect=${route.fullPath}`)
+    return
+  }
+  if (user.value?.profile && !user.value.profile.firstName) {
+    router.push('/auth/cv')
+    return
+  }
+
+  const confirmed = await openConfirm(
+    'ຍືນຍັນການສະໝັກ',
+    `ທ່ານຕ້ອງການສະໝັກຕຳແໜ່ງ <strong>${pos.position}</strong> ແມ່ນບໍ່?`
+  )
+
+  if (confirmed) {
+    try {
+      submittingPositionName.value = pos.position
+      isSubmitting.value = true
+      const { $apiFetch } = useNuxtApp()
+
+      const res = await $apiFetch<any>('/apply-job-for-vipo', {
+        method: 'POST',
+        body: {
+          _id: id,
+          positionName: pos.position
+        }
+      })
+
+      showToast(`${pos.position}: ສະໝັກແລ້ວ`, 'success')
+
+      // Use appliedPositions array from response to update UI locally first
+      const appliedPositions = res?.appliedPositions || res?.data?.appliedPositions || []
+      if (Array.isArray(appliedPositions) && appliedPositions.length > 0) {
+        positions.value = positions.value.map((item: any) => ({
+          ...item,
+          appliedStatus: item.appliedStatus || appliedPositions.includes(item.position)
+        }))
+      } else {
+        pos.appliedStatus = true
+      }
+
+      // Refresh apply status
+      await fetchData()
+    } catch (e: any) {
+      console.error(e)
+      const errMsg = e?.data?.message || 'Failed to apply'
+      openError('ເກີດຂໍ້ຜິດພາດ', errMsg)
+    } finally {
+      isSubmitting.value = false
+      submittingPositionName.value = null
+    }
+  }
+}
 
 const formatArray = (arr: any[]) => {
   return arr.map(item => item.name).join(', ')
@@ -184,13 +268,21 @@ const formatArray = (arr: any[]) => {
   background-color: var(--bg-color);
   padding: 1rem 0;
   min-height: 80vh;
+
+  .container {
+    max-width: 1120px;
+  }
 }
 
 .detail-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 500px 1fr;
   gap: 1.5rem;
   align-items: start;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1.1fr;
+  }
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -341,7 +433,7 @@ const formatArray = (arr: any[]) => {
   cursor: pointer;
 
   &:hover {
-    border-color: var(--primary-color);
+    border-color: var(--primary-500);
     background-color: var(--primary-100);
   }
 
@@ -378,6 +470,96 @@ const formatArray = (arr: any[]) => {
     white-space: nowrap;
   }
 
+  .btn-apply-pos {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.4rem 1.1rem;
+    font-size: var(--xsm-font);
+    font-family: var(--font-family);
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 1.5px solid var(--primary-500);
+    background-color: var(--primary-500);
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(255, 109, 0, 0.15);
+
+    i {
+      font-size: var(--xsm-font);
+    }
+
+    &:hover {
+      background-color: var(--primary-600);
+      border-color: var(--primary-600);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 14px rgba(255, 109, 0, 0.25);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+
+    &.applied {
+      background-color: #fff;
+      border-color: var(--primary-500);
+      color: var(--primary-500);
+      box-shadow: none;
+
+      i {
+        color: var(--primary-500);
+      }
+
+      &:hover {
+        background-color: var(--primary-500);
+        color: #fff;
+
+        i {
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 0.75rem;
+    align-items: center;
+    padding: 0.75rem;
+
+    .position-icon {
+      grid-column: 1;
+      grid-row: 1 / 3;
+      align-self: center;
+    }
+
+    .position-title {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: var(--sm-font);
+      line-height: 1.3;
+      margin: 0;
+    }
+
+    .position-total {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: start;
+    }
+
+    .btn-apply-pos {
+      grid-column: 2;
+      grid-row: 2;
+      justify-self: end;
+      padding: 0.35rem 0.9rem;
+      box-shadow: none;
+    }
+  }
 }
 
 .btn-show-more {
@@ -390,7 +572,7 @@ const formatArray = (arr: any[]) => {
   font-size: var(--sm-font);
   font-family: var(--font-family);
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--primary-500);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -400,7 +582,7 @@ const formatArray = (arr: any[]) => {
 
   &:hover {
     background-color: var(--primary-100);
-    border-color: var(--primary-color);
+    border-color: var(--primary-500);
   }
 }
 
@@ -423,7 +605,7 @@ const formatArray = (arr: any[]) => {
   }
 
   a {
-    color: var(--primary-color);
+    color: var(--primary-500);
     text-decoration: underline;
   }
 
@@ -512,7 +694,7 @@ const formatArray = (arr: any[]) => {
 .btn-company-profile {
   height: 36px;
   padding: 0 1rem;
-  background-color: var(--primary-color);
+  background-color: var(--primary-500);
   color: #fff;
   border-radius: 8px;
   font-size: var(--sm-font);
